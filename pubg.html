@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت نام و عضویت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0c0f17;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- هدر جدید مطابق با سایت اول (بدون عضویت و بدون Game Loop) --- */
+        header {
+            background-color: rgba(22, 27, 38, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid #00ff88;
+            padding: 15px 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* سمت راست - خالی (عضویت حذف شد) */
+        .nav-right {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        /* وسط: فقط علامت‌های پلی‌استیشن */
+        .header-title {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 10px;
+            min-width: 0;
+        }
+
+        .ps-shapes {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 8px 20px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(4px);
+        }
+
+        .ps-shapes i {
+            font-size: 1.4rem;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            cursor: pointer;
+        }
+
+        .ps-shapes .ps-square {
+            color: #ff77a9;
+            text-shadow: 0 0 12px rgba(255, 119, 169, 0.7);
+        }
+
+        .ps-shapes .ps-triangle {
+            color: #00f0ff;
+            text-shadow: 0 0 12px rgba(0, 240, 255, 0.7);
+        }
+
+        .ps-shapes .ps-circle {
+            color: #ff4757;
+            text-shadow: 0 0 12px rgba(255, 71, 87, 0.7);
+        }
+
+        .ps-shapes .ps-cross {
+            color: #5352ed;
+            text-shadow: 0 0 12px rgba(83, 82, 237, 0.7);
+        }
+
+        .ps-shapes i:hover {
+            transform: scale(1.3) rotate(10deg);
+        }
+
+        /* سمت چپ: لوگو */
+        .nav-left {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex: 1;
+        }
+
+        .logo-container {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            padding: 3px;
+            background: #161b26;
+            border: 2px solid #ff0055;
+            box-shadow: 0 0 12px #ff0055, inset 0 0 12px #ff0055;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .logo-container:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 20px #ff0055, inset 0 0 15px #ff0055;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        /* --- پایان هدر --- */
+
+        /* استایل بخش عنوان صفحه */
+        .page-header {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+
+        .page-header h1 {
+            color: #00ff88;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+            font-weight: 800;
+        }
+
+        .page-header p {
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px 60px;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(22, 27, 38, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #00ff88;
+            box-shadow: 0 15px 35px rgba(0, 255, 136, 0.25), 0 0 15px rgba(0, 255, 136, 0.15);
+        }
+
+        .card-img-wrapper {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-img {
+            transform: scale(1.08);
+        }
+
+        .card-body {
+            padding: 24px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+
+        .card:hover .card-title {
+            color: #00ff88;
+        }
+
+        .card-desc {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .card-action {
+            margin-top: 20px;
+            padding: 8px 16px;
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            align-self: center;
+            display: inline-block;
+        }
+
+        .card:hover .card-action {
+            background: #00ff88;
+            color: #0c0f17;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+        }
+
+        .island-support-fixed {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 1000;
+            background: rgba(22, 27, 38, 0.85);
+            backdrop-filter: blur(10px);
+            border: 2px solid #00ff88;
+            border-radius: 50px;
+            padding: 12px 24px;
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), 0 8px 25px rgba(0, 0, 0, 0.5);
+            animation: floatIsland 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .island-support-fixed i {
+            font-size: 1.2rem;
+            color: #00ff88;
+            transition: color 0.3s ease;
+        }
+
+        .island-support-fixed:hover {
+            background: #00ff88;
+            color: #0c0f17;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .island-support-fixed:hover i {
+            color: #0c0f17;
+        }
+
+        @keyframes floatIsland {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        /* ==========================================
+           بهینه‌سازی ویژه برای صفحه موبایل
+           ========================================== */
+        @media (max-width: 600px) {
+            header {
+                padding: 10px 12px;
+            }
+
+            nav {
+                gap: 6px;
+            }
+
+            .nav-right, .nav-left {
+                min-width: 36px;
+            }
+
+            .header-title {
+                padding: 0 5px;
+            }
+
+            .ps-shapes {
+                gap: 10px;
+                padding: 6px 12px;
+            }
+
+            .ps-shapes i {
+                font-size: 1rem;
+            }
+
+            .logo-container {
+                width: 36px;
+                height: 36px;
+                border-width: 1.5px;
+            }
+
+            .page-header h1 {
+                font-size: 1.6rem;
+            }
+
+            .card-title {
+                font-size: 1.1rem;
+            }
+
+            .card-desc {
+                font-size: 0.85rem;
+            }
+
+            .island-support-fixed {
+                bottom: 16px;
+                left: 16px;
+                padding: 10px 18px;
+                font-size: 0.85rem;
+                gap: 8px;
+            }
+
+            .island-support-fixed i {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .ps-shapes {
+                gap: 7px;
+                padding: 5px 8px;
+            }
+
+            .ps-shapes i {
+                font-size: 0.85rem;
+            }
+
+            .logo-container {
+                width: 30px;
+                height: 30px;
+            }
+
+            .nav-right, .nav-left {
+                min-width: 30px;
+            }
+        }
+
+        @media (min-width: 601px) and (max-width: 1024px) {
+            .ps-shapes i {
+                font-size: 1.2rem;
+            }
+
+            .logo-container {
+                width: 46px;
+                height: 46px;
+            }
+
+            .nav-right, .nav-left {
+                min-width: 46px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <!-- سمت راست - کاملاً خالی (عضویت حذف شد) -->
+            <div class="nav-right"></div>
+
+            <!-- وسط - فقط علامت‌های پلی‌استیشن (بدون Game Loop) -->
+            <div class="header-title">
+                <div class="ps-shapes">
+                    <i class="fa-regular fa-square ps-square"></i>
+                    <i class="fa-solid fa-triangle-exclamation ps-triangle"></i>
+                    <i class="fa-regular fa-circle ps-circle"></i>
+                    <i class="fa-solid fa-xmark ps-cross"></i>
+                </div>
+            </div>
+
+            <!-- سمت چپ - لوگو -->
+            <div class="nav-left">
+                <div class="logo-container">
+                    <img src="op.jpg" alt="Game Loop Logo">
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <h1>جوایز موجود پاپجی موبایل</h1>
+        <p>لطفا آیتم مورد ضرورت خویش را انتخاب نمایید.</p>
+    </div>
+
+    <main>
+        <div class="cards-container">
+            <a href="sendme.html" class="card">
+                <div class="card-img-wrapper">
+                    <img class="card-img" src="download.png" alt="دریافت سکه نقره پاپجی موبایل">
+                </div>
+                <div class="card-body">
+                    <div>
+                        <h3 class="card-title">Silver Coin</h3>
+                        <p class="card-desc">شما می‌توانید از طریق ایمیل‌های پاپجی موبایل جوایز خود را بدست بیاورید.</p>
+                    </div>
+                    <span class="card-action">انتخاب و دریافت ←</span>
+                </div>
+            </a>
+
+            <a href="sendme.html" class="card">
+                <div class="card-img-wrapper">
+                    <img class="card-img" src="uc.png" alt="UC VIP">
+                </div>
+                <div class="card-body">
+                    <div>
+                        <h3 class="card-title">UC (VIP)</h3>
+                        <p class="card-desc">برنده یوسی بازی پاپجی موبایل شوید.</p>
+                    </div>
+                    <span class="card-action">انتخاب و دریافت ←</span>
+                </div>
+            </a>
+
+            <a href="last of pubg.html" class="card">
+                <div class="card-img-wrapper">
+                    <img class="card-img" src="mmm.png" alt="Exchange items">
+                </div>
+                <div class="card-body">
+                    <div>
+                        <h3 class="card-title">Exchange items</h3>
+                        <p class="card-desc">تبدیل سلور با آیتم‌های موجود.</p>
+                    </div>
+                    <span class="card-action">انتخاب و دریافت ←</span>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <a href="conection.html" target="_blank" class="island-support-fixed">
+        <i class="fa-solid fa-headset"></i>
+        <span>پشتیبانی</span>
+    </a>
+
+</body>
+</html>

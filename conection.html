@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پشتیبانی و ارتباط با ما - گیمینگ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f1117;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* نوار بالای صفحه (Header) */
+        header {
+            background-color: #161b26;
+            border-bottom: 2px solid #00ff88;
+            padding: 15px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .header-title {
+            color: #00ff88;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        /* بخش اصلی */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* حاوی قطار عمودی جزیره‌ها */
+        .train-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            width: 100%;
+            max-width: 440px;
+        }
+
+        /* ریل عمودی نوری قطار */
+        .train-container::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            bottom: 25px;
+            right: 38px;
+            width: 3px;
+            background: linear-gradient(180deg, #00ff88, #25d366, #0088cc, #ffffff, #ea4335);
+            box-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+            z-index: 1;
+        }
+
+        /* کارت‌ها/جزیره‌های شناور */
+        .island-card {
+            position: relative;
+            z-index: 2;
+            background: #1a202c;
+            border: 1px solid #2d3748;
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: #ffffff;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: floatIsland 4s ease-in-out infinite;
+        }
+
+        .island-card:nth-child(1) { animation-delay: 0s; }
+        .island-card:nth-child(2) { animation-delay: 0.3s; }
+        .island-card:nth-child(3) { animation-delay: 0.6s; }
+        .island-card:nth-child(4) { animation-delay: 0.9s; }
+
+        @keyframes floatIsland {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .island-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* قاب آیکون نئونی */
+        .icon-box {
+            width: 45px;
+            height: 45px;
+            background-color: #161b26;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .island-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+
+        .island-info p {
+            font-size: 0.82rem;
+            color: #a0aec0;
+        }
+
+        .arrow-icon {
+            font-size: 0.9rem;
+            color: #a0aec0;
+            transition: all 0.3s ease;
+        }
+
+        /* 1. واتساپ */
+        .island-card.whatsapp:hover {
+            border-color: #25d366;
+            box-shadow: 0 0 20px rgba(37, 211, 102, 0.4);
+            transform: translateY(-6px) scale(1.02);
+        }
+        .island-card.whatsapp:hover .icon-box { background: #25d366; color: #0f1117; }
+        .island-card.whatsapp .icon-box { color: #25d366; }
+        .island-card.whatsapp:hover h3 { color: #25d366; }
+
+        /* 2. تلگرام */
+        .island-card.telegram:hover {
+            border-color: #0088cc;
+            box-shadow: 0 0 20px rgba(0, 136, 204, 0.4);
+            transform: translateY(-6px) scale(1.02);
+        }
+        .island-card.telegram:hover .icon-box { background: #0088cc; color: #ffffff; }
+        .island-card.telegram .icon-box { color: #0088cc; }
+        .island-card.telegram:hover h3 { color: #0088cc; }
+
+        /* 3. گیت‌هاب */
+        .island-card.github:hover {
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+            transform: translateY(-6px) scale(1.02);
+        }
+        .island-card.github:hover .icon-box { background: #00ff88; color: #0f1117; }
+        .island-card.github .icon-box { color: #00ff88; }
+        .island-card.github:hover h3 { color: #00ff88; }
+
+        /* 4. ایمیل */
+        .island-card.email:hover {
+            border-color: #ea4335;
+            box-shadow: 0 0 20px rgba(234, 67, 53, 0.4);
+            transform: translateY(-6px) scale(1.02);
+        }
+        .island-card.email:hover .icon-box { background: #ea4335; color: #ffffff; }
+        .island-card.email .icon-box { color: #ea4335; }
+        .island-card.email:hover h3 { color: #ea4335; }
+
+        .island-card:hover .arrow-icon {
+            transform: translateX(-6px);
+            color: #00ff88;
+        }
+
+        /* دکمه بازگشت در پایین صفحه */
+        .back-btn {
+            margin-top: 35px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2d3748;
+            color: #a0aec0;
+            padding: 10px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+            color: #00ff88;
+        }
+
+        .back-btn:hover i {
+            transform: translateX(4px);
+        }
+
+        .back-btn i {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">
+            <i class="fa-solid fa-headset"></i>
+            پشتیبانی و راه‌های ارتباطی
+        </div>
+    </header>
+
+    <main>
+        <div class="train-container">
+
+            <a href="https://wa.me/93790407080" target="_blank" class="island-card whatsapp">
+                <div class="island-content">
+                    <div class="icon-box">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <div class="island-info">
+                        <h3>واتساپ</h3>
+                        <p>ارتباط سریع و چت آنلاین</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-left arrow-icon"></i>
+            </a>
+
+            <a href="https://t.me/+93790407080" target="_blank" class="island-card telegram">
+                <div class="island-content">
+                    <div class="icon-box">
+                        <i class="fa-brands fa-telegram"></i>
+                    </div>
+                    <div class="island-info">
+                        <h3>تلگرام</h3>
+                        <p>ارتباط مستقیم در تلگرام</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-left arrow-icon"></i>
+            </a>
+
+            <a href="https://github.com/your_username" target="_blank" class="island-card github">
+                <div class="island-content">
+                    <div class="icon-box">
+                        <i class="fa-brands fa-github"></i>
+                    </div>
+                    <div class="island-info">
+                        <h3>گیت‌هاب</h3>
+                        <p>مشاهده پروژه‌ها و کدها</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-left arrow-icon"></i>
+            </a>
+
+            <a href="mailto:hamidiabdulmateen@gmail.com" class="island-card email">
+                <div class="island-content">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div class="island-info">
+                        <h3>ایمیل</h3>
+                        <p>hamidiabdulmateen@gmail.com</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-left arrow-icon"></i>
+            </a>
+
+        </div>
+
+        <a href="index.html" class="back-btn">
+            <i class="fa-solid fa-arrow-right"></i>
+            بازگشت
+        </a>
+    </main>
+
+</body>
+</html>س

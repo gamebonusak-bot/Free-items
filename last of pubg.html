@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سایت گیمینگ - جوایز ویژه</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f1117;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #161b26;
+            border-bottom: 2px solid #00ff88;
+            padding: 15px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a:hover {
+            color: #00ff88;
+            background-color: rgba(0, 255, 136, 0.1);
+        }
+
+        .island-support-fixed {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #1f293d, #111827);
+            border: 2px solid #00ff88;
+            border-radius: 50px;
+            padding: 12px 24px;
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4), 0 8px 25px rgba(0, 0, 0, 0.5);
+            animation: floatIsland 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .island-support-fixed i {
+            font-size: 1.2rem;
+            color: #00ff88;
+            transition: color 0.3s ease;
+        }
+
+        .island-support-fixed:hover {
+            background: #00ff88;
+            color: #0f1117;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .island-support-fixed:hover i {
+            color: #0f1117;
+        }
+
+        @keyframes floatIsland {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1300px;
+            width: 100%;
+        }
+
+        .card {
+            background: #1a202c;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: #00ff88;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid #2d3748;
+        }
+
+        .card-body {
+            padding: 20px;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #00ff88;
+        }
+
+        .card-desc {
+            color: #a0aec0;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        /* استایل بخش سکه و قیمت */
+        .card-price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid #2d3748;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-top: auto;
+        }
+
+        .coin-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .coin-img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 4px rgba(0, 255, 136, 0.4));
+        }
+
+        .coin-amount {
+            color: #e2e8f0;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .price-tag {
+            color: #00ff88;
+            font-weight: bold;
+            font-size: 1.05rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="#">
+                <i class="fa-solid fa-envelope"></i>
+                تماس با ما
+            </a>
+            <a href="sign.html">
+                <i class="fa-solid fa-user-plus"></i>
+                عضو شدن
+            </a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="cards-container">
+            <a href="." class="card">
+                <img class="card-img" src="mmm.png" alt="پاپجی موبایل">
+                <div class="card-body">
+                    <h3 class="card-title">M416 Glacier</h3>
+                    <p class="card-desc">Changing your silver coin with m416.</p>
+                    <div class="card-price-row">
+                        <div class="coin-box">
+                            <img class="coin-img" src="download.png" alt="سکه تجهیزات">
+                        </div>
+                        <span class="price-tag">10000</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="." class="card">
+                <img class="card-img" src="joker.jpg" alt="کلش اف کلنز">
+                <div class="card-body">
+                    <h3 class="card-title">M416 Joker</h3>
+                    <p class="card-desc">changing your silver coin with joker skin</p>
+                    <div class="card-price-row">
+                        <div class="coin-box">
+                            <img class="coin-img" src="download.png" alt="سکه تجهیزات">
+                        </div>
+                        <span class="price-tag">45000</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="." class="card">
+                <img class="card-img" src="blos.png" alt="کالاف دیوتی">
+                <div class="card-body">
+                    <h3 class="card-title">PNC Jacket</h3>
+                    <p class="card-desc">Limited pubg item.</p>
+                    <div class="card-price-row">
+                        <div class="coin-box">
+                            <img class="coin-img" src="download.png" alt="سکه تجهیزات">
+                        </div>
+                        <span class="price-tag">2500</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="freefire.html" class="card">
+                <img class="card-img" src="blos daraz.png" alt="فری فایر">
+                <div class="card-body">
+                    <h3 class="card-title">Trenh Coat</h3>
+                    <p class="card-desc">Limited pubg item.</p>
+                    <div class="card-price-row">
+                        <div class="coin-box">
+                            <img class="coin-img" src="download.png" alt="سکه تجهیزات">
+                        </div>
+                        <span class="price-tag">1800</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="fortnite.html" class="card">
+                <img class="card-img" src="zard.png" alt="فورتنایت">
+                <div class="card-body">
+                    <h3 class="card-title">Bright idea Coat</h3>
+                    <p class="card-desc">Limited pubg item.</p>
+                    <div class="card-price-row">
+                        <div class="coin-box">
+                            <img class="coin-img" src="download.png" alt="سکه تجهیزات">
+                        </div>
+                        <span class="price-tag">2000</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="fifa.html" class="card">
+                <img class="card-img" src="vevtor.png" alt="فیفا">
+                <div class="card-body">
+                    <h3 class="card-title">Emerled Edge Vivtor</h3>
+                    <p class="card-desc">Change you silver with Victor.</p>
+                    <div class="card-price-row">
+                        <div class="coin-box">
+                            <img class="coin-img" src="download.png" alt="سکه تجهیزات">
+                        </div>
+                        <span class="price-tag">3500</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="apex.html" class="card">
+                <img class="card-img" src="amw.png" alt="ایپکس لجندز">
+                <div class="card-body">
+                    <h3 class="card-title">Season 42 AWN</h3>
+                    <p class="card-desc">Change you silver with AWM.</p>
+                    <div class="card-price-row">
+                        <div class="coin-box">
+                            <img class="coin-img" src="download.png" alt="سکه تجهیزات">
+                        </div>
+                        <span class="price-tag">800</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="valorant.html" class="card">
+                <img class="card-img" src="dest kash.png" alt="والورانت">
+                <div class="card-body">
+                    <h3 class="card-title">Bright Idea Gloves</h3>
+                    <p class="card-desc">Achive Limited Items.</p>
+                    <div class="card-price-row">
+                        <div class="coin-box">
+                            <img class="coin-img" src="download.png" alt="سکه تجهیزات">
+                        </div>
+                        <span class="price-tag">1200</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="" class="card">
+                <img class="card-img" src="sorkh.png" alt="روبلاکس">
+                <div class="card-body">
+                    <h3 class="card-title">Stealth mode Hoodie</h3>
+                    <p class="card-desc">Limited Pubg Item.</p>
+                    <div class="card-price-row">
+                        <div class="coin-box">
+                            <img class="coin-img" src="download.png" alt="سکه تجهیزات">
+                        </div>
+                        <span class="price-tag">2500</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="" class="card">
+                <img class="card-img" src="white.png" alt="دوتا ۲">
+                <div class="card-body">
+                    <h3 class="card-title">Wilham Putro</h3>
+                    <p class="card-desc">Exchange your silver with M24.</p>
+                    <div class="card-price-row">
+                        <div class="coin-box">
+                            <img class="coin-img" src="download.png" alt="سکه تجهیزات">
+                        </div>
+                        <span class="price-tag">3000</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="" class="card">
+                <img class="card-img" src="beryl M762.png" alt="کانتر استرایک">
+                <div class="card-body">
+                    <h3 class="card-title">Beryl M762</h3>
+                    <p class="card-desc">Exchange your silvers with M762.</p>
+                    <div class="card-price-row">
+                        <div class="coin-box">
+                            <img class="coin-img" src="download.png" alt="سکه تجهیزات">
+                        </div>
+                        <span class="price-tag">3000</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="" class="card">
+                <img class="card-img" src="Stell show.png" alt="جی تی ای آنلاین">
+                <div class="card-body">
+                    <h3 class="card-title">Steel Show SKS</h3>
+                    <p class="card-desc"></p>
+                    <div class="card-price-row">
+                        <div class="coin-box">
+                            <img class="coin-img" src="download.png" alt="سکه تجهیزات">
+                        </div>
+                        <span class="price-tag">3000</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <a href="conection.html" target="_blank" class="island-support-fixed">
+        <i class="fa-solid fa-headset"></i>
+        <span>پشتیبانی</span>
+    </a>
+
+</body>
+</html>

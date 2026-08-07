@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سایت گیمینگ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f1117;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-size: 16px;
+        }
+
+        header {
+            background-color: #161b26;
+            border-bottom: 2px solid #00ff88;
+            padding: 16px 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            gap: 10px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            flex: 0 0 auto;
+            min-width: 54px; /* برای حفظ تعادل با لوگوی سمت چپ */
+        }
+
+        /* ==========================================
+           علامت‌های پلی‌استیشن وسط هدر
+           ========================================== */
+        .header-title {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 10px;
+            min-width: 0;
+        }
+
+        .ps-shapes {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 8px 20px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(4px);
+        }
+
+        .ps-shapes i {
+            font-size: 1.4rem;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* رنگ اختصاصی و جلوه نئونی علامت‌ها */
+        .ps-shapes .ps-square {
+            color: #ff77a9;
+            text-shadow: 0 0 12px rgba(255, 119, 169, 0.7);
+        }
+
+        .ps-shapes .ps-triangle {
+            color: #00f0ff;
+            text-shadow: 0 0 12px rgba(0, 240, 255, 0.7);
+        }
+
+        .ps-shapes .ps-circle {
+            color: #ff4757;
+            text-shadow: 0 0 12px rgba(255, 71, 87, 0.7);
+        }
+
+        .ps-shapes .ps-cross {
+            color: #5352ed;
+            text-shadow: 0 0 12px rgba(83, 82, 237, 0.7);
+        }
+
+        .ps-shapes i:hover {
+            transform: scale(1.3) rotate(10deg);
+        }
+
+        /* ==========================================
+           استایل لوگوی سمت چپ
+           ========================================== */
+        .nav-left {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex: 0 0 auto;
+            min-width: 54px;
+        }
+
+        .logo-container {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            padding: 3px;
+            background: #161b26;
+            border: 2px solid #ff0055;
+            box-shadow: 0 0 12px #ff0055, inset 0 0 12px #ff0055;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .logo-container:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 20px #ff0055, inset 0 0 15px #ff0055;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* ==========================================
+           دکمه پشتیبانی شناور
+           ========================================== */
+        .island-support-fixed {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #1f293d, #111827);
+            border: 2px solid #00ff88;
+            border-radius: 50px;
+            padding: 14px 28px;
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4), 0 8px 25px rgba(0, 0, 0, 0.5);
+            animation: floatIsland 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .island-support-fixed i {
+            font-size: 1.3rem;
+            color: #00ff88;
+            transition: color 0.3s ease;
+        }
+
+        .island-support-fixed:hover {
+            background: #00ff88;
+            color: #0f1117;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .island-support-fixed:hover i {
+            color: #0f1117;
+        }
+
+        @keyframes floatIsland {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .cards-container {
+            display: flex;
+            gap: 25px;
+            max-width: 900px;
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: #1a202c;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            overflow: hidden;
+            flex: 1 1 300px;
+            max-width: 400px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: #00ff88;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid #2d3748;
+        }
+
+        .card-body {
+            padding: 22px;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #00ff88;
+        }
+
+        .card-desc {
+            color: #cbd5e0;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* ==========================================
+           بهینه‌سازی ویژه برای صفحه موبایل
+           ========================================== */
+        @media (max-width: 600px) {
+            header {
+                padding: 10px 12px;
+            }
+
+            nav {
+                gap: 6px;
+            }
+
+            .nav-right, .nav-left {
+                min-width: 36px;
+            }
+
+            .header-title {
+                padding: 0 5px;
+            }
+
+            .ps-shapes {
+                gap: 10px;
+                padding: 6px 12px;
+            }
+
+            .ps-shapes i {
+                font-size: 1rem;
+            }
+
+            .logo-container {
+                width: 36px;
+                height: 36px;
+                border-width: 1.5px;
+            }
+
+            .card-title {
+                font-size: 1.2rem;
+            }
+
+            .card-desc {
+                font-size: 0.95rem;
+            }
+
+            .island-support-fixed {
+                bottom: 16px;
+                left: 16px;
+                padding: 10px 18px;
+                font-size: 0.85rem;
+                gap: 8px;
+            }
+
+            .island-support-fixed i {
+                font-size: 1rem;
+            }
+        }
+
+        /* برای صفحه‌های بسیار کوچک */
+        @media (max-width: 380px) {
+            .ps-shapes {
+                gap: 7px;
+                padding: 5px 8px;
+            }
+
+            .ps-shapes i {
+                font-size: 0.85rem;
+            }
+
+            .logo-container {
+                width: 30px;
+                height: 30px;
+            }
+
+            .nav-right, .nav-left {
+                min-width: 30px;
+            }
+        }
+
+        /* برای تبلت‌ها و صفحه‌های متوسط */
+        @media (min-width: 601px) and (max-width: 1024px) {
+            .ps-shapes i {
+                font-size: 1.2rem;
+            }
+
+            .logo-container {
+                width: 46px;
+                height: 46px;
+            }
+
+            .nav-right, .nav-left {
+                min-width: 46px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="nav-right">
+                </div>
+
+            <div class="header-title">
+                <div class="ps-shapes">
+                    <i class="fa-regular fa-square ps-square"></i>
+                    <i class="fa-solid fa-triangle-exclamation ps-triangle"></i>
+                    <i class="fa-regular fa-circle ps-circle"></i>
+                    <i class="fa-solid fa-xmark ps-cross"></i>
+                </div>
+            </div>
+
+            <div class="nav-left">
+                <div class="logo-container">
+                    <img src="op.jpg" alt="Game Loop Logo">
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="cards-container">
+            <a href="pubg.html" class="card">
+                <img class="card-img" src="image 1.jpg" alt="تصویر ۱">
+                <div class="card-body">
+                    <h3 class="card-title">جوایز بازی پاپجی موبایل</h3>
+                    <p class="card-desc">با ثبت نام برنده جوایز بازی پاپجی موبایل شوید.</p>
+                </div>
+            </a>
+
+            <a href="clash.html" class="card">
+                <img class="card-img" src="image 2.jpg" alt="تصویر ۲">
+                <div class="card-body">
+                    <h3 class="card-title">جوایز کلش اف کلنز</h3>
+                    <p class="card-desc">با ثبت نام برنده جوایز بازی کلش اف کلنز شوید.</p>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <a href="conection.html" target="_blank" class="island-support-fixed">
+        <i class="fa-solid fa-headset"></i>
+        <span>پشتیبانی</span>
+    </a>
+
+</body>
+</html>

