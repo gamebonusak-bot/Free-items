@@ -496,7 +496,6 @@
         let currentUserId = null;
         let countdownTimer = null;
         let timeLeft = 120;
-        let currentLang = 'fa';
         let isSubmitting = false;
 
         // ==========================================
@@ -545,7 +544,7 @@
             hideMessage(messageEmail);
 
             try {
-                // ارسال درخواست Token
+                // ایجاد توکن ایمیل (OTP)
                 const sessionToken = await account.createEmailToken(
                     Appwrite.ID.unique(),
                     email
@@ -566,7 +565,7 @@
                 
             } catch (error) {
                 console.error('❌ خطا در ارسال کد:', error);
-                let errorMessage = '❌ خطا در ارسال کد. لطفاً دامنه (Hostname) سایت خود را در پنل Appwrite چک کنید.';
+                let errorMessage = '❌ خطا در ارسال کد. لطفاً تنظیمات Appwrite را چک کنید.';
                 if (error.message && error.message.includes('rate limit')) {
                     errorMessage = '❌ تعداد درخواست‌ها زیاد است. لطفاً کمی صبر کنید.';
                 }
@@ -579,7 +578,7 @@
         }
 
         // ==========================================
-        // 7. تابع تأیید کد OTP (اصلاح‌شده)
+        // 7. تابع تأیید کد OTP (سازگار با SDK جدید)
         // ==========================================
         async function verifyOTP() {
             if (isSubmitting) return;
@@ -598,8 +597,8 @@
             hideMessage(messageCode);
 
             try {
-                // ✅ استفاده از متد صحیح Appwrite SDK v15
-                const session = await account.createSessionWithToken(
+                // ایجاد نشست (Session) با استفاده از توکن دریافتی
+                const session = await account.createSession(
                     currentUserId,
                     otpCode
                 );
@@ -612,10 +611,9 @@
                 resendBtn.disabled = true;
                 clearInterval(countdownTimer);
                 
-                // انتقال کاربر به صفحه بعد
                 setTimeout(() => {
                     showMessage(messageCode, '✅ در حال انتقال...', 'info');
-                    // window.location.href = 'dashboard.html'; // صفحه مقصد خود را تنظیم کنید
+                    // window.location.href = 'dashboard.html'; // آدرس صفحه مقصد
                 }, 1500);
                 
             } catch (error) {
@@ -670,10 +668,10 @@
             }
         });
 
-        // مدیریت رفتن به خانه بعدی موقع تایپ کد
+        // مدیریت هوشمند تایپ در کادرهای ۶ رقمی
         otpInputs.forEach((input, index) => {
             input.addEventListener('input', function() {
-                this.value = this.value.replace(/\D/g, ''); // فقط عدد
+                this.value = this.value.replace(/\D/g, ''); // فقط دریافت عدد
                 if (this.value && index < otpInputs.length - 1) {
                     otpInputs[index + 1].focus();
                 }
