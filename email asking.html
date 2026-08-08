@@ -6,7 +6,240 @@
     <title>Global Connect - ورود / ثبت‌نام</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <script src="https://cdn.jsdelivr.net/npm/appwrite@15.0.0/dist/umd/sdk.min.js"></script>
+    <script>
+        // ==========================================
+        // 1. تنظیمات Appwrite
+        // ==========================================
+        const APPWRITE_CONFIG = {
+            endpoint: 'https://fra.cloud.appwrite.io/v1',
+            projectId: '6a7734b900207cf3e944'
+        };
+
+        // ==========================================
+        // 2. راه‌اندازی Appwrite
+        // ==========================================
+        let client, account;
+        
+        if (typeof Appwrite !== 'undefined') {
+            client = new Appwrite.Client()
+                .setEndpoint(APPWRITE_CONFIG.endpoint)
+                .setProject(APPWRITE_CONFIG.projectId);
+            
+            account = new Appwrite.Account(client);
+            console.log('✅ Appwrite با موفقیت راه‌اندازی شد!');
+        } else {
+            console.error('❌ Appwrite SDK بارگذاری نشد. اینترنت را بررسی کنید.');
+        }
+
+        // ==========================================
+        // 3. متغیرهای سراسری
+        // ==========================================
+        let currentUserId = null;
+        let countdownTimer = null;
+        let timeLeft = 120;
+        let isSubmitting = false;
+
+        // ==========================================
+        // 4. عناصر DOM
+        // ==========================================
+        const stepEmail = document.getElementById('stepEmail');
+        const stepCode = document.getElementById('stepCode');
+        const sendCodeBtn = document.getElementById('sendCodeBtn');
+        const emailInput = document.getElementById('emailInput');
+        const otpInputs = document.querySelectorAll('.otp-input');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const messageEmail = document.getElementById('messageEmail');
+        const messageCode = document.getElementById('messageCode');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const resendBtn = document.getElementById('resendBtn');
+
+        // ==========================================
+        // 5. توابع پیام‌رسانی
+        // ==========================================
+        function showMessage(element, text, type = 'info') {
+            element.textContent = text;
+            element.className = 'message-box show ' + type;
+        }
+
+        function hideMessage(element) {
+            element.className = 'message-box';
+            element.textContent = '';
+        }
+
+        // ==========================================
+        // 6. تابع ارسال کد OTP (اصلاح فرمت Object)
+        // ==========================================
+        async function sendOTP() {
+            if (isSubmitting) return;
+            
+            const email = emailInput.value.trim();
+            
+            if (!email || !email.includes('@') || !email.includes('.')) {
+                showMessage(messageEmail, '❌ لطفاً یک ایمیل معتبر وارد کنید.', 'error');
+                return;
+            }
+
+            isSubmitting = true;
+            sendCodeBtn.disabled = true;
+            sendCodeBtn.textContent = '⏳ در حال ارسال...';
+            hideMessage(messageEmail);
+
+            try {
+                // ✅ ارسال پارامترها به صورت Object برای SDK v15
+                const sessionToken = await account.createEmailToken({
+                    userId: Appwrite.ID.unique(),
+                    email: email
+                });
+                
+                currentUserId = sessionToken.userId;
+                console.log('✅ کد ارسال شد! userId:', currentUserId);
+                
+                showMessage(messageEmail, '✅ کد ۶ رقمی به ایمیل شما ارسال شد!', 'success');
+                
+                setTimeout(() => {
+                    stepEmail.classList.remove('active');
+                    stepCode.classList.add('active');
+                    hideMessage(messageEmail);
+                    otpInputs[0].focus();
+                    startTimer();
+                }, 1000);
+                
+            } catch (error) {
+                console.error('❌ خطا در ارسال کد:', error);
+                let errorMessage = '❌ خطا در ارسال کد. لطفاً دامنه‌ی سایت را در کنسول Appwrite (بخش Platforms) اضافه کنید.';
+                if (error.message && error.message.includes('rate limit')) {
+                    errorMessage = '❌ تعداد درخواست‌ها زیاد است. لطفاً کمی صبر کنید.';
+                }
+                showMessage(messageEmail, errorMessage, 'error');
+            } finally {
+                sendCodeBtn.disabled = false;
+                sendCodeBtn.textContent = 'ارسال کد تایید';
+                isSubmitting = false;
+            }
+        }
+
+        // ==========================================
+        // 7. تابع تأیید کد OTP (استفاده از createSession)
+        // ==========================================
+        async function verifyOTP() {
+            if (isSubmitting) return;
+            
+            let otpCode = '';
+            otpInputs.forEach(input => otpCode += input.value);
+
+            if (otpCode.length !== 6) {
+                showMessage(messageCode, '❌ لطفاً کد ۶ رقمی را کامل وارد کنید.', 'error');
+                return;
+            }
+
+            isSubmitting = true;
+            verifyBtn.disabled = true;
+            verifyBtn.textContent = '⏳ در حال تأیید...';
+            hideMessage(messageCode);
+
+            try {
+                // ✅ متد استاندارد تأیید OTP در Appwrite
+                const session = await account.createSession({
+                    userId: currentUserId,
+                    secret: otpCode
+                });
+                
+                console.log('✅ ورود موفق! Session:', session);
+                
+                showMessage(messageCode, '🎉 ورود با موفقیت انجام شد!', 'success');
+                
+                otpInputs.forEach(input => input.disabled = true);
+                resendBtn.disabled = true;
+                clearInterval(countdownTimer);
+                
+                setTimeout(() => {
+                    showMessage(messageCode, '✅ در حال انتقال...', 'info');
+                    // window.location.href = 'dashboard.html'; // آدرس صفحه مقصد شما
+                }, 1500);
+                
+            } catch (error) {
+                console.error('❌ خطا در تأیید کد:', error);
+                showMessage(messageCode, '❌ کد وارد شده اشتباه یا منقضی شده است.', 'error');
+                
+                otpInputs.forEach(input => input.value = '');
+                otpInputs[0].focus();
+            } finally {
+                verifyBtn.disabled = false;
+                verifyBtn.textContent = 'تایید و ورود';
+                isSubmitting = false;
+            }
+        }
+
+        // ==========================================
+        // 8. مدیریت تایمر
+        // ==========================================
+        function startTimer() {
+            timeLeft = 120;
+            resendBtn.disabled = true;
+            resendBtn.textContent = '⏳ منتظر بمانید...';
+            
+            clearInterval(countdownTimer);
+            countdownTimer = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownTimer);
+                    timerDisplay.textContent = '00:00';
+                    resendBtn.disabled = false;
+                    resendBtn.textContent = '📨 ارسال مجدد کد';
+                    showMessage(messageCode, '⏰ زمان کد به پایان رسید. کد جدید دریافت کنید.', 'error');
+                }
+            }, 1000);
+        }
+
+        // ==========================================
+        // 9. رویدادها (Event Listeners)
+        // ==========================================
+        sendCodeBtn.addEventListener('click', sendOTP);
+        verifyBtn.addEventListener('click', verifyOTP);
+        resendBtn.addEventListener('click', sendOTP);
+
+        emailInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendOTP();
+            }
+        });
+
+        otpInputs.forEach((input, index) => {
+            input.addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '');
+                if (this.value && index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                }
+                
+                const allFilled = Array.from(otpInputs).every(inp => inp.value !== '');
+                if (allFilled && !isSubmitting) {
+                    verifyOTP();
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                    otpInputs[index - 1].focus();
+                }
+            });
+        });
+
+        // تم دارک / لایت
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const icon = document.querySelector('#themeToggle i');
+            if (document.body.classList.contains('light-mode')) {
+                icon.className = 'fa-solid fa-sun';
+            } else {
+                icon.className = 'fa-solid fa-moon';
+            }
+        });
+    </script>
     
     <style>
         /* ==========================================
