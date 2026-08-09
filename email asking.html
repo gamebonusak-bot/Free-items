@@ -6,7 +6,7 @@
     <title>Global Connect - ورود / ثبت‌نام</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- ✅ SDK اپ‌رایت — این خط قبلاً به کل وجود نداشت -->
+    <!-- ✅ SDK اپ‌رایت -->
     <script src="https://cdn.jsdelivr.net/npm/appwrite@16.0.2"></script>
 
     <style>
@@ -466,27 +466,27 @@
         </div>
     </div>
 
-    <!-- ✅ فقط یک اسکریپت، بعد از اینکه همه‌ی عناصر HTML لود شدن -->
     <script>
         // ==========================================
         // 1. تنظیمات Appwrite
         // ==========================================
         const APPWRITE_CONFIG = {
             endpoint: 'https://fra.cloud.appwrite.io/v1',
-            projectId: '6a7734b900207cf3e944'
+            projectId: '6a7734b900207cf3e944',
+            functionId: '6a7821220035fde758ad' // آیدی Function به اسم send-otp — اگه فرق داره عوضش کن
         };
 
         // ==========================================
         // 2. راه‌اندازی Appwrite
         // ==========================================
-        let client, account;
+        let client, functions;
 
         if (typeof Appwrite !== 'undefined') {
             client = new Appwrite.Client()
                 .setEndpoint(APPWRITE_CONFIG.endpoint)
                 .setProject(APPWRITE_CONFIG.projectId);
 
-            account = new Appwrite.Account(client);
+            functions = new Appwrite.Functions(client);
             console.log('✅ Appwrite با موفقیت راه‌اندازی شد!');
         } else {
             console.error('❌ Appwrite SDK بارگذاری نشد. اتصال اینترنت یا آدرس CDN را بررسی کنید.');
@@ -495,7 +495,7 @@
         // ==========================================
         // 3. متغیرهای سراسری
         // ==========================================
-        let currentUserId = null;
+        let currentEmail = null;
         let countdownTimer = null;
         let timeLeft = 120;
         let isSubmitting = false;
@@ -528,12 +528,12 @@
         }
 
         // ==========================================
-        // 6. تابع ارسال کد OTP
+        // 6. تابع ارسال کد OTP (از طریق Appwrite Function + Brevo)
         // ==========================================
         async function sendOTP() {
             if (isSubmitting) return;
 
-            if (!account) {
+            if (!functions) {
                 showMessage(messageEmail, '❌ Appwrite SDK لود نشده. صفحه را رفرش کنید.', 'error');
                 return;
             }
@@ -551,14 +551,21 @@
             hideMessage(messageEmail);
 
             try {
-                // فرمت Object — مطابق نسخه‌ی جدید SDK (appwrite@16.x)
-                const sessionToken = await account.createEmailToken({
-                    userId: Appwrite.ID.unique(),
-                    email: email
+                const execution = await functions.createExecution({
+                    functionId: APPWRITE_CONFIG.functionId,
+                    body: JSON.stringify({ action: 'send', email: email }),
+                    async: false,
+                    method: 'POST'
                 });
 
-                currentUserId = sessionToken.userId;
-                console.log('✅ کد ارسال شد! userId:', currentUserId);
+                const result = JSON.parse(execution.responseBody);
+
+                if (!result.success) {
+                    throw new Error(result.message || 'خطای نامشخص');
+                }
+
+                currentEmail = email;
+                console.log('✅ کد ارسال شد به:', currentEmail);
 
                 showMessage(messageEmail, '✅ کد ۶ رقمی به ایمیل شما ارسال شد!', 'success');
 
@@ -572,13 +579,7 @@
 
             } catch (error) {
                 console.error('❌ خطا در ارسال کد:', error);
-                let errorMessage = '❌ خطا در ارسال کد: ' + (error.message || 'خطای نامشخص');
-                if (error.message && error.message.toLowerCase().includes('rate limit')) {
-                    errorMessage = '❌ تعداد درخواست‌ها زیاد است. لطفاً کمی صبر کنید.';
-                } else if (error.code === 0 || (error.message && error.message.toLowerCase().includes('failed to fetch'))) {
-                    errorMessage = '❌ اتصال به سرور برقرار نشد. دامنه‌ی سایت را در پنل Appwrite (Overview > Platforms) اضافه کنید.';
-                }
-                showMessage(messageEmail, errorMessage, 'error');
+                showMessage(messageEmail, '❌ خطا در ارسال کد: ' + (error.message || 'خطای نامشخص'), 'error');
             } finally {
                 sendCodeBtn.disabled = false;
                 sendCodeBtn.textContent = 'ارسال کد تایید';
@@ -587,7 +588,7 @@
         }
 
         // ==========================================
-        // 7. تابع تأیید کد OTP
+        // 7. تابع تأیید کد OTP (از طریق Appwrite Function)
         // ==========================================
         async function verifyOTP() {
             if (isSubmitting) return;
@@ -606,13 +607,20 @@
             hideMessage(messageCode);
 
             try {
-                // فرمت Object — مطابق نسخه‌ی جدید SDK
-                const session = await account.createSession({
-                    userId: currentUserId,
-                    secret: otpCode
+                const execution = await functions.createExecution({
+                    functionId: APPWRITE_CONFIG.functionId,
+                    body: JSON.stringify({ action: 'verify', email: currentEmail, code: otpCode }),
+                    async: false,
+                    method: 'POST'
                 });
 
-                console.log('✅ ورود موفق! Session:', session);
+                const result = JSON.parse(execution.responseBody);
+
+                if (!result.success) {
+                    throw new Error(result.message || 'کد اشتباه است');
+                }
+
+                console.log('✅ ورود موفق!');
 
                 showMessage(messageCode, '🎉 ورود با موفقیت انجام شد!', 'success');
 
@@ -627,7 +635,7 @@
 
             } catch (error) {
                 console.error('❌ خطا در تأیید کد:', error);
-                showMessage(messageCode, '❌ کد وارد شده اشتباه یا منقضی شده است.', 'error');
+                showMessage(messageCode, '❌ ' + (error.message || 'کد وارد شده اشتباه یا منقضی شده است.'), 'error');
 
                 otpInputs.forEach(input => input.value = '');
                 otpInputs[0].focus();
