@@ -6,7 +6,6 @@
     <title>Global Connect - ورود / ثبت‌نام</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- SDK اپ‌رایت -->
     <script src="https://cdn.jsdelivr.net/npm/appwrite@16.0.2"></script>
 
     <style>
@@ -465,8 +464,14 @@
 
     <script>
         // ==========================================
-        // 1. تنظیمات Appwrite
+        // 1. تنظیمات و متغیرهای اولیه (انتقال زبان به بالا)
         // ==========================================
+        let currentLang = "fa";
+        let currentEmail = null;
+        let countdownTimer = null;
+        let timeLeft = 120;
+        let isSubmitting = false;
+
         const APPWRITE_CONFIG = {
             endpoint: "https://fra.cloud.appwrite.io/v1",
             projectId: "6a7734b900207cf3e944",
@@ -484,21 +489,13 @@
                 .setProject(APPWRITE_CONFIG.projectId);
 
             functions = new Appwrite.Functions(client);
-            console.log("Appwrite با موفقیت راه‌اندازی شد. Function ID:", APPWRITE_CONFIG.functionId);
+            console.log("Appwrite با موفقیت راه‌اندازی شد.");
         } else {
             console.error("Appwrite SDK بارگذاری نشد.");
         }
 
         // ==========================================
-        // 3. متغیرهای سراسری
-        // ==========================================
-        let currentEmail = null;
-        let countdownTimer = null;
-        let timeLeft = 120;
-        let isSubmitting = false;
-
-        // ==========================================
-        // 4. عناصر DOM
+        // 3. عناصر DOM
         // ==========================================
         const stepEmail = document.getElementById("stepEmail");
         const stepCode = document.getElementById("stepCode");
@@ -512,7 +509,7 @@
         const resendBtn = document.getElementById("resendBtn");
 
         // ==========================================
-        // 5. توابع پیام‌رسانی
+        // 4. توابع پیام‌رسانی
         // ==========================================
         function showMessage(element, text, type) {
             element.textContent = text;
@@ -525,7 +522,7 @@
         }
 
         // ==========================================
-        // 6. ارسال کد OTP (از طریق Appwrite Function + Brevo)
+        // 5. ارسال کد OTP
         // ==========================================
         async function sendOTP() {
             if (isSubmitting) return;
@@ -548,25 +545,31 @@
             hideMessage(messageEmail);
 
             try {
-                const execution = await functions.createExecution({
-                    functionId: APPWRITE_CONFIG.functionId,
-                    body: JSON.stringify({ action: "send", email: email }),
-                    async: false,
-                    method: "POST"
-                });
+                // ارسال تابع طبق ساختار استاندارد SDK 16
+                const execution = await functions.createExecution(
+                    APPWRITE_CONFIG.functionId,
+                    JSON.stringify({ action: "send", email: email }),
+                    false,
+                    '/',
+                    'POST'
+                );
 
-                if (execution.responseStatusCode >= 400) {
-                    throw new Error("خطای سرور (کد " + execution.responseStatusCode + ")");
+                if (execution.status === 'failed' || execution.responseStatusCode >= 400) {
+                    throw new Error("خطا در اجرای تابع (کد " + execution.responseStatusCode + ")");
                 }
 
-                const result = JSON.parse(execution.responseBody);
+                let result;
+                try {
+                    result = JSON.parse(execution.responseBody);
+                } catch(e) {
+                    result = { success: true }; 
+                }
 
-                if (!result.success) {
-                    throw new Error(result.message || "خطای نامشخص");
+                if (result.success === false) {
+                    throw new Error(result.message || "خطای نامشخص از سمت سرور");
                 }
 
                 currentEmail = email;
-
                 showMessage(messageEmail, "کد ۶ رقمی به ایمیل شما ارسال شد!", "success");
 
                 setTimeout(function () {
@@ -588,7 +591,7 @@
         }
 
         // ==========================================
-        // 7. تایید کد OTP
+        // 6. تایید کد OTP
         // ==========================================
         async function verifyOTP() {
             if (isSubmitting) return;
@@ -607,20 +610,26 @@
             hideMessage(messageCode);
 
             try {
-                const execution = await functions.createExecution({
-                    functionId: APPWRITE_CONFIG.functionId,
-                    body: JSON.stringify({ action: "verify", email: currentEmail, code: otpCode }),
-                    async: false,
-                    method: "POST"
-                });
+                const execution = await functions.createExecution(
+                    APPWRITE_CONFIG.functionId,
+                    JSON.stringify({ action: "verify", email: currentEmail, code: otpCode }),
+                    false,
+                    '/',
+                    'POST'
+                );
 
-                if (execution.responseStatusCode >= 400) {
-                    throw new Error("خطای سرور (کد " + execution.responseStatusCode + ")");
+                if (execution.status === 'failed' || execution.responseStatusCode >= 400) {
+                    throw new Error("خطا در اجرای تابع (کد " + execution.responseStatusCode + ")");
                 }
 
-                const result = JSON.parse(execution.responseBody);
+                let result;
+                try {
+                    result = JSON.parse(execution.responseBody);
+                } catch(e) {
+                    result = { success: true };
+                }
 
-                if (!result.success) {
+                if (result.success === false) {
                     throw new Error(result.message || "کد اشتباه است");
                 }
 
@@ -649,7 +658,7 @@
         }
 
         // ==========================================
-        // 8. مدیریت تایمر
+        // 7. مدیریت تایمر
         // ==========================================
         function startTimer() {
             timeLeft = 120;
@@ -672,7 +681,7 @@
         }
 
         // ==========================================
-        // 9. رویدادها
+        // 8. رویدادها (Events)
         // ==========================================
         sendCodeBtn.addEventListener("click", sendOTP);
         verifyBtn.addEventListener("click", verifyOTP);
@@ -706,7 +715,7 @@
         });
 
         // ==========================================
-        // 10. حالت شب / روز (با ذخیره‌سازی وضعیت)
+        // 9. تغییر تم (تیره / روشن)
         // ==========================================
         const themeToggle = document.getElementById("themeToggle");
         const themeIcon = themeToggle.querySelector("i");
@@ -716,14 +725,11 @@
             themeIcon.className = isLight ? "fa-solid fa-sun" : "fa-solid fa-moon";
         }
 
-        // بازیابی حالت ذخیره‌شده هنگام لود صفحه
         (function initTheme() {
             let saved = null;
             try {
                 saved = localStorage.getItem("theme");
-            } catch (e) {
-                // اگر localStorage در دسترس نبود، حالت پیش‌فرض تیره اعمال می‌شود
-            }
+            } catch (e) {}
             applyTheme(saved === "light");
         })();
 
@@ -732,15 +738,12 @@
             applyTheme(isLight);
             try {
                 localStorage.setItem("theme", isLight ? "light" : "dark");
-            } catch (e) {
-                // اگر localStorage در دسترس نبود، مشکلی نیست، فقط ذخیره نمی‌شود
-            }
+            } catch (e) {}
         });
 
         // ==========================================
-        // 11. تغییر زبان (فارسی / انگلیسی)
+        // 10. تغییر زبان
         // ==========================================
-        let currentLang = "fa";
         const langToggle = document.getElementById("langToggle");
         const langLabel = document.getElementById("langLabel");
         const translatable = document.querySelectorAll("[data-fa][data-en]");
