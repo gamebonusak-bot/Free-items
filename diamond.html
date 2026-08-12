@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گیمینگ استور - جوایز ویژه</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap');
+
+        :root {
+            --bg: #0f0f12;
+            --surface: #18181f;
+            --surface-hover: #22222e;
+            --border: rgba(255,255,255,0.06);
+            --text: #f0f0f5;
+            --text-muted: #8b8b9e;
+            --accent: #e11d48;
+            --accent-glow: rgba(225, 29, 72, 0.4);
+            --green: #10b981;
+            --green-glow: rgba(16, 185, 129, 0.3);
+            --radius: 16px;
+            --radius-sm: 12px;
+            --nav-bg: rgba(24, 24, 31, 0.85);
+            --pill-bg: rgba(24, 24, 31, 0.95);
+            --card-border: #2a3040;
+        }
+
+        [data-theme="light"] {
+            --bg: #f0f0f5;
+            --surface: #ffffff;
+            --surface-hover: #e8e8ee;
+            --border: rgba(0,0,0,0.08);
+            --text: #1a1a1e;
+            --text-muted: #6b6b7e;
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --pill-bg: rgba(255, 255, 255, 0.95);
+            --card-border: #e2ded3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 120px;
+            line-height: 1.6;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(15, 15, 18, 0.75);
+            backdrop-filter: blur(20px) saturate(1.8);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.4s ease;
+        }
+
+        [data-theme="light"] header {
+            background: rgba(240, 240, 245, 0.75);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 2px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .brand-logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .brand-text {
+            font-weight: 900;
+            font-size: 1.25rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #fff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        [data-theme="light"] .brand-text {
+            background: linear-gradient(to right, #1a1a1e, #6b6b7e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+        }
+
+        .btn-icon:hover {
+            background: var(--surface-hover);
+            color: var(--text);
+            transform: translateY(-2px);
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        [data-theme="light"] .btn-icon {
+            background: var(--surface);
+            color: var(--text-muted);
+        }
+
+        [data-theme="light"] .btn-icon:hover {
+            background: var(--surface-hover);
+            color: var(--text);
+            border-color: rgba(0,0,0,0.12);
+        }
+
+        .btn-primary {
+            padding: 8px 20px;
+            border-radius: 24px;
+            border: none;
+            background: linear-gradient(135deg, var(--accent), #fb7185);
+            color: white;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px var(--accent-glow);
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .masonry {
+            column-count: 5;
+            column-gap: 18px;
+        }
+
+        .card {
+            break-inside: avoid;
+            margin-bottom: 18px;
+            background: var(--surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease, background 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
+        }
+
+        [data-theme="light"] .card:hover {
+            box-shadow: 0 24px 48px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);
+        }
+
+        .card-img-wrap {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-img {
+            width: 100%;
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), filter 0.4s ease;
+        }
+
+        .card:hover .card-img {
+            transform: scale(1.08);
+            filter: brightness(1.1);
+        }
+
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 50%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 16px;
+        }
+
+        .card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .overlay-title {
+            font-weight: 800;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .overlay-desc {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .card-body {
+            padding: 14px 16px;
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 0.65rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.06);
+            color: var(--text-muted);
+            font-weight: 500;
+            border: 1px solid var(--border);
+        }
+
+        [data-theme="light"] .tag {
+            background: rgba(0,0,0,0.04);
+        }
+
+        .tag.pink {
+            background: rgba(225, 29, 72, 0.12);
+            color: #fb7185;
+            border-color: rgba(225, 29, 72, 0.2);
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .price-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        /* ==========================================
+           تصویر الماس
+           ========================================== */
+        .diamond-img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.6));
+            transition: transform 0.3s ease, filter 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .card:hover .diamond-img {
+            transform: scale(1.2) rotate(-10deg);
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8));
+        }
+
+        .price {
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: var(--green);
+            text-shadow: 0 0 20px var(--green-glow);
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .save-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .save-btn:hover {
+            background: rgba(225, 29, 72, 0.15);
+            color: var(--accent);
+            border-color: rgba(225, 29, 72, 0.3);
+        }
+
+        .detail-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeOverlay 0.3s ease;
+        }
+
+        .detail-overlay.open {
+            display: flex;
+        }
+
+        @keyframes fadeOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .detail-panel {
+            background: var(--surface);
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid var(--border);
+            box-shadow: 0 32px 64px rgba(0,0,0,0.6);
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        [data-theme="light"] .detail-panel {
+            box-shadow: 0 32px 64px rgba(0,0,0,0.15);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .detail-panel .panel-img-wrap {
+            position: relative;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            min-height: 200px;
+        }
+
+        .detail-panel .panel-img {
+            max-width: 100%;
+            max-height: 320px;
+            object-fit: contain;
+            border-radius: var(--radius-sm);
+        }
+
+        .detail-panel .panel-close {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .detail-panel .panel-close:hover {
+            background: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        .detail-panel .panel-body {
+            padding: 24px 28px 28px;
+        }
+
+        .detail-panel .panel-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+        }
+
+        .detail-panel .panel-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+
+        .detail-panel .panel-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .detail-panel .panel-tags .tag {
+            font-size: 0.75rem;
+            padding: 4px 14px;
+        }
+
+        .detail-panel .panel-price {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .detail-panel .panel-price .price {
+            font-size: 1.5rem;
+        }
+
+        /* تصویر الماس در پنل جزئیات */
+        .detail-panel .panel-price .diamond-img {
+            width: 40px;
+            height: 40px;
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8));
+        }
+
+        .detail-panel .panel-action {
+            margin-top: 18px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .detail-panel .panel-action .btn-primary {
+            flex: 1;
+            padding: 12px;
+            font-size: 0.95rem;
+            text-align: center;
+            border-radius: var(--radius-sm);
+        }
+
+        .detail-panel .panel-action .btn-secondary {
+            flex: 1;
+            padding: 12px;
+            font-size: 0.95rem;
+            text-align: center;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .detail-panel .panel-action .btn-secondary:hover {
+            background: var(--surface-hover);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        /* ==========================================
+           نوار پایین با آیکون‌های نئونی (پلی‌استیشن)
+           ========================================== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 24px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .ps-shapes {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 32px;
+            background: var(--pill-bg);
+            padding: 14px 40px;
+            border-radius: 50px;
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+            width: auto;
+            transition: background 0.4s ease, border-color 0.4s ease;
+        }
+
+        [data-theme="light"] .ps-shapes {
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .ps-shapes .ps-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .ps-shapes .ps-cross { color: #5352ed; text-shadow: 0 0 20px rgba(83, 82, 237, 0.7); }
+        .ps-shapes .ps-circle { color: #ff4757; text-shadow: 0 0 20px rgba(255, 71, 87, 0.7); }
+        .ps-shapes .ps-triangle { color: #00f0ff; text-shadow: 0 0 20px rgba(0, 240, 255, 0.7); }
+        .ps-shapes .ps-square { color: #ff77a9; text-shadow: 0 0 20px rgba(255, 119, 169, 0.7); }
+
+        .ps-shapes .ps-item:hover {
+            transform: scale(1.3) rotate(10deg);
+            filter: brightness(1.5);
+        }
+
+        .ps-shapes .ps-item.active {
+            transform: scale(1.2);
+        }
+
+        .ps-shapes .ps-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 15px currentColor;
+        }
+
+        .fab-support {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 1000;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--green), #059669);
+            border: none;
+            color: white;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 32px var(--green-glow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+        }
+
+        .fab-support:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 12px 40px var(--green-glow);
+        }
+
+        @media (max-width: 1200px) { .masonry { column-count: 4; } }
+        @media (max-width: 900px) { .masonry { column-count: 3; } }
+        @media (max-width: 600px) { 
+            .masonry { column-count: 2; column-gap: 12px; } 
+            main { padding: 20px 12px; }
+            header { padding: 12px 16px; }
+            .brand-text { font-size: 1.1rem; }
+            .brand-logo { width: 40px; height: 40px; }
+            
+            .ps-shapes { padding: 12px 25px; gap: 20px; }
+            .ps-shapes .ps-item { font-size: 1.3rem; width: 32px; height: 32px; }
+            
+            .detail-panel { max-width: 95%; }
+            .detail-panel .panel-body { padding: 18px 20px 22px; }
+            .price { font-size: 1rem; }
+            .detail-panel .panel-price .price { font-size: 1.2rem; }
+            .diamond-img { width: 24px; height: 24px; }
+            .detail-panel .panel-price .diamond-img { width: 32px; height: 32px; }
+            .save-btn { width: 32px; height: 32px; font-size: 0.9rem; }
+        }
+        @media (max-width: 380px) { 
+            .masonry { column-count: 2; column-gap: 10px; } 
+            .card-body { padding: 10px 12px; }
+            .ps-shapes { padding: 10px 18px; gap: 14px; }
+            .ps-shapes .ps-item { font-size: 1.1rem; width: 28px; height: 28px; }
+            .brand-logo { width: 36px; height: 36px; }
+            .diamond-img { width: 20px; height: 20px; }
+            .detail-panel .panel-price .diamond-img { width: 28px; height: 28px; }
+            .price { font-size: 0.9rem; }
+            .detail-panel .panel-price .price { font-size: 1rem; }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+        [data-theme="light"] ::-webkit-scrollbar-thumb { background: #bbb; }
+        [data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            animation: fadeInUp 0.6s ease backwards;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="brand" id="brandLink">
+            <div class="brand-logo">
+                <img src="op.jpg.png" alt="Logo">
+            </div>
+        </a>
+        <div class="header-actions">
+            <button class="btn-icon" id="themeToggle" title="حالت تاریک/روشن">
+                <i class="fa-solid fa-moon" id="themeIcon"></i>
+            </button>
+            <button class="btn-icon" id="langToggle" title="تغییر زبان">
+                <span id="langLabel" style="font-size:0.75rem; font-weight:700;">FA</span>
+            </button>
+            <button class="btn-primary" id="joinBtn">عضویت</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="masonry" id="masonryGrid">
+            <!-- Cards will be populated by JavaScript -->
+        </div>
+    </main>
+
+    <!-- Detail Panel -->
+    <div class="detail-overlay" id="detailOverlay">
+        <div class="detail-panel" id="detailPanel">
+            <div class="panel-img-wrap">
+                <img class="panel-img" id="panelImg" src="" alt="">
+                <button class="panel-close" id="panelClose"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="panel-body">
+                <h2 class="panel-title" id="panelTitle">عنوان</h2>
+                <p class="panel-desc" id="panelDesc">توضیحات</p>
+                <div class="panel-tags" id="panelTags"></div>
+                <div class="panel-price">
+                    <img class="diamond-img" src="diamond.png" alt="Diamond">
+                    <span class="price" id="panelPrice">۰</span>
+                </div>
+                <div class="panel-action">
+                    <button class="btn-primary" id="buyBtn">خرید با الماس</button>
+                    <button class="btn-secondary" id="saveBtn"><i class="fa-regular fa-bookmark"></i> <span id="saveText">ذخیره</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+    نوار پایین با آیکون‌های نئونی (پلی‌استیشن)
+    ========================================== -->
+    <div class="bottom-nav">
+        <div class="ps-shapes">
+            <div class="ps-item ps-cross"><i class="fa-solid fa-xmark"></i></div>
+            <div class="ps-item ps-circle"><i class="fa-regular fa-circle"></i></div>
+            <div class="ps-item ps-triangle"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div class="ps-item ps-square"><i class="fa-regular fa-square"></i></div>
+        </div>
+    </div>
+
+    <!-- FAB Support -->
+    <a href="conection.html" class="fab-support" title="پشتیبانی" id="supportBtn">
+        <i class="fa-solid fa-headset"></i>
+    </a>
+
+    <script>
+        // ============================================================
+        // 1. DATA WITH TRANSLATIONS
+        // ============================================================
+        const itemsData = [
+            {
+                id: 1,
+                img: "book of time.png",
+                titles: { fa: "کتاب زمان", en: "Book of Time" },
+                descs: { fa: "الماس خود را با آیتم‌های دیگر عوض کنید", en: "Exchange your diamond with other items" },
+                tags: { fa: ["آیتم جادویی"], en: ["Magic item"] },
+                price: "200"
+            },
+            {
+                id: 2,
+                img: "book of hero.png",
+                titles: { fa: "کتاب قهرمان", en: "Book of Hero" },
+                descs: { fa: "ارزان‌تر از فروشگاه کلش", en: "It's cheaper than Clash store" },
+                tags: { fa: ["آیتم جادویی"], en: ["Magic item"] },
+                price: "200"
+            },
+            {
+                id: 3,
+                img: "hut.png",
+                titles: { fa: "کلبه سازنده", en: "Builder Hut" },
+                descs: { fa: "یک سازنده دیگر برای پایگاه خود بخرید", en: "Buy one more builder for your base" },
+                tags: { fa: ["پایگاه"], en: ["Base"] },
+                price: "1000"
+            },
+            {
+                id: 4,
+                img: "rune.png",
+                titles: { fa: "رون طلا", en: "Rune of Gold" },
+                descs: { fa: "گنجینه خود را پر کنید", en: "Fill your treasury completely" },
+                tags: { fa: ["آیتم جادویی"], en: ["Magic item"] },
+                price: "350"
+            },
+            {
+                id: 5,
+                img: "book of warior.png",
+                titles: { fa: "کتاب جنگجو", en: "Book of Warrior" },
+                descs: { fa: "قهرمان خود را فوری به پایان برسانید", en: "Finish your Hero instantly" },
+                tags: { fa: ["آیتم جادویی", "محدود"], en: ["Magic item", "Limited"] },
+                price: "200"
+            },
+            {
+                id: 6,
+                img: "hero ball.png",
+                titles: { fa: "توپ خاردار", en: "Spiky Ball" },
+                descs: { fa: "پادشاه خود را دوباره بزرگ کنید", en: "Make your King great again" },
+                tags: { fa: ["قابلیت قهرمان"], en: ["Hero ability"] },
+                price: "500"
+            },
+            {
+                id: 7,
+                img: "hand of the king.png",
+                titles: { fa: "دستکش غول‌پیکر", en: "Giant Glove" },
+                descs: { fa: "پادشاه خود را ارتقا دهید", en: "Upgrade your King" },
+                tags: { fa: ["قابلیت قهرمان"], en: ["Hero ability"] },
+                price: "500"
+            },
+            {
+                id: 8,
+                img: "fire ball.png",
+                titles: { fa: "توپ آتش", en: "Fire Ball" },
+                descs: { fa: "پایگاه‌های دشمن را نابود کنید", en: "Destroy enemy bases" },
+                tags: { fa: ["قابلیت قهرمان"], en: ["Hero ability"] },
+                price: "500"
+            },
+            {
+                id: 9,
+                img: "fhgkl.png",
+                titles: { fa: "چکمه قهرمان سلطنتی", en: "Royal Champion Boot" },
+                descs: { fa: "دشمن خود را شوکه کنید", en: "Shock your enemy" },
+                tags: { fa: ["قابلیت قهرمان"], en: ["Hero ability"] },
+                price: "500"
+            },
+            {
+                id: 10,
+                img: "ChatGPT Image Aug 11, 2026, 08_10_30 PM.png",
+                titles: { fa: "تیر یخ‌زده", en: "Frozen Arrow" },
+                descs: { fa: "دشمنان خود را منجمد کنید", en: "Freeze your enemies" },
+                tags: { fa: ["قابلیت قهرمان"], en: ["Hero ability"] },
+                price: "250"
+            },
+            {
+                id: 11,
+                img: "viking.png",
+                titles: { fa: "پادشاه وایکینگ", en: "Viking King" },
+                descs: { fa: "مجموعه پادشاه بربر وایکینگ", en: "Viking Barbarian King series" },
+                tags: { fa: ["اسکین"], en: ["Skin"] },
+                price: "500"
+            },
+            {
+                id: 12,
+                img: "gea.png",
+                titles: { fa: "چکش سازنده", en: "Builder's Hammer" },
+                descs: { fa: "سازنده خود را فوری آزاد کنید", en: "Free your builder instantly" },
+                tags: { fa: ["آیتم جادویی"], en: ["Magic item"] },
+                price: "200"
+            },
+            {
+                id: 13,
+                img: "haaland.png",
+                titles: { fa: "پادشاه هالند", en: "King Haaland" },
+                descs: { fa: "اسکین نسخه محدود", en: "Limited edition skin" },
+                tags: { fa: ["اسکین", "محدود"], en: ["Skin", "Limited"] },
+                price: "500"
+            }
+        ];
+
+        // ============================================================
+        // 2. TRANSLATIONS FOR UI ELEMENTS
+        // ============================================================
+        const uiTranslations = {
+            fa: {
+                join: "عضویت",
+                buy: "خرید با الماس",
+                save: "ذخیره",
+                support: "پشتیبانی"
+            },
+            en: {
+                join: "Join",
+                buy: "Buy with Diamonds",
+                save: "Save",
+                support: "Support"
+            }
+        };
+
+        // ============================================================
+        // 3. STATE
+        // ============================================================
+        let currentLang = localStorage.getItem('lang') || 'fa';
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+
+        // ============================================================
+        // 4. DOM REFS
+        // ============================================================
+        const masonryGrid = document.getElementById('masonryGrid');
+        const overlay = document.getElementById('detailOverlay');
+        const panelImg = document.getElementById('panelImg');
+        const panelTitle = document.getElementById('panelTitle');
+        const panelDesc = document.getElementById('panelDesc');
+        const panelTags = document.getElementById('panelTags');
+        const panelPrice = document.getElementById('panelPrice');
+        const panelClose = document.getElementById('panelClose');
+        const buyBtn = document.getElementById('buyBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const saveText = document.getElementById('saveText');
+        const joinBtn = document.getElementById('joinBtn');
+        const supportBtn = document.getElementById('supportBtn');
+        const langToggle = document.getElementById('langToggle');
+        const langLabel = document.getElementById('langLabel');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        // ============================================================
+        // 5. RENDER CARDS
+        // ============================================================
+        function renderCards() {
+            masonryGrid.innerHTML = '';
+            itemsData.forEach((item, index) => {
+                const title = item.titles[currentLang] || item.titles.fa;
+                const desc = item.descs[currentLang] || item.descs.fa;
+                const tags = item.tags[currentLang] || item.tags.fa;
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.animationDelay = `${0.05 + index * 0.05}s`;
+                card.dataset.index = index;
+                card.innerHTML = `
+                    <div class="card-img-wrap">
+                        <img class="card-img" src="${item.img}" alt="${title}">
+                        <div class="card-overlay">
+                            <div class="overlay-title">${title}</div>
+                            <div class="overlay-desc">${desc}</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-tags">
+                            ${tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                        </div>
+                        <div class="card-footer">
+                            <div class="price-box">
+                                <img class="diamond-img" src="diamond.png" alt="Diamond">
+                                <span class="price">${item.price}</span>
+                            </div>
+                            <button class="save-btn"><i class="fa-regular fa-bookmark"></i></button>
+                        </div>
+                    </div>
+                `;
+                card.addEventListener('click', () => openDetail(item));
+                masonryGrid.appendChild(card);
+            });
+        }
+
+        // ============================================================
+        // 6. DETAIL PANEL
+        // ============================================================
+        let currentDetailItem = null;
+
+        function openDetail(item) {
+            currentDetailItem = item;
+            updateDetailPanel(item);
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function updateDetailPanel(item) {
+            const title = item.titles[currentLang] || item.titles.fa;
+            const desc = item.descs[currentLang] || item.descs.fa;
+            const tags = item.tags[currentLang] || item.tags.fa;
+
+            panelImg.src = item.img;
+            panelImg.alt = title;
+            panelTitle.textContent = title;
+            panelDesc.textContent = desc;
+            panelTags.innerHTML = tags.map(t => `<span class="tag">${t}</span>`).join('');
+            panelPrice.textContent = item.price;
+        }
+
+        function closeDetail() {
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+            currentDetailItem = null;
+        }
+
+        panelClose.addEventListener('click', closeDetail);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeDetail();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDetail();
+        });
+
+        // ============================================================
+        // 7. APPLY UI LANGUAGE
+        // ============================================================
+        function applyUILanguage(lang) {
+            const t = uiTranslations[lang];
+            joinBtn.textContent = t.join;
+            buyBtn.textContent = t.buy;
+            saveText.textContent = t.save;
+            supportBtn.title = t.support;
+            langLabel.textContent = lang === 'fa' ? 'FA' : 'EN';
+            document.documentElement.lang = lang === 'fa' ? 'fa' : 'en';
+            document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+            localStorage.setItem('lang', lang);
+            currentLang = lang;
+
+            renderCards();
+            if (currentDetailItem) {
+                updateDetailPanel(currentDetailItem);
+            }
+        }
+
+        // ============================================================
+        // 8. THEME
+        // ============================================================
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fa-solid fa-sun';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fa-solid fa-moon';
+            }
+            localStorage.setItem('theme', theme);
+            currentTheme = theme;
+        }
+
+        // ============================================================
+        // 9. EVENT LISTENERS
+        // ============================================================
+
+        langToggle.addEventListener('click', () => {
+            const newLang = currentLang === 'fa' ? 'en' : 'fa';
+            applyUILanguage(newLang);
+        });
+
+        themeToggle.addEventListener('click', () => {
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+        });
+
+        // PlayStation nav active state
+        const psItems = document.querySelectorAll('.ps-item');
+        psItems.forEach(item => {
+            item.addEventListener('click', function() {
+                psItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        if (psItems.length > 0) psItems[0].classList.add('active');
+
+        // ============================================================
+        // 10. INIT
+        // ============================================================
+        applyTheme(currentTheme);
+        applyUILanguage(currentLang);
+        if (psItems.length > 0) psItems[0].classList.add('active');
+    </script>
+
+</body>
+</html>

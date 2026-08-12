@@ -6,42 +6,164 @@
     <title>پشتیبانی و ارتباط با ما - گیمینگ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap');
+
+        :root {
+            --bg: #0f0f12;
+            --surface: #18181f;
+            --surface-hover: #22222e;
+            --border: rgba(255,255,255,0.06);
+            --text: #f0f0f5;
+            --text-muted: #8b8b9e;
+            --accent: #e11d48;
+            --accent-glow: rgba(225, 29, 72, 0.4);
+            --green: #10b981;
+            --green-glow: rgba(16, 185, 129, 0.3);
+            --radius: 16px;
+            --radius-sm: 12px;
+            --nav-bg: rgba(24, 24, 31, 0.85);
+            --pill-bg: rgba(24, 24, 31, 0.95);
+            --card-border: #2a3040;
+        }
+
+        [data-theme="light"] {
+            --bg: #f0f0f5;
+            --surface: #ffffff;
+            --surface-hover: #e8e8ee;
+            --border: rgba(0,0,0,0.08);
+            --text: #1a1a1e;
+            --text-muted: #6b6b7e;
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --pill-bg: rgba(255, 255, 255, 0.95);
+            --card-border: #e2ded3;
+        }
+
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', sans-serif;
         }
 
         body {
-            background-color: #0f1117;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
+            padding-bottom: 120px;
+            line-height: 1.6;
+            transition: background 0.4s ease, color 0.4s ease;
         }
 
-        /* نوار بالای صفحه (Header) */
+        /* ==========================================
+           HEADER
+           ========================================== */
         header {
-            background-color: #161b26;
-            border-bottom: 2px solid #00ff88;
-            padding: 15px 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(15, 15, 18, 0.75);
+            backdrop-filter: blur(20px) saturate(1.8);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.4s ease;
         }
 
-        .header-title {
-            color: #00ff88;
-            font-size: 1.2rem;
-            font-weight: bold;
+        [data-theme="light"] header {
+            background: rgba(240, 240, 245, 0.75);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+            flex-shrink: 0;
+            border: 2px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* بخش اصلی */
+        .brand-logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+        }
+
+        .btn-icon:hover {
+            background: var(--surface-hover);
+            color: var(--text);
+            transform: translateY(-2px);
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        [data-theme="light"] .btn-icon:hover {
+            background: var(--surface-hover);
+            color: var(--text);
+            border-color: rgba(0,0,0,0.12);
+        }
+
+        .btn-primary {
+            padding: 8px 20px;
+            border-radius: 24px;
+            border: none;
+            background: linear-gradient(135deg, var(--accent), #fb7185);
+            color: white;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px var(--accent-glow);
+        }
+
+        /* ==========================================
+           MAIN
+           ========================================== */
         main {
             flex: 1;
             display: flex;
@@ -49,46 +171,70 @@
             justify-content: center;
             align-items: center;
             padding: 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        /* حاوی قطار عمودی جزیره‌ها */
+        /* عنوان صفحه */
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--green);
+            font-size: 1.4rem;
+            font-weight: 900;
+            margin-bottom: 32px;
+            text-shadow: 0 0 20px var(--green-glow);
+        }
+
+        .page-title i {
+            font-size: 1.8rem;
+        }
+
+        /* ==========================================
+           TRAIN CONTAINER - جزیره‌های شناور
+           ========================================== */
         .train-container {
             position: relative;
             display: flex;
             flex-direction: column;
             gap: 22px;
             width: 100%;
-            max-width: 440px;
+            max-width: 480px;
         }
 
-        /* ریل عمودی نوری قطار */
+        /* ریل عمودی نوری */
         .train-container::before {
             content: '';
             position: absolute;
             top: 25px;
             bottom: 25px;
-            right: 38px;
+            right: 42px;
             width: 3px;
-            background: linear-gradient(180deg, #00ff88, #25d366, #0088cc, #ffffff, #ea4335);
-            box-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+            background: linear-gradient(180deg, #10b981, #3b82f6, #8b5cf6, #f59e0b, #ef4444);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
             z-index: 1;
+            border-radius: 10px;
         }
 
-        /* کارت‌ها/جزیره‌های شناور */
+        /* ==========================================
+           ISLAND CARDS
+           ========================================== */
         .island-card {
             position: relative;
             z-index: 2;
-            background: #1a202c;
-            border: 1px solid #2d3748;
-            border-radius: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             padding: 16px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             text-decoration: none;
-            color: #ffffff;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             animation: floatIsland 4s ease-in-out infinite;
         }
 
@@ -99,7 +245,17 @@
 
         @keyframes floatIsland {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .island-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--green);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(16, 185, 129, 0.15);
+        }
+
+        [data-theme="light"] .island-card:hover {
+            box-shadow: 0 16px 40px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.04);
         }
 
         .island-content {
@@ -108,89 +264,101 @@
             gap: 16px;
         }
 
-        /* قاب آیکون نئونی */
+        /* آیکون باکس نئونی */
         .icon-box {
-            width: 45px;
-            height: 45px;
-            background-color: #161b26;
-            border: 1px solid #2d3748;
-            border-radius: 12px;
+            width: 48px;
+            height: 48px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            flex-shrink: 0;
+        }
+
+        .island-card:hover .icon-box {
+            background: var(--green);
+            color: var(--bg);
+            border-color: var(--green);
+            box-shadow: 0 0 25px var(--green-glow);
+            transform: rotate(-8deg) scale(1.05);
         }
 
         .island-info h3 {
             font-size: 1.1rem;
+            font-weight: 800;
             margin-bottom: 2px;
-            color: #ffffff;
+            color: var(--text);
             transition: color 0.3s ease;
         }
 
+        .island-card:hover .island-info h3 {
+            color: var(--green);
+        }
+
         .island-info p {
-            font-size: 0.82rem;
-            color: #a0aec0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
 
         .arrow-icon {
-            font-size: 0.9rem;
-            color: #a0aec0;
+            font-size: 1rem;
+            color: var(--text-muted);
             transition: all 0.3s ease;
         }
 
-        /* 1. واتساپ */
-        .island-card.whatsapp:hover {
-            border-color: #25d366;
-            box-shadow: 0 0 20px rgba(37, 211, 102, 0.4);
-            transform: translateY(-6px) scale(1.02);
-        }
-        .island-card.whatsapp:hover .icon-box { background: #25d366; color: #0f1117; }
-        .island-card.whatsapp .icon-box { color: #25d366; }
-        .island-card.whatsapp:hover h3 { color: #25d366; }
-
-        /* 2. تلگرام */
-        .island-card.telegram:hover {
-            border-color: #0088cc;
-            box-shadow: 0 0 20px rgba(0, 136, 204, 0.4);
-            transform: translateY(-6px) scale(1.02);
-        }
-        .island-card.telegram:hover .icon-box { background: #0088cc; color: #ffffff; }
-        .island-card.telegram .icon-box { color: #0088cc; }
-        .island-card.telegram:hover h3 { color: #0088cc; }
-
-        /* 3. گیت‌هاب */
-        .island-card.github:hover {
-            border-color: #00ff88;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
-            transform: translateY(-6px) scale(1.02);
-        }
-        .island-card.github:hover .icon-box { background: #00ff88; color: #0f1117; }
-        .island-card.github .icon-box { color: #00ff88; }
-        .island-card.github:hover h3 { color: #00ff88; }
-
-        /* 4. ایمیل */
-        .island-card.email:hover {
-            border-color: #ea4335;
-            box-shadow: 0 0 20px rgba(234, 67, 53, 0.4);
-            transform: translateY(-6px) scale(1.02);
-        }
-        .island-card.email:hover .icon-box { background: #ea4335; color: #ffffff; }
-        .island-card.email .icon-box { color: #ea4335; }
-        .island-card.email:hover h3 { color: #ea4335; }
-
         .island-card:hover .arrow-icon {
             transform: translateX(-6px);
-            color: #00ff88;
+            color: var(--green);
         }
 
-        /* دکمه بازگشت در پایین صفحه */
+        /* ==========================================
+           رنگ‌های اختصاصی هر کارت
+           ========================================== */
+        .island-card.whatsapp:hover .icon-box {
+            background: #25d366;
+            border-color: #25d366;
+            box-shadow: 0 0 30px rgba(37, 211, 102, 0.5);
+        }
+        .island-card.whatsapp .icon-box { color: #25d366; }
+
+        .island-card.telegram:hover .icon-box {
+            background: #0088cc;
+            border-color: #0088cc;
+            box-shadow: 0 0 30px rgba(0, 136, 204, 0.5);
+        }
+        .island-card.telegram .icon-box { color: #0088cc; }
+
+        .island-card.github:hover .icon-box {
+            background: #6e5494;
+            border-color: #6e5494;
+            box-shadow: 0 0 30px rgba(110, 84, 148, 0.5);
+        }
+        .island-card.github .icon-box { color: #6e5494; }
+
+        .island-card.email:hover .icon-box {
+            background: #ea4335;
+            border-color: #ea4335;
+            box-shadow: 0 0 30px rgba(234, 67, 53, 0.5);
+        }
+        .island-card.email .icon-box { color: #ea4335; }
+
+        .island-card.whatsapp:hover .island-info h3 { color: #25d366; }
+        .island-card.telegram:hover .island-info h3 { color: #0088cc; }
+        .island-card.github:hover .island-info h3 { color: #6e5494; }
+        .island-card.email:hover .island-info h3 { color: #ea4335; }
+
+        /* ==========================================
+           دکمه بازگشت
+           ========================================== */
         .back-btn {
             margin-top: 35px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #2d3748;
-            color: #a0aec0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
             padding: 10px 24px;
             border-radius: 25px;
             text-decoration: none;
@@ -202,9 +370,9 @@
         }
 
         .back-btn:hover {
-            background: rgba(0, 255, 136, 0.1);
-            border-color: #00ff88;
-            color: #00ff88;
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--green);
+            color: var(--green);
         }
 
         .back-btn:hover i {
@@ -214,79 +382,325 @@
         .back-btn i {
             transition: transform 0.3s ease;
         }
+
+        /* ==========================================
+           BOTTOM NAV - PlayStation Shapes
+           ========================================== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 24px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .ps-shapes {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 32px;
+            background: var(--pill-bg);
+            padding: 14px 40px;
+            border-radius: 50px;
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+            width: auto;
+            transition: background 0.4s ease, border-color 0.4s ease;
+        }
+
+        [data-theme="light"] .ps-shapes {
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .ps-shapes .ps-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .ps-shapes .ps-cross { color: #5352ed; text-shadow: 0 0 20px rgba(83, 82, 237, 0.7); }
+        .ps-shapes .ps-circle { color: #ff4757; text-shadow: 0 0 20px rgba(255, 71, 87, 0.7); }
+        .ps-shapes .ps-triangle { color: #00f0ff; text-shadow: 0 0 20px rgba(0, 240, 255, 0.7); }
+        .ps-shapes .ps-square { color: #ff77a9; text-shadow: 0 0 20px rgba(255, 119, 169, 0.7); }
+
+        .ps-shapes .ps-item:hover {
+            transform: scale(1.3) rotate(10deg);
+            filter: brightness(1.5);
+        }
+
+        .ps-shapes .ps-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 15px currentColor;
+        }
+
+        /* ==========================================
+           RESPONSIVE
+           ========================================== */
+        @media (max-width: 600px) {
+            header { padding: 12px 16px; }
+            .brand-logo { width: 40px; height: 40px; }
+            .btn-icon { width: 36px; height: 36px; font-size: 0.8rem; }
+            .btn-primary { font-size: 0.7rem; padding: 6px 14px; }
+            
+            .page-title { font-size: 1.1rem; }
+            .page-title i { font-size: 1.4rem; }
+            
+            .train-container { max-width: 100%; padding: 0 4px; }
+            .train-container::before { right: 34px; }
+            
+            .island-card { padding: 14px 16px; }
+            .icon-box { width: 40px; height: 40px; font-size: 1.2rem; }
+            .island-info h3 { font-size: 0.95rem; }
+            .island-info p { font-size: 0.7rem; }
+            
+            .ps-shapes { padding: 12px 25px; gap: 20px; }
+            .ps-shapes .ps-item { font-size: 1.3rem; width: 32px; height: 32px; }
+            
+            .back-btn { font-size: 0.8rem; padding: 8px 18px; }
+        }
+
+        @media (max-width: 380px) {
+            .train-container::before { right: 28px; }
+            .icon-box { width: 34px; height: 34px; font-size: 1rem; }
+            .island-card { padding: 10px 12px; }
+            .island-info h3 { font-size: 0.85rem; }
+            .island-info p { font-size: 0.65rem; }
+            .ps-shapes { padding: 10px 16px; gap: 14px; }
+            .ps-shapes .ps-item { font-size: 1.1rem; width: 28px; height: 28px; }
+            .brand-logo { width: 34px; height: 34px; }
+        }
+
+        /* ==========================================
+           SCROLLBAR
+           ========================================== */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+        [data-theme="light"] ::-webkit-scrollbar-thumb { background: #bbb; }
+        [data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: #999; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="header-title">
-            <i class="fa-solid fa-headset"></i>
-            پشتیبانی و راه‌های ارتباطی
+        <a href="" class="brand" id="brandLink">
+            <div class="brand-logo">
+                <img src="op.jpg.png" alt="Logo">
+            </div>
+        </a>
+        <div class="header-actions">
+            <button class="btn-icon" id="themeToggle" title="حالت تاریک/روشن">
+                <i class="fa-solid fa-moon" id="themeIcon"></i>
+            </button>
+            <button class="btn-icon" id="langToggle" title="تغییر زبان">
+                <span id="langLabel" style="font-size:0.75rem; font-weight:700;">FA</span>
+            </button>
+            <button class="btn-primary" id="joinBtn">عضویت</button>
         </div>
     </header>
 
     <main>
-        <div class="train-container">
+        <div class="page-title">
+            <i class="fa-solid fa-headset"></i>
+            <span id="pageTitle">پشتیبانی و راه‌های ارتباطی</span>
+        </div>
 
+        <div class="train-container">
+            <!-- واتساپ -->
             <a href="https://wa.me/93790407080" target="_blank" class="island-card whatsapp">
                 <div class="island-content">
                     <div class="icon-box">
                         <i class="fa-brands fa-whatsapp"></i>
                     </div>
                     <div class="island-info">
-                        <h3>واتساپ</h3>
-                        <p>ارتباط سریع و چت آنلاین</p>
+                        <h3 data-fa="واتساپ" data-en="WhatsApp">واتساپ</h3>
+                        <p data-fa="ارتباط سریع و چت آنلاین" data-en="Fast and online chat">ارتباط سریع و چت آنلاین</p>
                     </div>
                 </div>
                 <i class="fa-solid fa-chevron-left arrow-icon"></i>
             </a>
 
+            <!-- تلگرام -->
             <a href="https://t.me/+93790407080" target="_blank" class="island-card telegram">
                 <div class="island-content">
                     <div class="icon-box">
                         <i class="fa-brands fa-telegram"></i>
                     </div>
                     <div class="island-info">
-                        <h3>تلگرام</h3>
-                        <p>ارتباط مستقیم در تلگرام</p>
+                        <h3 data-fa="تلگرام" data-en="Telegram">تلگرام</h3>
+                        <p data-fa="ارتباط مستقیم در تلگرام" data-en="Direct connection on Telegram">ارتباط مستقیم در تلگرام</p>
                     </div>
                 </div>
                 <i class="fa-solid fa-chevron-left arrow-icon"></i>
             </a>
 
+            <!-- گیت‌هاب -->
             <a href="https://github.com/your_username" target="_blank" class="island-card github">
                 <div class="island-content">
                     <div class="icon-box">
                         <i class="fa-brands fa-github"></i>
                     </div>
                     <div class="island-info">
-                        <h3>گیت‌هاب</h3>
-                        <p>مشاهده پروژه‌ها و کدها</p>
+                        <h3 data-fa="گیت‌هاب" data-en="GitHub">گیت‌هاب</h3>
+                        <p data-fa="مشاهده پروژه‌ها و کدها" data-en="View projects and codes">مشاهده پروژه‌ها و کدها</p>
                     </div>
                 </div>
                 <i class="fa-solid fa-chevron-left arrow-icon"></i>
             </a>
 
+            <!-- ایمیل -->
             <a href="mailto:hamidiabdulmateen@gmail.com" class="island-card email">
                 <div class="island-content">
                     <div class="icon-box">
                         <i class="fa-solid fa-envelope"></i>
                     </div>
                     <div class="island-info">
-                        <h3>ایمیل</h3>
+                        <h3 data-fa="ایمیل" data-en="Email">ایمیل</h3>
                         <p>hamidiabdulmateen@gmail.com</p>
                     </div>
                 </div>
                 <i class="fa-solid fa-chevron-left arrow-icon"></i>
             </a>
-
         </div>
 
         <a href="index.html" class="back-btn">
             <i class="fa-solid fa-arrow-right"></i>
-            بازگشت
+            <span data-fa="بازگشت" data-en="Back">بازگشت</span>
         </a>
     </main>
 
+    <!-- ==========================================
+    BOTTOM NAV - PlayStation Shapes
+    ========================================== -->
+    <div class="bottom-nav">
+        <div class="ps-shapes">
+            <div class="ps-item ps-cross"><i class="fa-solid fa-xmark"></i></div>
+            <div class="ps-item ps-circle"><i class="fa-regular fa-circle"></i></div>
+            <div class="ps-item ps-triangle"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div class="ps-item ps-square"><i class="fa-regular fa-square"></i></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // 1. THEME TOGGLE
+        // ============================================================
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeIcon.className = 'fa-solid fa-sun';
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeIcon.className = 'fa-solid fa-moon';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fa-solid fa-sun';
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fa-solid fa-moon';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // ============================================================
+        // 2. LANGUAGE TOGGLE
+        // ============================================================
+        const langToggle = document.getElementById('langToggle');
+        const langLabel = document.getElementById('langLabel');
+        const joinBtn = document.getElementById('joinBtn');
+        const pageTitle = document.getElementById('pageTitle');
+        const backBtnText = document.querySelector('.back-btn span');
+
+        let currentLang = localStorage.getItem('lang') || 'fa';
+
+        const translations = {
+            fa: {
+                lang: 'FA',
+                join: 'عضویت',
+                title: 'پشتیبانی و راه‌های ارتباطی',
+                back: 'بازگشت'
+            },
+            en: {
+                lang: 'EN',
+                join: 'Join',
+                title: 'Support & Contact Us',
+                back: 'Back'
+            }
+        };
+
+        function applyLanguage(lang) {
+            const t = translations[lang];
+            langLabel.textContent = t.lang;
+            joinBtn.textContent = t.join;
+            pageTitle.textContent = t.title;
+            backBtnText.textContent = t.back;
+            
+            document.documentElement.lang = lang === 'fa' ? 'fa' : 'en';
+            document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+            localStorage.setItem('lang', lang);
+            currentLang = lang;
+
+            // تغییر متن‌های داخل کارت‌ها
+            document.querySelectorAll('.island-info h3').forEach(el => {
+                const text = el.getAttribute('data-' + lang);
+                if (text) el.textContent = text;
+            });
+
+            document.querySelectorAll('.island-info p').forEach(el => {
+                const text = el.getAttribute('data-' + lang);
+                if (text) el.textContent = text;
+            });
+        }
+
+        applyLanguage(currentLang);
+
+        langToggle.addEventListener('click', () => {
+            const newLang = currentLang === 'fa' ? 'en' : 'fa';
+            applyLanguage(newLang);
+        });
+
+        // ============================================================
+        // 3. BOTTOM NAV - PlayStation Active State
+        // ============================================================
+        const psItems = document.querySelectorAll('.ps-item');
+        psItems.forEach(item => {
+            item.addEventListener('click', function() {
+                psItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        if (psItems.length > 0) psItems[0].classList.add('active');
+    </script>
+
 </body>
-</html>س
+</html>

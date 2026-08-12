@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ثبت نام و عضویت</title>
+    <title>تبدیل آیتم‌های کلش اف کلنز</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* ==========================================
-           متغیرهای رنگی (حالت شب / روز)
-           ========================================== */
+        /* ===== ROOT ===== */
         :root {
             --bg-base: #0d0f14;
             --bg-radial: #1a1f2b;
@@ -19,8 +17,37 @@
             --pill-bg: rgba(26, 31, 43, 0.95);
             --accent-pink: #ff0055;
             --accent-green: #00ff88;
+            --shadow-color: rgba(0, 0, 0, 0.35);
+            --green-main: #00ff88;
+            --green-shadow: rgba(0, 255, 136, 0.4);
+            --img-bg: radial-gradient(circle at center, #1a1a2e, #0a0a0a);
+            --img-filter: brightness(1.1) saturate(1.1) drop-shadow(0 0 10px rgba(0, 255, 136, 0.1));
+            --img-opacity: 0.95;
+            --img-scale: 1;
+            --modal-overlay: rgba(0, 0, 0, 0.8);
+            --input-bg: #2a3040;
         }
 
+        .light-mode {
+            --bg-base: #f5f7fa;
+            --bg-radial: #eef1f5;
+            --text-main: #2d3748;
+            --text-sub: #4a5568;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --pill-bg: rgba(255, 255, 255, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --green-main: #38a89d;
+            --green-shadow: rgba(56, 168, 157, 0.25);
+            --img-bg: linear-gradient(135deg, #f0f4f8, #ffffff);
+            --img-filter: brightness(1) saturate(1) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.06));
+            --img-opacity: 1;
+            --img-scale: 0.92;
+            --modal-overlay: rgba(0, 0, 0, 0.5);
+            --input-bg: #edf2f7;
+        }
+
+        /* ===== RESET & BASE ===== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -37,12 +64,10 @@
             min-height: 100vh;
             padding-bottom: 90px;
             position: relative;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.5s ease, color 0.5s ease, background-image 0.5s ease;
         }
 
-        /* ==========================================
-           هدر مطابق با سایت اول
-           ========================================== */
+        /* ===== HEADER ===== */
         header {
             padding: 18px 20px;
             display: flex;
@@ -69,22 +94,13 @@
             color: var(--text-main);
             font-size: 1rem;
             cursor: pointer;
-            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            transition: all 0.3s ease;
         }
 
         .icon-btn:hover {
             transform: translateY(-2px);
-            border-color: var(--accent-green);
-            box-shadow: 0 0 12px rgba(0, 255, 136, 0.35);
-        }
-
-        .lang-btn {
-            width: auto;
-            padding: 0 14px;
-            border-radius: 21px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
+            border-color: var(--green-main);
+            box-shadow: 0 0 12px var(--green-shadow);
         }
 
         .membership-btn {
@@ -97,10 +113,25 @@
             border: none;
             color: #ffffff;
             box-shadow: 0 0 15px rgba(255, 0, 85, 0.35);
+            transition: all 0.3s ease;
+        }
+
+        .light-mode .membership-btn {
+            background: linear-gradient(135deg, #e53e6b, #ed6a8e);
+            box-shadow: 0 0 15px rgba(229, 62, 107, 0.2);
         }
 
         .membership-btn:hover {
             box-shadow: 0 0 22px rgba(255, 0, 85, 0.55);
+        }
+
+        .lang-btn {
+            width: auto;
+            padding: 0 14px;
+            border-radius: 21px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
         }
 
         .logo-container {
@@ -114,8 +145,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
             flex-shrink: 0;
+        }
+
+        .light-mode .logo-container {
+            border-color: #e53e6b;
+            box-shadow: 0 0 20px rgba(229, 62, 107, 0.15), inset 0 0 20px rgba(229, 62, 107, 0.05);
         }
 
         .logo-container:hover {
@@ -129,9 +165,7 @@
             border-radius: 50%;
         }
 
-        /* ==========================================
-           بخش محتوای اصلی (کارت‌ها به صورت عمودی)
-           ========================================== */
+        /* ===== MAIN ===== */
         main {
             flex: 1;
             display: flex;
@@ -147,20 +181,28 @@
         }
 
         .page-header h1 {
-            color: var(--accent-green);
+            color: var(--green-main);
             font-size: 1.2rem;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+            text-shadow: 0 0 15px var(--green-shadow);
             margin-bottom: 6px;
+            transition: all 0.5s ease;
+        }
+
+        .light-mode .page-header h1 {
+            text-shadow: 0 0 10px rgba(56, 168, 157, 0.15);
+            font-weight: 600;
         }
 
         .page-header p {
             color: var(--text-sub);
             font-size: 0.85rem;
+            transition: color 0.5s ease;
         }
 
+        /* ===== CARDS ===== */
         .cards-container {
             display: flex;
             flex-direction: column;
@@ -170,7 +212,6 @@
             position: relative;
         }
 
-        /* خط سبز بین کارت‌ها */
         .cards-container::before {
             content: '';
             position: absolute;
@@ -179,10 +220,17 @@
             left: 50%;
             transform: translateX(-50%);
             width: 3px;
-            background: var(--accent-green);
+            background: var(--green-main);
             border-radius: 10px;
-            box-shadow: 0 0 10px var(--accent-green), 0 0 20px var(--accent-green), 0 0 35px var(--accent-green);
+            box-shadow: 0 0 10px var(--green-main), 0 0 20px var(--green-main), 0 0 35px var(--green-main);
             z-index: 0;
+            transition: all 0.5s ease;
+        }
+
+        .light-mode .cards-container::before {
+            background: #cbd5e0;
+            box-shadow: none;
+            width: 2px;
         }
 
         .card {
@@ -197,41 +245,62 @@
             overflow: hidden;
             position: relative;
             z-index: 1;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 25px var(--shadow-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .card:hover {
             transform: translateY(-4px) scale(1.02);
-            border-color: var(--accent-green);
-            box-shadow: 0 12px 35px rgba(0, 255, 136, 0.2);
+            border-color: var(--green-main);
+            box-shadow: 0 12px 35px var(--green-shadow);
+        }
+
+        .light-mode .card:hover {
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+            border-color: var(--green-main);
         }
 
         .card-img-wrapper {
             width: 140px;
             height: 100%;
             flex-shrink: 0;
-            background: #000;
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            border-left: 2px solid var(--accent-green);
+            border-left: 2px solid var(--green-main);
+            transition: all 0.5s ease;
+            background: var(--img-bg);
+        }
+
+        .light-mode .card-img-wrapper {
+            border-left: 2px solid #e2e8f0;
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.02);
         }
 
         .card-img-wrapper img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             object-position: center;
-            opacity: 0.9;
-            transition: opacity 0.3s, transform 0.3s;
+            padding: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: var(--img-filter);
+            opacity: var(--img-opacity);
+            transform: scale(var(--img-scale));
         }
 
         .card:hover .card-img-wrapper img {
-            opacity: 1;
+            transform: scale(1.08);
+            filter: brightness(1.2) saturate(1.1);
+        }
+
+        .light-mode .card:hover .card-img-wrapper img {
             transform: scale(1.05);
+            filter: brightness(1.05) saturate(1.05);
         }
 
         .card-body {
@@ -248,24 +317,285 @@
             font-weight: 800;
             color: var(--text-main);
             margin-bottom: 5px;
+            transition: color 0.5s ease;
+        }
+
+        .light-mode .card-title {
+            font-weight: 700;
+        }
+
+        .card-title i {
+            margin-left: 6px;
+            color: var(--green-main);
+            font-size: 1.3rem;
+            width: 1.6rem;
+            text-align: center;
         }
 
         .card-desc {
             font-size: 0.9rem;
             color: var(--text-sub);
             font-weight: 500;
+            transition: color 0.5s ease;
         }
 
         .card-action {
             margin-top: 6px;
             font-size: 0.8rem;
             font-weight: 700;
-            color: var(--accent-green);
+            color: var(--green-main);
+            transition: all 0.3s ease;
+        }
+
+        .light-mode .card-action {
+            font-weight: 600;
+            color: #38a89d;
         }
 
         /* ==========================================
-           نوار پایین با آیکون‌های نئونی (پلی‌استیشن)
+           مودال
            ========================================== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-overlay);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 2px solid var(--green-main);
+            border-radius: 30px;
+            padding: 40px 35px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 0 50px var(--green-shadow);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .light-mode .modal-content {
+            border-color: #38a89d;
+            box-shadow: 0 0 30px rgba(56, 168, 157, 0.15);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--green-main);
+            transform: rotate(90deg);
+        }
+
+        .modal-icon-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .modal-icon-img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px var(--green-shadow));
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--green-main);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .modal-subtitle {
+            color: var(--text-sub);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .slider-container {
+            margin: 20px 0;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .slider-value {
+            color: var(--green-main);
+            font-size: 1.4rem;
+            font-weight: 800;
+            min-width: 80px;
+            text-align: left;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: var(--card-border);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--green-main);
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--green-shadow);
+            transition: all 0.3s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--green-main);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 20px var(--green-shadow);
+        }
+
+        .slider-limits {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        .manual-input-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 15px;
+            padding: 12px 15px;
+            background: var(--input-bg);
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+        }
+
+        .manual-input-container:focus-within {
+            border-color: var(--green-main);
+            box-shadow: 0 0 15px var(--green-shadow);
+        }
+
+        .manual-input-container label {
+            color: var(--text-sub);
+            font-weight: 600;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .manual-input-container input[type="number"] {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 5px 10px;
+            outline: none;
+            width: 100%;
+            min-width: 60px;
+            direction: ltr;
+            text-align: right;
+        }
+
+        .manual-input-container input[type="number"]::-webkit-inner-spin-button,
+        .manual-input-container input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .manual-input-container input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .manual-input-container .max-hint {
+            color: var(--text-sub);
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, var(--green-main), #00cc88);
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 0 25px var(--green-shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .light-mode .modal-btn {
+            background: linear-gradient(135deg, #38a89d, #4fc3b7);
+            box-shadow: 0 0 20px rgba(56, 168, 157, 0.2);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 40px var(--green-shadow);
+        }
+
+        .modal-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* ===== BOTTOM NAV ===== */
         .bottom-nav {
             position: fixed;
             bottom: 20px;
@@ -287,13 +617,20 @@
             border-radius: 50px;
             border: 1px solid var(--card-border);
             backdrop-filter: blur(10px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 5px 20px var(--shadow-color);
             width: auto;
+            transition: all 0.5s ease;
+        }
+
+        .light-mode .ps-shapes {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #e2e8f0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
         }
 
         .ps-shapes i {
             font-size: 1.5rem;
-            transition: transform 0.3s ease, filter 0.3s ease;
+            transition: all 0.3s ease;
             cursor: pointer;
         }
 
@@ -302,65 +639,92 @@
         .ps-shapes .ps-triangle { color: #00f0ff; text-shadow: 0 0 15px rgba(0, 240, 255, 0.7); }
         .ps-shapes .ps-square { color: #ff77a9; text-shadow: 0 0 15px rgba(255, 119, 169, 0.7); }
 
+        .light-mode .ps-shapes .ps-cross { color: #6c63c4; text-shadow: 0 0 15px rgba(108, 99, 196, 0.2); }
+        .light-mode .ps-shapes .ps-circle { color: #e53e6b; text-shadow: 0 0 15px rgba(229, 62, 107, 0.2); }
+        .light-mode .ps-shapes .ps-triangle { color: #38b2ac; text-shadow: 0 0 15px rgba(56, 178, 172, 0.2); }
+        .light-mode .ps-shapes .ps-square { color: #b779c4; text-shadow: 0 0 15px rgba(183, 121, 196, 0.2); }
+
         .ps-shapes i:hover {
             transform: scale(1.3) rotate(10deg);
             filter: brightness(1.5);
         }
 
-        /* ==========================================
-           دکمه پشتیبانی ثابت
-           ========================================== */
-        .island-support-fixed {
+        .light-mode .ps-shapes i:hover {
+            filter: brightness(1.2);
+        }
+
+        /* ===== FAB ===== */
+        .fab-support {
             position: fixed;
             bottom: 90px;
-            left: 25px;
+            right: 25px;
+            left: auto;
             z-index: 1000;
-            background: rgba(22, 27, 38, 0.85);
-            backdrop-filter: blur(10px);
-            border: 2px solid var(--accent-green);
-            border-radius: 50px;
-            padding: 12px 24px;
-            color: var(--accent-green);
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.95rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--green-main), #00cc88);
+            border: 2px solid var(--green-main);
+            color: #ffffff;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 0 25px var(--green-shadow), 0 8px 30px var(--shadow-color);
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), 0 8px 25px rgba(0, 0, 0, 0.5);
-            animation: floatIsland 3s ease-in-out infinite;
-            transition: all 0.3s ease;
+            justify-content: center;
+            animation: floatFAB 3s ease-in-out infinite;
         }
 
-        .island-support-fixed i {
-            font-size: 1.2rem;
-            color: var(--accent-green);
-            transition: color 0.3s ease;
+        .light-mode .fab-support {
+            background: linear-gradient(135deg, #38a89d, #4fc3b7);
+            border-color: #38a89d;
+            box-shadow: 0 0 20px rgba(56, 168, 157, 0.2), 0 8px 30px rgba(0, 0, 0, 0.06);
         }
 
-        .island-support-fixed:hover {
-            background: var(--accent-green);
-            color: var(--bg-base);
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
-            transform: translateY(-5px) scale(1.05);
+        .fab-support:hover {
+            transform: scale(1.15) translateY(-5px);
+            box-shadow: 0 0 40px var(--green-shadow), 0 12px 40px var(--shadow-color);
+            background: var(--green-main);
+            border-color: #ffffff;
         }
 
-        .island-support-fixed:hover i {
-            color: var(--bg-base);
+        .light-mode .fab-support:hover {
+            background: #38a89d;
+            border-color: #ffffff;
+            box-shadow: 0 0 30px rgba(56, 168, 157, 0.35), 0 12px 40px rgba(0, 0, 0, 0.08);
         }
 
-        @keyframes floatIsland {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-6px);
-            }
+        .fab-support:active {
+            transform: scale(0.95);
         }
 
-        /* ==========================================
-           واکنش‌گرایی
-           ========================================== */
+        .fab-support::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--green-main);
+            animation: rippleFAB 2s ease-out infinite;
+            pointer-events: none;
+        }
+
+        .light-mode .fab-support::after {
+            border-color: #38a89d;
+        }
+
+        @keyframes rippleFAB {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+
+        @keyframes floatFAB {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 500px) {
             header { padding: 14px 15px; }
             .logo-container { width: 52px; height: 52px; }
@@ -372,6 +736,7 @@
             .card { height: 85px; border-radius: 15px; }
             .cards-container::before { top: 42px; bottom: 42px; }
             .card-img-wrapper { width: 110px; }
+            .card-img-wrapper img { padding: 8px; }
             .card-body { padding: 0 15px; }
             .card-title { font-size: 1.1rem; }
             .card-desc { font-size: 0.8rem; }
@@ -380,41 +745,66 @@
             .ps-shapes { padding: 12px 25px; gap: 20px; }
             .ps-shapes i { font-size: 1.2rem; }
 
-            .island-support-fixed {
+            .fab-support {
                 bottom: 80px;
-                left: 16px;
-                padding: 10px 18px;
-                font-size: 0.85rem;
+                right: 16px;
+                left: auto;
+                width: 50px;
+                height: 50px;
+                font-size: 1.4rem;
+            }
+            
+            .modal-content {
+                padding: 30px 20px;
+            }
+            .modal-title {
+                font-size: 1.4rem;
+            }
+            .modal-icon-img {
+                width: 55px;
+                height: 55px;
+            }
+            .manual-input-container {
+                flex-wrap: wrap;
                 gap: 8px;
             }
-            .island-support-fixed i { font-size: 1rem; }
+            .manual-input-container input[type="number"] {
+                font-size: 0.95rem;
+            }
         }
 
         @media (max-width: 380px) {
             .card-img-wrapper { width: 90px; }
+            .card-img-wrapper img { padding: 6px; }
             .card-title { font-size: 0.95rem; }
+            .card-title i { font-size: 1rem; width: 1.3rem; }
             .card-desc { font-size: 0.7rem; }
             .card-body { padding: 0 10px; }
             .ps-shapes { gap: 14px; padding: 10px 16px; }
             .ps-shapes i { font-size: 1rem; }
+            .fab-support {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+                bottom: 75px;
+                right: 12px;
+                left: auto;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- ==========================================
-    هدر مطابق با صفحه اصلی
-    ========================================== -->
+    <!-- ===== HEADER ===== -->
     <header>
         <div class="logo-container">
-            <img src="op.jpg" alt="Logo">
+            <img src="op.jpg.png" alt="Logo">
         </div>
-
         <div class="header-actions">
-            <button class="icon-btn" id="themeToggle" type="button" aria-label="تغییر حالت شب و روز" title="حالت شب/روز">
+            <button class="icon-btn" id="themeToggle" type="button">
                 <i class="fa-solid fa-moon"></i>
             </button>
-            <button class="icon-btn lang-btn" id="langToggle" type="button" aria-label="تغییر زبان" title="زبان">
+            <button class="icon-btn lang-btn" id="langToggle" type="button">
                 <span id="langLabel">FA</span>
             </button>
             <button class="icon-btn membership-btn" id="membershipBtn" type="button">
@@ -423,59 +813,92 @@
         </div>
     </header>
 
-    <!-- ==========================================
-    محتوای اصلی
-    ========================================== -->
+    <!-- ===== MAIN ===== -->
     <main>
         <div class="page-header">
-            <h1>تبدیل ایتیم هاکلش اف کلنز</h1>
-            <p>لطفا آیتم مورد ضرورت خویش را انتخاب نمایید.</p>
+            <h1 data-i18n="pageTitle"><i class="fa-solid fa-gamepad"></i> Game item converter</h1>
+            <p data-i18n="pageSubtitle"><i class="fa-solid fa-globe"></i> Global Content</p>
         </div>
 
         <div class="cards-container">
-
-            <!-- کارت اول: Silver Coin -->
-            <a href="sendme.html" class="card">
+            <!-- کارت ۱: Gem (ترجمه نمی‌شود) -->
+            <div class="card" onclick="openModalFn('diamond')">
                 <div class="card-img-wrapper">
-                    <img src="diamond png.png" alt="تبدیل دایمند با ایتیم های دیگر">
+                    <img src="diamond.png" alt="Gem">
                 </div>
                 <div class="card-body">
-                    <h3 class="card-title">Diamond</h3>
-                    <p class="card-desc">Exchange your diamond with other items.</p>
-                    <span class="card-action">انتخاب و دریافت ←</span>
+                    <h3 class="card-title"><i class="fa-regular fa-gem"></i> Gem</h3>
+                    <p class="card-desc">Gem خود را با آیتم‌های ارزشمند دیگر تبدیل کنید</p>
+                    <span class="card-action">تبدیل و دریافت ←</span>
                 </div>
-            </a>
+            </div>
 
-            <!-- کارت دوم: UC VIP -->
-            <a href="sendme.html" class="card">
+            <!-- کارت ۲: سکه طلا (ترجمه نمی‌شود) -->
+            <div class="card" onclick="openModalFn('gold')">
                 <div class="card-img-wrapper">
-                    <img src="uudf.png" alt="UC VIP">
+                    <img src="coin.png" alt="Gold Coin">
                 </div>
                 <div class="card-body">
-                    <h3 class="card-title">Coin</h3>
-                    <p class="card-desc">Exchange your Coin with other items</p>
-                    <span class="card-action">انتخاب و دریافت ←</span>
+                    <h3 class="card-title"><i class="fa-solid fa-coins"></i> سکه طلا</h3>
+                    <p class="card-desc">سکه‌های طلای خود را با آیتم‌های نادر تبدیل کنید</p>
+                    <span class="card-action">تبدیل و دریافت ←</span>
                 </div>
-            </a>
+            </div>
 
-            <!-- کارت سوم: Exchange items -->
-            <a href="last of pubg.html" class="card">
+            <!-- کارت ۳: آیتم‌های ویژه (ترجمه نمی‌شود) -->
+            <a href="diamond.html" class="card">
                 <div class="card-img-wrapper">
-                    <img src="tfgyuf.png" alt="Exchange items">
+                    <img src="magic item kdf.png" alt="Magic Items">
                 </div>
                 <div class="card-body">
-                    <h3 class="card-title">Exchange items</h3>
-                    <p class="card-desc">Exchange gym with magin items.</p>
-                    <span class="card-action">انتخاب و دریافت ←</span>
+                    <h3 class="card-title"><i class="fa-solid fa-bolt"></i> آیتم‌های ویژه</h3>
+                    <p class="card-desc">آیتم‌های جادویی و ویژه خود را مبادله کنید</p>
+                    <span class="card-action">تبدیل و دریافت ←</span>
                 </div>
             </a>
-
         </div>
     </main>
 
     <!-- ==========================================
-    نوار پایین با آیکون‌های پلی‌استیشن
+    مودال
     ========================================== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModalFn()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="modal-icon-wrapper">
+                <img src="diamond.png" alt="Gem" class="modal-icon-img" id="modalIconImg">
+            </div>
+            <h2 class="modal-title" id="modalTitle">Gem</h2>
+            <p class="modal-subtitle" id="modalSubtitle" data-i18n="modalSubtitle">مقدار مورد نظر خود را انتخاب کنید</p>
+
+            <div class="slider-container">
+                <div class="slider-label">
+                    <span id="sliderLabel" data-i18n="sliderLabelDiamond">مقدار Gem:</span>
+                    <span class="slider-value" id="sliderValue">0</span>
+                </div>
+                <input type="range" id="amountSlider" min="0" max="500" value="0" step="1">
+                <div class="slider-limits">
+                    <span id="minLabel">0</span>
+                    <span id="maxLabel">500</span>
+                </div>
+            </div>
+
+            <div class="manual-input-container">
+                <label id="manualLabel" data-i18n="manualLabel">مقدار:</label>
+                <input type="number" id="manualInput" min="0" max="500" value="0" step="1">
+                <span class="max-hint" id="maxHint" data-i18n="maxHintDiamond">حداکثر: 500</span>
+            </div>
+
+            <button class="modal-btn" onclick="confirmAmountFn()">
+                <i class="fa-solid fa-check"></i> <span data-i18n="confirmBtn">تأیید و دریافت</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== BOTTOM NAV ===== -->
     <div class="bottom-nav">
         <div class="ps-shapes">
             <i class="fa-solid fa-xmark ps-cross"></i>
@@ -485,42 +908,261 @@
         </div>
     </div>
 
-    <!-- ==========================================
-    دکمه پشتیبانی ثابت
-    ========================================== -->
-    <a href="conection.html" target="_blank" class="island-support-fixed">
+    <!-- ===== FAB SUPPORT ===== -->
+    <button class="fab-support" title="پشتیبانی" id="supportBtn" onclick="window.location.href='conection.html'">
         <i class="fa-solid fa-headset"></i>
-        <span>پشتیبانی</span>
-    </a>
+    </button>
 
+    <!-- ===== SCRIPT ===== -->
     <script>
-        // حالت شب / روز
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = themeToggle.querySelector('i');
-        themeToggle.addEventListener('click', () => {
+        // ==================== ترجمه‌ها ====================
+        const translations = {
+            fa: {
+                'langLabel': 'FA',
+                'membershipLabel': 'عضویت',
+                'pageTitle': 'Game item converter',
+                'pageSubtitle': 'Global Content',
+                'supportTitle': 'پشتیبانی',
+                'confirmBtn': 'تأیید و دریافت',
+                'modalSubtitle': 'مقدار مورد نظر خود را انتخاب کنید',
+                'sliderLabelDiamond': 'مقدار Gem:',
+                'sliderLabelGold': 'مقدار سکه طلا:',
+                'manualLabel': 'مقدار:',
+                'maxHintDiamond': 'حداکثر: 500',
+                'maxHintGold': 'حداکثر: 20,000,000'
+            },
+            en: {
+                'langLabel': 'EN',
+                'membershipLabel': 'Sign up',
+                'pageTitle': 'Game item converter',
+                'pageSubtitle': 'Global Content',
+                'supportTitle': 'Support',
+                'confirmBtn': 'Confirm & Receive',
+                'modalSubtitle': 'Select your desired amount',
+                'sliderLabelDiamond': 'Gem Amount:',
+                'sliderLabelGold': 'Gold Coin Amount:',
+                'manualLabel': 'Amount:',
+                'maxHintDiamond': 'Max: 500',
+                'maxHintGold': 'Max: 20,000,000'
+            }
+        };
+
+        let currentLang = localStorage.getItem('lang') || 'fa';
+        let currentItem = 'diamond';
+        let maxAmount = 500;
+
+        // عناصر DOM
+        var modalOverlay = document.getElementById('modalOverlay');
+        var modalIconImg = document.getElementById('modalIconImg');
+        var modalTitle = document.getElementById('modalTitle');
+        var modalSubtitle = document.getElementById('modalSubtitle');
+        var slider = document.getElementById('amountSlider');
+        var sliderValue = document.getElementById('sliderValue');
+        var sliderLabel = document.getElementById('sliderLabel');
+        var maxLabel = document.getElementById('maxLabel');
+        var minLabel = document.getElementById('minLabel');
+        var manualInput = document.getElementById('manualInput');
+        var maxHint = document.getElementById('maxHint');
+        var manualLabel = document.getElementById('manualLabel');
+
+        // ==========================================
+        // توابع ترجمه
+        // ==========================================
+        function changeLanguage(lang) {
+            currentLang = lang;
+            var t = translations[lang];
+            
+            document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+            document.documentElement.lang = lang;
+            localStorage.setItem('lang', lang);
+            
+            // ترجمه فقط المان‌های دارای data-i18n (به جز کارت‌ها)
+            var elements = document.querySelectorAll('[data-i18n]');
+            for (var i = 0; i < elements.length; i++) {
+                var el = elements[i];
+                var key = el.getAttribute('data-i18n');
+                if (t[key] !== undefined) {
+                    var icon = el.querySelector('i');
+                    if (icon) {
+                        var textNode = el.childNodes[el.childNodes.length - 1];
+                        if (textNode && textNode.nodeType === 3) {
+                            textNode.textContent = ' ' + t[key];
+                        } else {
+                            el.innerHTML = icon.outerHTML + ' ' + t[key];
+                        }
+                    } else {
+                        el.textContent = t[key];
+                    }
+                }
+            }
+            
+            // ترجمه دکمه‌های هدر
+            document.getElementById('langLabel').textContent = t['langLabel'];
+            document.getElementById('membershipLabel').textContent = t['membershipLabel'];
+            
+            // ترجمه دکمه پشتیبانی
+            document.getElementById('supportBtn').title = t['supportTitle'];
+            
+            // ترجمه دکمه مودال
+            document.querySelector('.modal-btn span').textContent = t['confirmBtn'];
+            
+            // به‌روزرسانی متن‌های مودال
+            modalSubtitle.textContent = t['modalSubtitle'];
+            manualLabel.textContent = t['manualLabel'];
+            
+            // به‌روزرسانی برچسب اسلایدر و راهنما
+            updateModalTexts();
+        }
+
+        function updateModalTexts() {
+            var t = translations[currentLang];
+            if (currentItem === 'diamond') {
+                sliderLabel.textContent = t['sliderLabelDiamond'];
+                maxHint.textContent = t['maxHintDiamond'];
+                maxLabel.textContent = '500';
+            } else {
+                sliderLabel.textContent = t['sliderLabelGold'];
+                maxHint.textContent = t['maxHintGold'];
+                maxLabel.textContent = '20,000,000';
+            }
+        }
+
+        // ==========================================
+        // توابع مودال
+        // ==========================================
+        function openModalFn(type) {
+            currentItem = type;
+            var t = translations[currentLang];
+
+            if (type === 'diamond') {
+                maxAmount = 500;
+                modalIconImg.src = 'diamond.png';
+                modalIconImg.alt = 'Gem';
+                modalTitle.textContent = 'Gem';
+                maxLabel.textContent = '500';
+                maxHint.textContent = t['maxHintDiamond'];
+                sliderLabel.textContent = t['sliderLabelDiamond'];
+            } else if (type === 'gold') {
+                maxAmount = 20000000;
+                modalIconImg.src = 'coin.png';
+                modalIconImg.alt = 'Gold Coin';
+                modalTitle.textContent = 'سکه طلا';
+                maxLabel.textContent = '20,000,000';
+                maxHint.textContent = t['maxHintGold'];
+                sliderLabel.textContent = t['sliderLabelGold'];
+            }
+
+            modalSubtitle.textContent = t['modalSubtitle'];
+            manualLabel.textContent = t['manualLabel'];
+
+            slider.max = maxAmount;
+            slider.value = 0;
+            sliderValue.textContent = '0';
+            manualInput.max = maxAmount;
+            manualInput.value = 0;
+            minLabel.textContent = '0';
+
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModalFn() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function confirmAmountFn() {
+            var val = parseInt(slider.value);
+            if (val === 0) {
+                alert(currentLang === 'fa' ? 'لطفاً مقداری را انتخاب کنید!' : 'Please select an amount!');
+                return;
+            }
+            var itemName = currentItem === 'diamond' ? 'Gem' : (currentLang === 'fa' ? 'سکه طلا' : 'Gold Coin');
+            alert(currentLang === 'fa' 
+                ? 'شما ' + val.toLocaleString() + ' ' + itemName + ' درخواست کردید!' 
+                : 'You requested ' + val.toLocaleString() + ' ' + itemName + '!'
+            );
+            closeModalFn();
+        }
+
+        // ==========================================
+        // رویدادهای اسلایدر و ورودی دستی
+        // ==========================================
+        slider.addEventListener('input', function() {
+            var val = parseInt(this.value);
+            sliderValue.textContent = val.toLocaleString();
+            manualInput.value = val;
+        });
+
+        manualInput.addEventListener('input', function() {
+            var val = parseInt(this.value) || 0;
+            if (val < 0) val = 0;
+            if (val > maxAmount) val = maxAmount;
+            slider.value = val;
+            sliderValue.textContent = val.toLocaleString();
+        });
+
+        manualInput.addEventListener('blur', function() {
+            var val = parseInt(this.value) || 0;
+            if (val < 0) val = 0;
+            if (val > maxAmount) val = maxAmount;
+            this.value = val;
+            slider.value = val;
+            sliderValue.textContent = val.toLocaleString();
+        });
+
+        // ==========================================
+        // بستن مودال با کلیک خارج
+        // ==========================================
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModalFn();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModalFn();
+            }
+        });
+
+        // ==========================================
+        // دکمه تغییر زبان
+        // ==========================================
+        document.getElementById('langToggle').addEventListener('click', function() {
+            var newLang = currentLang === 'fa' ? 'en' : 'fa';
+            changeLanguage(newLang);
+        });
+
+        // ==========================================
+        // دکمه تغییر تم
+        // ==========================================
+        var themeToggle = document.getElementById('themeToggle');
+        var themeIcon = themeToggle.querySelector('i');
+
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggle.addEventListener('click', function() {
             document.body.classList.toggle('light-mode');
-            const isLight = document.body.classList.contains('light-mode');
-            themeIcon.classList.toggle('fa-moon', !isLight);
-            themeIcon.classList.toggle('fa-sun', isLight);
+            var isLight = document.body.classList.contains('light-mode');
+            themeIcon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
         });
 
-        // تغییر زبان (فارسی / انگلیسی) - فقط برای هدر
-        const langToggle = document.getElementById('langToggle');
-        const langLabel = document.getElementById('langLabel');
-        const membershipLabel = document.getElementById('membershipLabel');
-
-        langToggle.addEventListener('click', () => {
-            const currentLang = langLabel.textContent === 'FA' ? 'en' : 'fa';
-            langLabel.textContent = currentLang === 'fa' ? 'FA' : 'EN';
-            membershipLabel.textContent = currentLang === 'fa' ? 'عضویت' : 'Sign up';
-            document.documentElement.lang = currentLang;
-            document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
-        });
-
+        // ==========================================
         // دکمه عضویت
-        document.getElementById('membershipBtn').addEventListener('click', () => {
+        // ==========================================
+        document.getElementById('membershipBtn').addEventListener('click', function() {
             window.location.href = 'signup.html';
         });
+
+        // ==========================================
+        // اجرای اولیه
+        // ==========================================
+        changeLanguage(currentLang);
     </script>
 
 </body>
