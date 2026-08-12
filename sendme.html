@@ -6,6 +6,55 @@
     <title>پشتیبانی و ارتباط با ما - گیمینگ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        /* ==========================================
+           متغیرهای رنگی (حالت شب / روز)
+           ========================================== */
+        :root {
+            --bg-base: #0d0f14;
+            --bg-radial: #1a1f2b;
+            --text-main: #ffffff;
+            --text-sub: #a0aec0;
+            --card-bg: #1a1f2b;
+            --card-border: #2a3040;
+            --pill-bg: rgba(26, 31, 43, 0.95);
+            --accent-pink: #ff0055;
+            --accent-green: #00ff88;
+            --green-shadow: rgba(0, 255, 136, 0.4);
+            --shadow-color: rgba(0, 0, 0, 0.35);
+            --twitter-color: #ffffff;
+            --twitter-bg: #1a1a1a;
+            --twitter-neon: rgba(255, 255, 255, 0.6);
+            
+            --facebook-color: #1877f2;
+            --facebook-neon: rgba(24, 119, 242, 0.6);
+            
+            --tiktok-color: #ff0050;
+            --tiktok-neon: rgba(255, 0, 80, 0.6);
+            
+            --google-color: #ea4335;
+            --google-neon: rgba(234, 67, 53, 0.6);
+        }
+
+        .light-mode {
+            --bg-base: #f5f7fa;
+            --bg-radial: #eef1f5;
+            --text-main: #2d3748;
+            --text-sub: #4a5568;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --pill-bg: rgba(255, 255, 255, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --accent-green: #38a89d;
+            --green-shadow: rgba(56, 168, 157, 0.25);
+            --twitter-color: #1a1a1a;
+            --twitter-bg: #e8e8e8;
+            --twitter-neon: rgba(26, 26, 26, 0.4);
+            
+            --facebook-neon: rgba(24, 119, 242, 0.3);
+            --tiktok-neon: rgba(255, 0, 80, 0.3);
+            --google-neon: rgba(234, 67, 53, 0.3);
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -14,82 +63,206 @@
         }
 
         body {
-            background-color: #0f1117;
-            color: #ffffff;
+            background-color: var(--bg-base);
+            background-image: radial-gradient(circle at 10% 10%, var(--bg-radial) 0%, var(--bg-base) 100%);
+            color: var(--text-main);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            padding-bottom: 90px;
+            position: relative;
+            transition: background-color 0.5s ease, color 0.5s ease, background-image 0.5s ease;
         }
 
-        /* نوار بالای صفحه (Header) */
+        /* ==========================================
+           هدر (فشرده)
+           ========================================== */
         header {
-            background-color: #161b26;
-            border-bottom: 2px solid #00ff88;
-            padding: 15px 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            text-align: center;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--accent-green);
+            box-shadow: 0 4px 20px var(--green-shadow);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-container {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            padding: 3px;
+            background: var(--card-bg);
+            border: 2px solid var(--accent-pink);
+            box-shadow: 0 0 15px var(--accent-pink), inset 0 0 15px var(--accent-pink);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .light-mode .logo-container {
+            border-color: #e53e6b;
+            box-shadow: 0 0 15px rgba(229, 62, 107, 0.15), inset 0 0 15px rgba(229, 62, 107, 0.05);
+        }
+
+        .logo-container:hover {
+            transform: scale(1.08);
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
 
         .header-title {
-            color: #00ff88;
-            font-size: 1.2rem;
-            font-weight: bold;
+            color: var(--accent-green);
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px var(--green-shadow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.5s ease;
+        }
+
+        .light-mode .header-title {
+            text-shadow: 0 0 10px rgba(56, 168, 157, 0.15);
+        }
+
+        .header-title i {
+            font-size: 1rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .icon-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        /* بخش اصلی */
+        .icon-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-green);
+            box-shadow: 0 0 12px var(--green-shadow);
+        }
+
+        .membership-btn {
+            width: auto;
+            padding: 0 14px;
+            border-radius: 21px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            background: linear-gradient(135deg, var(--accent-pink), #ff5588);
+            border: none;
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.35);
+            transition: all 0.3s ease;
+        }
+
+        .light-mode .membership-btn {
+            background: linear-gradient(135deg, #e53e6b, #ed6a8e);
+            box-shadow: 0 0 15px rgba(229, 62, 107, 0.2);
+        }
+
+        .membership-btn:hover {
+            box-shadow: 0 0 22px rgba(255, 0, 85, 0.55);
+        }
+
+        .lang-btn {
+            width: auto;
+            padding: 0 12px;
+            border-radius: 21px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* ==========================================
+           بخش اصلی
+           ========================================== */
         main {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 20px;
+            padding: 30px 20px;
         }
 
-        /* حاوی قطار عمودی جزیره‌ها */
         .train-container {
             position: relative;
             display: flex;
             flex-direction: column;
-            gap: 22px;
+            gap: 20px;
             width: 100%;
-            max-width: 440px;
+            max-width: 480px;
         }
 
-        /* ریل عمودی نوری قطار */
+        /* ریل عمودی نوری */
         .train-container::before {
             content: '';
             position: absolute;
             top: 25px;
             bottom: 25px;
-            right: 38px;
+            left: 50%;
+            transform: translateX(-50%);
             width: 3px;
-            background: linear-gradient(180deg, #1877f2, #ffffff, #ff0050, #ea4335);
-            box-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
-            z-index: 1;
+            background: var(--accent-green);
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--accent-green), 0 0 20px var(--accent-green), 0 0 35px var(--accent-green);
+            z-index: 0;
+            transition: all 0.5s ease;
         }
 
-        /* کارت‌ها/جزیره‌های شناور */
+        .light-mode .train-container::before {
+            background: #cbd5e0;
+            box-shadow: none;
+            width: 2px;
+        }
+
+        /* کارت‌ها */
         .island-card {
             position: relative;
             z-index: 2;
-            background: #1a202c;
-            border: 1px solid #2d3748;
-            border-radius: 16px;
-            padding: 16px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             text-decoration: none;
-            color: #ffffff;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: inherit;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 14px 20px;
+            box-shadow: 0 8px 25px var(--shadow-color);
+            transition: all 0.3s ease;
             animation: floatIsland 4s ease-in-out infinite;
+            cursor: pointer;
         }
 
         .island-card:nth-child(1) { animation-delay: 0s; }
@@ -102,191 +275,527 @@
             50% { transform: translateY(-4px); }
         }
 
+        .island-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            border-color: var(--accent-green);
+            box-shadow: 0 12px 35px var(--green-shadow);
+        }
+
+        .light-mode .island-card:hover {
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+            border-color: var(--accent-green);
+        }
+
         .island-content {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
 
-        /* قاب آیکون نئونی */
+        /* ==========================================
+           باکس آیکون با نوار نئونی
+           ========================================== */
         .icon-box {
-            width: 45px;
-            height: 45px;
-            background-color: #161b26;
-            border: 1px solid #2d3748;
-            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
             transition: all 0.3s ease;
+            flex-shrink: 0;
+            position: relative;
         }
 
+        .light-mode .icon-box {
+            background: #f7fafc;
+        }
+
+        .island-card:hover .icon-box {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 20px var(--green-shadow);
+        }
+
+        /* ==========================================
+           نوار نئونی دور هر آیکون
+           ========================================== */
+        .icon-box::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 16px;
+            z-index: -1;
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .island-card:hover .icon-box::before {
+            opacity: 1;
+        }
+
+        /* فیس بوک - نوار نئونی آبی */
+        .island-card.facebook .icon-box::before {
+            background: var(--facebook-neon);
+            filter: blur(8px);
+            box-shadow: 0 0 30px var(--facebook-neon);
+        }
+        .island-card.facebook:hover .icon-box {
+            border-color: var(--facebook-color);
+            box-shadow: 0 0 25px var(--facebook-neon);
+        }
+        .island-card.facebook .icon-box { color: var(--facebook-color); }
+        .island-card.facebook:hover .icon-box { background: var(--facebook-color); color: #ffffff; border-color: var(--facebook-color); }
+        .island-card.facebook:hover h3 { color: var(--facebook-color); }
+
+        /* توییتر - نوار نئونی سفید/مشکی */
+        .island-card.x-twitter .icon-box::before {
+            background: var(--twitter-neon);
+            filter: blur(8px);
+            box-shadow: 0 0 30px var(--twitter-neon);
+        }
+        .island-card.x-twitter:hover .icon-box {
+            border-color: var(--twitter-color);
+            box-shadow: 0 0 25px var(--twitter-neon);
+        }
+        .island-card.x-twitter .icon-box { 
+            color: var(--twitter-color);
+            background: var(--twitter-bg);
+            border-color: var(--twitter-color);
+        }
+        .island-card.x-twitter:hover .icon-box { 
+            background: var(--twitter-color); 
+            color: var(--bg-base); 
+            border-color: var(--twitter-color);
+        }
+        .island-card.x-twitter:hover h3 { color: var(--twitter-color); }
+
+        /* تیک تاک - نوار نئونی صورتی */
+        .island-card.tiktok .icon-box::before {
+            background: var(--tiktok-neon);
+            filter: blur(8px);
+            box-shadow: 0 0 30px var(--tiktok-neon);
+        }
+        .island-card.tiktok:hover .icon-box {
+            border-color: var(--tiktok-color);
+            box-shadow: 0 0 25px var(--tiktok-neon);
+        }
+        .island-card.tiktok .icon-box { color: var(--tiktok-color); }
+        .island-card.tiktok:hover .icon-box { background: var(--tiktok-color); color: #ffffff; border-color: var(--tiktok-color); }
+        .island-card.tiktok:hover h3 { color: var(--tiktok-color); }
+
+        /* گوگل - نوار نئونی قرمز */
+        .island-card.google .icon-box::before {
+            background: var(--google-neon);
+            filter: blur(8px);
+            box-shadow: 0 0 30px var(--google-neon);
+        }
+        .island-card.google:hover .icon-box {
+            border-color: var(--google-color);
+            box-shadow: 0 0 25px var(--google-neon);
+        }
+        .island-card.google .icon-box { color: var(--google-color); }
+        .island-card.google:hover .icon-box { background: var(--google-color); color: #ffffff; border-color: var(--google-color); }
+        .island-card.google:hover h3 { color: var(--google-color); }
+
+        /* ==========================================
+           اطلاعات کارت
+           ========================================== */
         .island-info h3 {
-            font-size: 1.1rem;
+            font-size: 1rem;
+            font-weight: 700;
             margin-bottom: 2px;
-            color: #ffffff;
+            color: var(--text-main);
             transition: color 0.3s ease;
         }
 
         .island-info p {
-            font-size: 0.82rem;
-            color: #a0aec0;
+            font-size: 0.78rem;
+            color: var(--text-sub);
+            transition: color 0.3s ease;
         }
 
         .arrow-icon {
             font-size: 0.9rem;
-            color: #a0aec0;
+            color: var(--text-sub);
             transition: all 0.3s ease;
         }
-
-        /* 1. فیس‌بوک */
-        .island-card.facebook:hover {
-            border-color: #1877f2;
-            box-shadow: 0 0 20px rgba(24, 119, 242, 0.4);
-            transform: translateY(-6px) scale(1.02);
-        }
-        .island-card.facebook:hover .icon-box { background: #1877f2; color: #ffffff; }
-        .island-card.facebook .icon-box { color: #1877f2; }
-        .island-card.facebook:hover h3 { color: #1877f2; }
-
-        /* 2. اکس / توییتر */
-        .island-card.x-twitter:hover {
-            border-color: #ffffff;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-            transform: translateY(-6px) scale(1.02);
-        }
-        .island-card.x-twitter:hover .icon-box { background: #ffffff; color: #0f1117; }
-        .island-card.x-twitter .icon-box { color: #ffffff; }
-        .island-card.x-twitter:hover h3 { color: #ffffff; }
-
-        /* 3. تیک‌تاک */
-        .island-card.tiktok:hover {
-            border-color: #ff0050;
-            box-shadow: 0 0 20px rgba(255, 0, 80, 0.4);
-            transform: translateY(-6px) scale(1.02);
-        }
-        .island-card.tiktok:hover .icon-box { background: #ff0050; color: #ffffff; }
-        .island-card.tiktok .icon-box { color: #ff0050; }
-        .island-card.tiktok:hover h3 { color: #ff0050; }
-
-        /* 4. گوگل */
-        .island-card.google:hover {
-            border-color: #ea4335;
-            box-shadow: 0 0 20px rgba(234, 67, 53, 0.4);
-            transform: translateY(-6px) scale(1.02);
-        }
-        .island-card.google:hover .icon-box { background: #ea4335; color: #ffffff; }
-        .island-card.google .icon-box { color: #ea4335; }
-        .island-card.google:hover h3 { color: #ea4335; }
 
         .island-card:hover .arrow-icon {
             transform: translateX(-6px);
-            color: #00ff88;
+            color: var(--accent-green);
         }
 
-        /* دکمه بازگشت در پایین صفحه */
+        /* ==========================================
+           دکمه بازگشت
+           ========================================== */
         .back-btn {
-            margin-top: 35px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #2d3748;
-            color: #a0aec0;
-            padding: 10px 24px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-size: 0.9rem;
+            margin-top: 30px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            padding: 10px 24px;
+            border-radius: 25px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-sub);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            cursor: pointer;
         }
 
         .back-btn:hover {
-            background: rgba(0, 255, 136, 0.1);
-            border-color: #00ff88;
-            color: #00ff88;
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+            box-shadow: 0 0 25px var(--green-shadow);
+            transform: translateY(-3px);
+        }
+
+        .back-btn i {
+            transition: transform 0.3s ease;
         }
 
         .back-btn:hover i {
             transform: translateX(4px);
         }
 
-        .back-btn i {
-            transition: transform 0.3s ease;
+        /* ==========================================
+           نوار پایین
+           ========================================== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .ps-shapes {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            background: var(--pill-bg);
+            padding: 14px 35px;
+            border-radius: 50px;
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px var(--shadow-color);
+            width: auto;
+            transition: all 0.5s ease;
+        }
+
+        .light-mode .ps-shapes {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #e2e8f0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .ps-shapes i {
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .ps-shapes .ps-cross { color: #5352ed; text-shadow: 0 0 15px rgba(83, 82, 237, 0.7); }
+        .ps-shapes .ps-circle { color: #ff4757; text-shadow: 0 0 15px rgba(255, 71, 87, 0.7); }
+        .ps-shapes .ps-triangle { color: #00f0ff; text-shadow: 0 0 15px rgba(0, 240, 255, 0.7); }
+        .ps-shapes .ps-square { color: #ff77a9; text-shadow: 0 0 15px rgba(255, 119, 169, 0.7); }
+
+        .light-mode .ps-shapes .ps-cross { color: #6c63c4; text-shadow: 0 0 15px rgba(108, 99, 196, 0.2); }
+        .light-mode .ps-shapes .ps-circle { color: #e53e6b; text-shadow: 0 0 15px rgba(229, 62, 107, 0.2); }
+        .light-mode .ps-shapes .ps-triangle { color: #38b2ac; text-shadow: 0 0 15px rgba(56, 178, 172, 0.2); }
+        .light-mode .ps-shapes .ps-square { color: #b779c4; text-shadow: 0 0 15px rgba(183, 121, 196, 0.2); }
+
+        .ps-shapes i:hover {
+            transform: scale(1.3) rotate(10deg);
+            filter: brightness(1.5);
+        }
+
+        .light-mode .ps-shapes i:hover {
+            filter: brightness(1.2);
+        }
+
+        /* ==========================================
+           واکنش‌گرایی
+           ========================================== */
+        @media (max-width: 500px) {
+            header { padding: 10px 15px; }
+            .logo-container { width: 42px; height: 42px; }
+            .icon-btn { width: 34px; height: 34px; font-size: 0.8rem; }
+            .lang-btn { padding: 0 10px; font-size: 0.7rem; }
+            .membership-btn { padding: 0 10px; font-size: 0.7rem; }
+            .header-actions { gap: 5px; }
+            .header-title { font-size: 0.75rem; }
+            .header-title i { font-size: 0.8rem; }
+
+            .train-container { max-width: 100%; }
+            .island-card { padding: 12px 14px; border-radius: 14px; }
+            .icon-box { width: 42px; height: 42px; font-size: 1.3rem; }
+            .island-info h3 { font-size: 0.9rem; }
+            .island-info p { font-size: 0.7rem; }
+
+            .bottom-nav { bottom: 12px; }
+            .ps-shapes { padding: 12px 25px; gap: 20px; }
+            .ps-shapes i { font-size: 1.2rem; }
+
+            .back-btn { padding: 8px 18px; font-size: 0.75rem; }
+        }
+
+        @media (max-width: 380px) {
+            .header-title { font-size: 0.65rem; }
+            .header-title i { font-size: 0.7rem; }
+            .logo-container { width: 36px; height: 36px; }
+            .icon-box { width: 36px; height: 36px; font-size: 1.1rem; }
+            .island-card { padding: 10px 10px; }
+            .island-info h3 { font-size: 0.8rem; }
+            .island-info p { font-size: 0.6rem; }
+            .ps-shapes { gap: 14px; padding: 10px 16px; }
+            .ps-shapes i { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 
+    <!-- ==========================================
+    هدر (فشرده)
+    ========================================== -->
     <header>
-    <div class="header-title">
-        <i class="fa-solid fa-gamepad"></i>
-        ورود به حساب کاربری پاپجی موبایل
-    </div>
-</header>
+        <div class="header-left">
+            <div class="logo-container">
+                <img src="op.jpg.png" alt="Logo">
+            </div>
+            <div class="header-title">
+                <i class="fa-solid fa-gamepad"></i>
+                <span data-i18n="headerTitle">ورود به حساب پاپجی</span>
+            </div>
+        </div>
 
+        <div class="header-actions">
+            <button class="icon-btn" id="themeToggle" type="button">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+            <button class="icon-btn lang-btn" id="langToggle" type="button">
+                <span id="langLabel">FA</span>
+            </button>
+            <button class="icon-btn membership-btn" id="membershipBtn" type="button">
+                <span id="membershipLabel">عضویت</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ==========================================
+    محتوای اصلی
+    ========================================== -->
     <main>
         <div class="train-container">
 
-            <a href="facebook.html" target="_blank" class="island-card facebook">
-    <div class="island-content">
-        <div class="icon-box">
-            <i class="fa-brands fa-facebook-f"></i>
-        </div>
-        <div class="island-info">
-            <h3>Facebook</h3>
-            <p>ورود به حساب پاپجی از طریق فیس بوک</p>
-        </div>
-    </div>
-    <i class="fa-solid fa-chevron-left arrow-icon"></i>
-</a>
+            <div class="island-card facebook" data-page="facebook.html">
+                <div class="island-content">
+                    <div class="icon-box">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </div>
+                    <div class="island-info">
+                        <h3 data-i18n="facebookTitle">Facebook</h3>
+                        <p data-i18n="facebookDesc">ورود از طریق فیس بوک</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-left arrow-icon"></i>
+            </div>
 
-            <a href="X.com.html" target="_blank" class="island-card x-twitter">
+            <div class="island-card x-twitter" data-page="X.com.html">
                 <div class="island-content">
                     <div class="icon-box">
                         <i class="fa-brands fa-x-twitter"></i>
                     </div>
                     <div class="island-info">
-                       <h3>X.com</h3>
-                        <p>ورود به حساب پاپجی از طریق اکس </p>
+                        <h3 data-i18n="twitterTitle">X.com</h3>
+                        <p data-i18n="twitterDesc">ورود از طریق اکس</p>
                     </div>
                 </div>
                 <i class="fa-solid fa-chevron-left arrow-icon"></i>
-            </a>
+            </div>
 
-            <a href="tiktok.html" target="_blank" class="island-card tiktok">
+            <div class="island-card tiktok" data-page="tiktok.html">
                 <div class="island-content">
                     <div class="icon-box">
                         <i class="fa-brands fa-tiktok"></i>
                     </div>
                     <div class="island-info">
-                        <h3>Tiktok</h3>
-                        <p>ورود به حساب پاپجی از طریق تیک تاک</p>
+                        <h3 data-i18n="tiktokTitle">Tiktok</h3>
+                        <p data-i18n="tiktokDesc">ورود از طریق تیک تاک</p>
                     </div>
                 </div>
                 <i class="fa-solid fa-chevron-left arrow-icon"></i>
-            </a>
+            </div>
 
-            <a href="google.html" target="_blank" class="island-card google">
+            <div class="island-card google" data-page="google.html">
                 <div class="island-content">
                     <div class="icon-box">
                         <i class="fa-brands fa-google"></i>
                     </div>
                     <div class="island-info">
-                        <h3>Google</h3>
-                        <p>ورود به حساب پاپجی از طریق گوگل</p>
+                        <h3 data-i18n="googleTitle">Google</h3>
+                        <p data-i18n="googleDesc">ورود از طریق گوگل</p>
                     </div>
                 </div>
                 <i class="fa-solid fa-chevron-left arrow-icon"></i>
-            </a>
+            </div>
 
         </div>
 
-        <a href="index.html" class="back-btn">
+        <div class="back-btn" id="backBtn">
             <i class="fa-solid fa-arrow-right"></i>
-            بازگشت
-        </a>
+            <span data-i18n="backBtn">بازگشت</span>
+        </div>
     </main>
+
+    <!-- ==========================================
+    نوار پایین
+    ========================================== -->
+    <div class="bottom-nav">
+        <div class="ps-shapes">
+            <i class="fa-solid fa-xmark ps-cross"></i>
+            <i class="fa-regular fa-circle ps-circle"></i>
+            <i class="fa-solid fa-triangle-exclamation ps-triangle"></i>
+            <i class="fa-regular fa-square ps-square"></i>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // ترجمه‌ها
+        // ==========================================
+        var translations = {
+            fa: {
+                'langLabel': 'FA',
+                'membershipLabel': 'عضویت',
+                'headerTitle': 'ورود به حساب پاپجی',
+                'facebookTitle': 'Facebook',
+                'facebookDesc': 'ورود از طریق فیس بوک',
+                'twitterTitle': 'X.com',
+                'twitterDesc': 'ورود از طریق اکس',
+                'tiktokTitle': 'Tiktok',
+                'tiktokDesc': 'ورود از طریق تیک تاک',
+                'googleTitle': 'Google',
+                'googleDesc': 'ورود از طریق گوگل',
+                'backBtn': 'بازگشت'
+            },
+            en: {
+                'langLabel': 'EN',
+                'membershipLabel': 'Sign up',
+                'headerTitle': 'PUBG Account Login',
+                'facebookTitle': 'Facebook',
+                'facebookDesc': 'Login via Facebook',
+                'twitterTitle': 'X.com',
+                'twitterDesc': 'Login via X',
+                'tiktokTitle': 'Tiktok',
+                'tiktokDesc': 'Login via TikTok',
+                'googleTitle': 'Google',
+                'googleDesc': 'Login via Google',
+                'backBtn': 'Back'
+            }
+        };
+
+        var currentLang = localStorage.getItem('lang') || 'fa';
+
+        // ==========================================
+        // توابع ترجمه
+        // ==========================================
+        function changeLanguage(lang) {
+            currentLang = lang;
+            var t = translations[lang];
+            
+            document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+            document.documentElement.lang = lang;
+            localStorage.setItem('lang', lang);
+            
+            var elements = document.querySelectorAll('[data-i18n]');
+            for (var i = 0; i < elements.length; i++) {
+                var el = elements[i];
+                var key = el.getAttribute('data-i18n');
+                if (t[key] !== undefined) {
+                    var icon = el.querySelector('i');
+                    if (icon) {
+                        var textNode = el.childNodes[el.childNodes.length - 1];
+                        if (textNode && textNode.nodeType === 3) {
+                            textNode.textContent = ' ' + t[key];
+                        } else {
+                            el.innerHTML = icon.outerHTML + ' ' + t[key];
+                        }
+                    } else {
+                        el.textContent = t[key];
+                    }
+                }
+            }
+            
+            document.getElementById('langLabel').textContent = t['langLabel'];
+            document.getElementById('membershipLabel').textContent = t['membershipLabel'];
+        }
+
+        changeLanguage(currentLang);
+
+        // ==========================================
+        // دکمه تغییر زبان
+        // ==========================================
+        document.getElementById('langToggle').addEventListener('click', function() {
+            var newLang = currentLang === 'fa' ? 'en' : 'fa';
+            changeLanguage(newLang);
+        });
+
+        // ==========================================
+        // دکمه تغییر تم (شب/روز)
+        // ==========================================
+        var themeToggle = document.getElementById('themeToggle');
+        var themeIcon = themeToggle.querySelector('i');
+
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('light-mode');
+            var isLight = document.body.classList.contains('light-mode');
+            themeIcon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+
+        // ==========================================
+        // دکمه عضویت
+        // ==========================================
+        document.getElementById('membershipBtn').addEventListener('click', function() {
+            window.location.href = 'signup.html';
+        });
+
+        // ==========================================
+        // تغییر مسیر کارت‌ها در همان صفحه (بدون تب جدید)
+        // ==========================================
+        var cards = document.querySelectorAll('.island-card');
+        for (var i = 0; i < cards.length; i++) {
+            cards[i].addEventListener('click', function() {
+                var page = this.getAttribute('data-page');
+                if (page) {
+                    window.location.href = page;
+                }
+            });
+        }
+
+        // ==========================================
+        // دکمه بازگشت
+        // ==========================================
+        document.getElementById('backBtn').addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+    </script>
 
 </body>
 </html>
