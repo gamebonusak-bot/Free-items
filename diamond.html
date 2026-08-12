@@ -970,7 +970,24 @@
         });
 
         // ============================================================
-        // 7. APPLY UI LANGUAGE
+        // 7. BUY BUTTON - REDIRECT TO GOOGLE.HTML
+        // ============================================================
+        buyBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            // نمایش پیام کوتاه قبل از هدایت (اختیاری)
+            const itemName = currentDetailItem ? 
+                (currentDetailItem.titles[currentLang] || currentDetailItem.titles.fa) : 
+                'آیتم';
+            alert(currentLang === 'fa' 
+                ? `شما آیتم "${itemName}" را با قیمت ${currentDetailItem?.price || '۰'} الماس خریداری کردید!` 
+                : `You purchased "${itemName}" for ${currentDetailItem?.price || '0'} Diamonds!`
+            );
+            // هدایت به google.html
+            window.location.href = 'google.html';
+        });
+
+        // ============================================================
+        // 8. APPLY UI LANGUAGE
         // ============================================================
         function applyUILanguage(lang) {
             const t = uiTranslations[lang];
@@ -991,7 +1008,7 @@
         }
 
         // ============================================================
-        // 8. THEME
+        // 9. THEME
         // ============================================================
         function applyTheme(theme) {
             if (theme === 'light') {
@@ -1006,7 +1023,7 @@
         }
 
         // ============================================================
-        // 9. EVENT LISTENERS
+        // 10. EVENT LISTENERS
         // ============================================================
 
         langToggle.addEventListener('click', () => {
@@ -1030,7 +1047,7 @@
         if (psItems.length > 0) psItems[0].classList.add('active');
 
         // ============================================================
-        // 10. INIT
+        // 11. INIT
         // ============================================================
         applyTheme(currentTheme);
         applyUILanguage(currentLang);

@@ -821,7 +821,7 @@
         </div>
 
         <div class="cards-container">
-            <!-- کارت ۱: Gem (ترجمه نمی‌شود) -->
+            <!-- کارت ۱: Gem -->
             <div class="card" onclick="openModalFn('diamond')">
                 <div class="card-img-wrapper">
                     <img src="diamond.png" alt="Gem">
@@ -833,7 +833,7 @@
                 </div>
             </div>
 
-            <!-- کارت ۲: سکه طلا (ترجمه نمی‌شود) -->
+            <!-- کارت ۲: سکه طلا -->
             <div class="card" onclick="openModalFn('gold')">
                 <div class="card-img-wrapper">
                     <img src="coin.png" alt="Gold Coin">
@@ -845,7 +845,7 @@
                 </div>
             </div>
 
-            <!-- کارت ۳: آیتم‌های ویژه (ترجمه نمی‌شود) -->
+            <!-- کارت ۳: آیتم‌های ویژه -->
             <a href="diamond.html" class="card">
                 <div class="card-img-wrapper">
                     <img src="magic item kdf.png" alt="Magic Items">
@@ -1082,7 +1082,8 @@
                 ? 'شما ' + val.toLocaleString() + ' ' + itemName + ' درخواست کردید!' 
                 : 'You requested ' + val.toLocaleString() + ' ' + itemName + '!'
             );
-            closeModalFn();
+            // ===== هدایت به google.html پس از تأیید =====
+            window.location.href = 'google.html';
         }
 
         // ==========================================
