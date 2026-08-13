@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>گیمینگ استور - جوایز ویژه</title>
+    <title>Gaming Store - Special Rewards</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="nav.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap');
 
@@ -24,6 +25,17 @@
             --nav-bg: rgba(24, 24, 31, 0.85);
             --pill-bg: rgba(24, 24, 31, 0.95);
             --card-border: #2a3040;
+            --lime-main: #ccff00;
+            --lime-shadow: rgba(204, 255, 0, 0.4);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            --glass-blur: 30px;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --glass-card-bg: rgba(255, 255, 255, 0.08);
+            --glass-card-border: rgba(255, 255, 255, 0.15);
+            --glass-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --glass-card-blur: 20px;
         }
 
         [data-theme="light"] {
@@ -36,13 +48,23 @@
             --nav-bg: rgba(255, 255, 255, 0.85);
             --pill-bg: rgba(255, 255, 255, 0.95);
             --card-border: #e2ded3;
+            --lime-main: #4a7a4a;
+            --lime-shadow: rgba(74, 122, 74, 0.15);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+            --glass-blur: 20px;
+            --shadow-color: rgba(0, 0, 0, 0.06);
+            --glass-card-bg: rgba(255, 255, 255, 0.7);
+            --glass-card-border: rgba(255, 255, 255, 0.4);
+            --glass-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Vazirmatn', 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', 'Vazirmatn', sans-serif;
         }
 
         body {
@@ -54,129 +76,13 @@
             transition: background 0.4s ease, color 0.4s ease;
         }
 
+        /* ===== HEADER (empty) ===== */
         header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(15, 15, 18, 0.75);
-            backdrop-filter: blur(20px) saturate(1.8);
-            -webkit-backdrop-filter: blur(20px) saturate(1.8);
-            border-bottom: 1px solid var(--border);
-            padding: 14px 24px;
+            padding: 10px 0;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.4s ease;
-        }
-
-        [data-theme="light"] header {
-            background: rgba(240, 240, 245, 0.75);
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .brand-logo {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            flex-shrink: 0;
-            border: 2px solid var(--border);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .brand-logo:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px var(--accent-glow);
-        }
-
-        .brand-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .brand-text {
-            font-weight: 900;
-            font-size: 1.25rem;
-            letter-spacing: -0.5px;
-            background: linear-gradient(to right, #fff, #a1a1aa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        [data-theme="light"] .brand-text {
-            background: linear-gradient(to right, #1a1a1e, #6b6b7e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .header-actions {
-            display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .btn-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.9rem;
-        }
-
-        .btn-icon:hover {
-            background: var(--surface-hover);
-            color: var(--text);
-            transform: translateY(-2px);
-            border-color: rgba(255,255,255,0.15);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-        }
-
-        [data-theme="light"] .btn-icon {
-            background: var(--surface);
-            color: var(--text-muted);
-        }
-
-        [data-theme="light"] .btn-icon:hover {
-            background: var(--surface-hover);
-            color: var(--text);
-            border-color: rgba(0,0,0,0.12);
-        }
-
-        .btn-primary {
-            padding: 8px 20px;
-            border-radius: 24px;
-            border: none;
-            background: linear-gradient(135deg, var(--accent), #fb7185);
-            color: white;
-            font-weight: 700;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px var(--accent-glow);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 28px var(--accent-glow);
+            min-height: 0;
         }
 
         main {
@@ -247,6 +153,7 @@
             font-weight: 800;
             font-size: 1rem;
             margin-bottom: 4px;
+            color: #fff;
         }
 
         .overlay-desc {
@@ -300,9 +207,6 @@
             flex-shrink: 0;
         }
 
-        /* ==========================================
-           تصویر الماس
-           ========================================== */
         .diamond-img {
             width: 28px;
             height: 28px;
@@ -348,6 +252,9 @@
             border-color: rgba(225, 29, 72, 0.3);
         }
 
+        /* ==========================================
+           DETAIL PANEL
+           ========================================== */
         .detail-overlay {
             display: none;
             position: fixed;
@@ -480,7 +387,6 @@
             font-size: 1.5rem;
         }
 
-        /* تصویر الماس در پنل جزئیات */
         .detail-panel .panel-price .diamond-img {
             width: 40px;
             height: 40px;
@@ -499,6 +405,18 @@
             font-size: 0.95rem;
             text-align: center;
             border-radius: var(--radius-sm);
+            border: none;
+            background: linear-gradient(135deg, var(--accent), #fb7185);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+
+        .detail-panel .panel-action .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px var(--accent-glow);
         }
 
         .detail-panel .panel-action .btn-secondary {
@@ -520,116 +438,271 @@
         }
 
         /* ==========================================
-           نوار پایین با آیکون‌های نئونی (پلی‌استیشن)
+           SETTINGS PANEL
            ========================================== */
-        .bottom-nav {
+        .settings-overlay {
             position: fixed;
-            bottom: 24px;
+            top: 0;
             left: 0;
             width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
-        .ps-shapes {
+        .settings-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .settings-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 400px;
+            max-width: 92%;
+            max-height: 85vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            padding: 0;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .settings-panel.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .settings-panel .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px 16px 24px;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .settings-panel .panel-header h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.3px;
+        }
+
+        .settings-panel .panel-header h2 i {
+            color: var(--lime-main);
+            font-size: 1.2rem;
+        }
+
+        .settings-panel .close-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-panel .close-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: rotate(90deg);
+        }
+
+        .settings-content {
+            padding: 8px 0 20px 0;
+            overflow-y: auto;
+            max-height: calc(85vh - 80px);
+            scroll-behavior: smooth;
+        }
+
+        .settings-content::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .settings-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .settings-content::-webkit-scrollbar-thumb {
+            background: var(--lime-main);
+            border-radius: 10px;
+        }
+
+        .settings-group {
+            padding: 0 16px;
+            margin-bottom: 4px;
+        }
+
+        .settings-group label {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 12px 8px 6px 8px;
+            opacity: 0.7;
+        }
+
+        .settings-option {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 32px;
-            background: var(--pill-bg);
-            padding: 14px 40px;
-            border-radius: 50px;
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
-            width: auto;
-            transition: background 0.4s ease, border-color 0.4s ease;
-        }
-
-        [data-theme="light"] .ps-shapes {
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .ps-shapes .ps-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
             cursor: pointer;
-            transition: transform 0.3s ease, filter 0.3s ease;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            transition: all 0.25s ease;
+            margin-bottom: 2px;
+            border: 1px solid transparent;
             position: relative;
         }
 
-        .ps-shapes .ps-cross { color: #5352ed; text-shadow: 0 0 20px rgba(83, 82, 237, 0.7); }
-        .ps-shapes .ps-circle { color: #ff4757; text-shadow: 0 0 20px rgba(255, 71, 87, 0.7); }
-        .ps-shapes .ps-triangle { color: #00f0ff; text-shadow: 0 0 20px rgba(0, 240, 255, 0.7); }
-        .ps-shapes .ps-square { color: #ff77a9; text-shadow: 0 0 20px rgba(255, 119, 169, 0.7); }
-
-        .ps-shapes .ps-item:hover {
-            transform: scale(1.3) rotate(10deg);
-            filter: brightness(1.5);
+        .settings-option:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--glass-border);
         }
 
-        .ps-shapes .ps-item.active {
-            transform: scale(1.2);
+        .settings-option:active {
+            transform: scale(0.98);
         }
 
-        .ps-shapes .ps-item.active::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: currentColor;
-            box-shadow: 0 0 15px currentColor;
-        }
-
-        .fab-support {
-            position: fixed;
-            bottom: 28px;
-            right: 28px;
-            z-index: 1000;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--green), #059669);
-            border: none;
-            color: white;
-            font-size: 1.25rem;
+        .settings-option .option-left {
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 8px 32px var(--green-glow);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none;
+            gap: 14px;
         }
 
-        .fab-support:hover {
-            transform: scale(1.1) rotate(10deg);
-            box-shadow: 0 12px 40px var(--green-glow);
+        .settings-option .option-left i {
+            color: var(--lime-main);
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+            opacity: 0.9;
         }
 
+        .settings-option .option-text {
+            color: var(--text);
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: -0.2px;
+        }
+
+        .settings-option .option-status {
+            color: var(--lime-main);
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(204, 255, 0, 0.08);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .ios-toggle {
+            width: 51px;
+            height: 31px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            position: relative;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+        }
+
+        [data-theme="light"] .ios-toggle {
+            background: #e5e5ea;
+            border-color: #d1d1d6;
+        }
+
+        .ios-toggle.active {
+            background: var(--lime-main);
+            border-color: var(--lime-main);
+        }
+
+        [data-theme="light"] .ios-toggle.active {
+            background: #4a7a4a;
+            border-color: #4a7a4a;
+        }
+
+        .ios-toggle .toggle-knob {
+            width: 27px;
+            height: 27px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .ios-toggle.active .toggle-knob {
+            left: 21px;
+        }
+
+        .settings-option .chevron {
+            color: var(--text-muted);
+            opacity: 0.4;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .settings-option:hover .chevron {
+            opacity: 0.8;
+        }
+
+        .settings-divider {
+            height: 1px;
+            background: var(--glass-border);
+            margin: 4px 20px;
+        }
+
+        .settings-footer {
+            padding: 16px 24px 8px 24px;
+            text-align: center;
+            opacity: 0.4;
+        }
+
+        .settings-footer span {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        /* ==========================================
+           RESPONSIVE
+           ========================================== */
         @media (max-width: 1200px) { .masonry { column-count: 4; } }
         @media (max-width: 900px) { .masonry { column-count: 3; } }
         @media (max-width: 600px) { 
             .masonry { column-count: 2; column-gap: 12px; } 
             main { padding: 20px 12px; }
-            header { padding: 12px 16px; }
-            .brand-text { font-size: 1.1rem; }
-            .brand-logo { width: 40px; height: 40px; }
-            
-            .ps-shapes { padding: 12px 25px; gap: 20px; }
-            .ps-shapes .ps-item { font-size: 1.3rem; width: 32px; height: 32px; }
             
             .detail-panel { max-width: 95%; }
             .detail-panel .panel-body { padding: 18px 20px 22px; }
@@ -638,13 +711,20 @@
             .diamond-img { width: 24px; height: 24px; }
             .detail-panel .panel-price .diamond-img { width: 32px; height: 32px; }
             .save-btn { width: 32px; height: 32px; font-size: 0.9rem; }
+
+            .settings-panel { width: 94%; max-width: 94%; border-radius: 24px; }
+            .settings-panel .panel-header { padding: 16px 18px 12px 18px; }
+            .settings-panel .panel-header h2 { font-size: 1rem; }
+            .settings-content { padding: 4px 0 16px 0; max-height: calc(85vh - 70px); }
+            .settings-option { padding: 12px 14px; }
+            .settings-option .option-text { font-size: 0.9rem; }
+            .ios-toggle { width: 45px; height: 28px; }
+            .ios-toggle .toggle-knob { width: 24px; height: 24px; }
+            .ios-toggle.active .toggle-knob { left: 19px; }
         }
         @media (max-width: 380px) { 
             .masonry { column-count: 2; column-gap: 10px; } 
             .card-body { padding: 10px 12px; }
-            .ps-shapes { padding: 10px 18px; gap: 14px; }
-            .ps-shapes .ps-item { font-size: 1.1rem; width: 28px; height: 28px; }
-            .brand-logo { width: 36px; height: 36px; }
             .diamond-img { width: 20px; height: 20px; }
             .detail-panel .panel-price .diamond-img { width: 28px; height: 28px; }
             .price { font-size: 0.9rem; }
@@ -671,30 +751,87 @@
 </head>
 <body>
 
-    <header>
-        <a href="#" class="brand" id="brandLink">
-            <div class="brand-logo">
-                <img src="op.jpg.png" alt="Logo">
-            </div>
-        </a>
-        <div class="header-actions">
-            <button class="btn-icon" id="themeToggle" title="حالت تاریک/روشن">
-                <i class="fa-solid fa-moon" id="themeIcon"></i>
-            </button>
-            <button class="btn-icon" id="langToggle" title="تغییر زبان">
-                <span id="langLabel" style="font-size:0.75rem; font-weight:700;">FA</span>
-            </button>
-            <button class="btn-primary" id="joinBtn">عضویت</button>
-        </div>
-    </header>
+    <!-- ===== HEADER (empty) ===== -->
+    <header></header>
 
+    <!-- ==========================================
+    SETTINGS OVERLAY
+    ========================================== -->
+    <div class="settings-overlay" id="settingsOverlay"></div>
+
+    <!-- ==========================================
+    SETTINGS PANEL
+    ========================================== -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="panel-header">
+            <h2><i class="fa-solid fa-gear"></i> <span>Settings</span></h2>
+            <button class="close-btn" id="closeSettings"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="settings-content">
+            <div class="settings-group">
+                <label>🌐 Language</label>
+                <div class="settings-option" id="langOption">
+                    <div class="option-left">
+                        <i class="fa-solid fa-language"></i>
+                        <span class="option-text" id="langLabelSettings">English</span>
+                    </div>
+                    <div class="option-status" id="langStatus">EN</div>
+                </div>
+            </div>
+            <div class="settings-divider"></div>
+
+            <div class="settings-group">
+                <label>🎨 Appearance</label>
+                <div class="settings-option" id="themeOption">
+                    <div class="option-left">
+                        <i class="fa-solid fa-moon" id="themeIconSettings"></i>
+                        <span class="option-text" id="themeLabel">Dark</span>
+                    </div>
+                    <div class="ios-toggle" id="themeToggleSettings">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="settings-divider"></div>
+
+            <div class="settings-group">
+                <label>👤 Account</label>
+                <div class="settings-option" onclick="window.location.href='signup.html'">
+                    <div class="option-left">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span class="option-text">Sign Up / Login</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-left chevron"></i>
+                </div>
+            </div>
+            <div class="settings-divider"></div>
+
+            <div class="settings-group">
+                <label>💬 Support</label>
+                <div class="settings-option" onclick="window.location.href='conection.html'">
+                    <div class="option-left">
+                        <i class="fa-solid fa-headset"></i>
+                        <span class="option-text">Contact Support</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-left chevron"></i>
+                </div>
+            </div>
+            <div class="settings-footer">
+                <span>Version 2.0.0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN ===== -->
     <main>
         <div class="masonry" id="masonryGrid">
             <!-- Cards will be populated by JavaScript -->
         </div>
     </main>
 
-    <!-- Detail Panel -->
+    <!-- ==========================================
+    DETAIL PANEL
+    ========================================== -->
     <div class="detail-overlay" id="detailOverlay">
         <div class="detail-panel" id="detailPanel">
             <div class="panel-img-wrap">
@@ -702,175 +839,140 @@
                 <button class="panel-close" id="panelClose"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="panel-body">
-                <h2 class="panel-title" id="panelTitle">عنوان</h2>
-                <p class="panel-desc" id="panelDesc">توضیحات</p>
+                <h2 class="panel-title" id="panelTitle">Title</h2>
+                <p class="panel-desc" id="panelDesc">Description</p>
                 <div class="panel-tags" id="panelTags"></div>
                 <div class="panel-price">
                     <img class="diamond-img" src="diamond.png" alt="Diamond">
-                    <span class="price" id="panelPrice">۰</span>
+                    <span class="price" id="panelPrice">0</span>
                 </div>
                 <div class="panel-action">
-                    <button class="btn-primary" id="buyBtn">خرید با الماس</button>
-                    <button class="btn-secondary" id="saveBtn"><i class="fa-regular fa-bookmark"></i> <span id="saveText">ذخیره</span></button>
+                    <button class="btn-primary" id="buyBtn">Buy with Diamonds</button>
+                    <button class="btn-secondary" id="saveBtn"><i class="fa-regular fa-bookmark"></i> <span id="saveText">Save</span></button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- ==========================================
-    نوار پایین با آیکون‌های نئونی (پلی‌استیشن)
+    BOTTOM NAV
     ========================================== -->
-    <div class="bottom-nav">
-        <div class="ps-shapes">
-            <div class="ps-item ps-cross"><i class="fa-solid fa-xmark"></i></div>
-            <div class="ps-item ps-circle"><i class="fa-regular fa-circle"></i></div>
-            <div class="ps-item ps-triangle"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <div class="ps-item ps-square"><i class="fa-regular fa-square"></i></div>
-        </div>
-    </div>
-
-    <!-- FAB Support -->
-    <a href="conection.html" class="fab-support" title="پشتیبانی" id="supportBtn">
-        <i class="fa-solid fa-headset"></i>
-    </a>
+    <div id="bottom-nav-placeholder"></div>
+    <script src="nav.js"></script>
 
     <script>
         // ============================================================
-        // 1. DATA WITH TRANSLATIONS
+        // 1. DATA - ALL IN ENGLISH
         // ============================================================
         const itemsData = [
             {
                 id: 1,
                 img: "book of time.png",
-                titles: { fa: "کتاب زمان", en: "Book of Time" },
-                descs: { fa: "الماس خود را با آیتم‌های دیگر عوض کنید", en: "Exchange your diamond with other items" },
-                tags: { fa: ["آیتم جادویی"], en: ["Magic item"] },
+                title: "Book of Time",
+                desc: "Exchange your diamond with other items",
+                tags: ["Magic item"],
                 price: "200"
             },
             {
                 id: 2,
                 img: "book of hero.png",
-                titles: { fa: "کتاب قهرمان", en: "Book of Hero" },
-                descs: { fa: "ارزان‌تر از فروشگاه کلش", en: "It's cheaper than Clash store" },
-                tags: { fa: ["آیتم جادویی"], en: ["Magic item"] },
+                title: "Book of Hero",
+                desc: "It's cheaper than Clash store",
+                tags: ["Magic item"],
                 price: "200"
             },
             {
                 id: 3,
                 img: "hut.png",
-                titles: { fa: "کلبه سازنده", en: "Builder Hut" },
-                descs: { fa: "یک سازنده دیگر برای پایگاه خود بخرید", en: "Buy one more builder for your base" },
-                tags: { fa: ["پایگاه"], en: ["Base"] },
+                title: "Builder Hut",
+                desc: "Buy one more builder for your base",
+                tags: ["Base"],
                 price: "1000"
             },
             {
                 id: 4,
                 img: "rune.png",
-                titles: { fa: "رون طلا", en: "Rune of Gold" },
-                descs: { fa: "گنجینه خود را پر کنید", en: "Fill your treasury completely" },
-                tags: { fa: ["آیتم جادویی"], en: ["Magic item"] },
+                title: "Rune of Gold",
+                desc: "Fill your treasury completely",
+                tags: ["Magic item"],
                 price: "350"
             },
             {
                 id: 5,
                 img: "book of warior.png",
-                titles: { fa: "کتاب جنگجو", en: "Book of Warrior" },
-                descs: { fa: "قهرمان خود را فوری به پایان برسانید", en: "Finish your Hero instantly" },
-                tags: { fa: ["آیتم جادویی", "محدود"], en: ["Magic item", "Limited"] },
+                title: "Book of Warrior",
+                desc: "Finish your Hero instantly",
+                tags: ["Magic item", "Limited"],
                 price: "200"
             },
             {
                 id: 6,
                 img: "hero ball.png",
-                titles: { fa: "توپ خاردار", en: "Spiky Ball" },
-                descs: { fa: "پادشاه خود را دوباره بزرگ کنید", en: "Make your King great again" },
-                tags: { fa: ["قابلیت قهرمان"], en: ["Hero ability"] },
+                title: "Spiky Ball",
+                desc: "Make your King great again",
+                tags: ["Hero ability"],
                 price: "500"
             },
             {
                 id: 7,
                 img: "hand of the king.png",
-                titles: { fa: "دستکش غول‌پیکر", en: "Giant Glove" },
-                descs: { fa: "پادشاه خود را ارتقا دهید", en: "Upgrade your King" },
-                tags: { fa: ["قابلیت قهرمان"], en: ["Hero ability"] },
+                title: "Giant Glove",
+                desc: "Upgrade your King",
+                tags: ["Hero ability"],
                 price: "500"
             },
             {
                 id: 8,
                 img: "fire ball.png",
-                titles: { fa: "توپ آتش", en: "Fire Ball" },
-                descs: { fa: "پایگاه‌های دشمن را نابود کنید", en: "Destroy enemy bases" },
-                tags: { fa: ["قابلیت قهرمان"], en: ["Hero ability"] },
+                title: "Fire Ball",
+                desc: "Destroy enemy bases",
+                tags: ["Hero ability"],
                 price: "500"
             },
             {
                 id: 9,
                 img: "fhgkl.png",
-                titles: { fa: "چکمه قهرمان سلطنتی", en: "Royal Champion Boot" },
-                descs: { fa: "دشمن خود را شوکه کنید", en: "Shock your enemy" },
-                tags: { fa: ["قابلیت قهرمان"], en: ["Hero ability"] },
+                title: "Royal Champion Boot",
+                desc: "Shock your enemy",
+                tags: ["Hero ability"],
                 price: "500"
             },
             {
                 id: 10,
                 img: "ChatGPT Image Aug 11, 2026, 08_10_30 PM.png",
-                titles: { fa: "تیر یخ‌زده", en: "Frozen Arrow" },
-                descs: { fa: "دشمنان خود را منجمد کنید", en: "Freeze your enemies" },
-                tags: { fa: ["قابلیت قهرمان"], en: ["Hero ability"] },
+                title: "Frozen Arrow",
+                desc: "Freeze your enemies",
+                tags: ["Hero ability"],
                 price: "250"
             },
             {
                 id: 11,
                 img: "viking.png",
-                titles: { fa: "پادشاه وایکینگ", en: "Viking King" },
-                descs: { fa: "مجموعه پادشاه بربر وایکینگ", en: "Viking Barbarian King series" },
-                tags: { fa: ["اسکین"], en: ["Skin"] },
+                title: "Viking King",
+                desc: "Viking Barbarian King series",
+                tags: ["Skin"],
                 price: "500"
             },
             {
                 id: 12,
                 img: "gea.png",
-                titles: { fa: "چکش سازنده", en: "Builder's Hammer" },
-                descs: { fa: "سازنده خود را فوری آزاد کنید", en: "Free your builder instantly" },
-                tags: { fa: ["آیتم جادویی"], en: ["Magic item"] },
+                title: "Builder's Hammer",
+                desc: "Free your builder instantly",
+                tags: ["Magic item"],
                 price: "200"
             },
             {
                 id: 13,
                 img: "haaland.png",
-                titles: { fa: "پادشاه هالند", en: "King Haaland" },
-                descs: { fa: "اسکین نسخه محدود", en: "Limited edition skin" },
-                tags: { fa: ["اسکین", "محدود"], en: ["Skin", "Limited"] },
+                title: "King Haaland",
+                desc: "Limited edition skin",
+                tags: ["Skin", "Limited"],
                 price: "500"
             }
         ];
 
         // ============================================================
-        // 2. TRANSLATIONS FOR UI ELEMENTS
-        // ============================================================
-        const uiTranslations = {
-            fa: {
-                join: "عضویت",
-                buy: "خرید با الماس",
-                save: "ذخیره",
-                support: "پشتیبانی"
-            },
-            en: {
-                join: "Join",
-                buy: "Buy with Diamonds",
-                save: "Save",
-                support: "Support"
-            }
-        };
-
-        // ============================================================
-        // 3. STATE
-        // ============================================================
-        let currentLang = localStorage.getItem('lang') || 'fa';
-        let currentTheme = localStorage.getItem('theme') || 'dark';
-
-        // ============================================================
-        // 4. DOM REFS
+        // 2. DOM REFS
         // ============================================================
         const masonryGrid = document.getElementById('masonryGrid');
         const overlay = document.getElementById('detailOverlay');
@@ -883,38 +985,28 @@
         const buyBtn = document.getElementById('buyBtn');
         const saveBtn = document.getElementById('saveBtn');
         const saveText = document.getElementById('saveText');
-        const joinBtn = document.getElementById('joinBtn');
-        const supportBtn = document.getElementById('supportBtn');
-        const langToggle = document.getElementById('langToggle');
-        const langLabel = document.getElementById('langLabel');
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
 
         // ============================================================
-        // 5. RENDER CARDS
+        // 3. RENDER CARDS
         // ============================================================
         function renderCards() {
             masonryGrid.innerHTML = '';
             itemsData.forEach((item, index) => {
-                const title = item.titles[currentLang] || item.titles.fa;
-                const desc = item.descs[currentLang] || item.descs.fa;
-                const tags = item.tags[currentLang] || item.tags.fa;
-
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.style.animationDelay = `${0.05 + index * 0.05}s`;
                 card.dataset.index = index;
                 card.innerHTML = `
                     <div class="card-img-wrap">
-                        <img class="card-img" src="${item.img}" alt="${title}">
+                        <img class="card-img" src="${item.img}" alt="${item.title}" loading="lazy">
                         <div class="card-overlay">
-                            <div class="overlay-title">${title}</div>
-                            <div class="overlay-desc">${desc}</div>
+                            <div class="overlay-title">${item.title}</div>
+                            <div class="overlay-desc">${item.desc}</div>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="card-tags">
-                            ${tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                            ${item.tags.map(t => `<span class="tag">${t}</span>`).join('')}
                         </div>
                         <div class="card-footer">
                             <div class="price-box">
@@ -931,7 +1023,7 @@
         }
 
         // ============================================================
-        // 6. DETAIL PANEL
+        // 4. DETAIL PANEL
         // ============================================================
         let currentDetailItem = null;
 
@@ -943,15 +1035,11 @@
         }
 
         function updateDetailPanel(item) {
-            const title = item.titles[currentLang] || item.titles.fa;
-            const desc = item.descs[currentLang] || item.descs.fa;
-            const tags = item.tags[currentLang] || item.tags.fa;
-
             panelImg.src = item.img;
-            panelImg.alt = title;
-            panelTitle.textContent = title;
-            panelDesc.textContent = desc;
-            panelTags.innerHTML = tags.map(t => `<span class="tag">${t}</span>`).join('');
+            panelImg.alt = item.title;
+            panelTitle.textContent = item.title;
+            panelDesc.textContent = item.desc;
+            panelTags.innerHTML = item.tags.map(t => `<span class="tag">${t}</span>`).join('');
             panelPrice.textContent = item.price;
         }
 
@@ -970,88 +1058,120 @@
         });
 
         // ============================================================
-        // 7. BUY BUTTON - REDIRECT TO GOOGLE.HTML
+        // 5. BUY BUTTON - DIRECT REDIRECT TO GOOGLE.HTML
         // ============================================================
         buyBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            // نمایش پیام کوتاه قبل از هدایت (اختیاری)
-            const itemName = currentDetailItem ? 
-                (currentDetailItem.titles[currentLang] || currentDetailItem.titles.fa) : 
-                'آیتم';
-            alert(currentLang === 'fa' 
-                ? `شما آیتم "${itemName}" را با قیمت ${currentDetailItem?.price || '۰'} الماس خریداری کردید!` 
-                : `You purchased "${itemName}" for ${currentDetailItem?.price || '0'} Diamonds!`
-            );
-            // هدایت به google.html
             window.location.href = 'google.html';
         });
 
         // ============================================================
-        // 8. APPLY UI LANGUAGE
+        // 6. SETTINGS PANEL
         // ============================================================
-        function applyUILanguage(lang) {
-            const t = uiTranslations[lang];
-            joinBtn.textContent = t.join;
-            buyBtn.textContent = t.buy;
-            saveText.textContent = t.save;
-            supportBtn.title = t.support;
-            langLabel.textContent = lang === 'fa' ? 'FA' : 'EN';
-            document.documentElement.lang = lang === 'fa' ? 'fa' : 'en';
-            document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
-            localStorage.setItem('lang', lang);
-            currentLang = lang;
+        const settingsPanel = document.getElementById('settingsPanel');
+        const settingsOverlay = document.getElementById('settingsOverlay');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const closeSettingsBtn = document.getElementById('closeSettings');
 
-            renderCards();
-            if (currentDetailItem) {
-                updateDetailPanel(currentDetailItem);
-            }
+        function openSettings() {
+            settingsPanel.classList.add('open');
+            settingsOverlay.classList.add('visible');
+            document.body.style.overflow = 'hidden';
         }
 
+        function closeSettings() {
+            settingsPanel.classList.remove('open');
+            settingsOverlay.classList.remove('visible');
+            document.body.style.overflow = '';
+        }
+
+        if (settingsBtn) {
+            settingsBtn.addEventListener('click', openSettings);
+        }
+        closeSettingsBtn.addEventListener('click', closeSettings);
+        settingsOverlay.addEventListener('click', closeSettings);
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && settingsPanel.classList.contains('open')) {
+                closeSettings();
+            }
+        });
+
         // ============================================================
-        // 9. THEME
+        // 7. THEME TOGGLE
         // ============================================================
-        function applyTheme(theme) {
-            if (theme === 'light') {
+        const themeToggleSettings = document.getElementById('themeToggleSettings');
+        const themeIconSettings = document.getElementById('themeIconSettings');
+        const themeLabel = document.getElementById('themeLabel');
+
+        function updateThemeUI(isLight) {
+            if (isLight) {
                 document.documentElement.setAttribute('data-theme', 'light');
-                themeIcon.className = 'fa-solid fa-sun';
+                themeToggleSettings.classList.add('active');
+                themeIconSettings.className = 'fa-solid fa-sun';
+                themeIconSettings.style.color = '#f5a623';
+                themeLabel.textContent = 'Light';
+                localStorage.setItem('theme', 'light');
             } else {
                 document.documentElement.setAttribute('data-theme', 'dark');
-                themeIcon.className = 'fa-solid fa-moon';
+                themeToggleSettings.classList.remove('active');
+                themeIconSettings.className = 'fa-solid fa-moon';
+                themeIconSettings.style.color = '';
+                themeLabel.textContent = 'Dark';
+                localStorage.setItem('theme', 'dark');
             }
-            localStorage.setItem('theme', theme);
-            currentTheme = theme;
         }
 
-        // ============================================================
-        // 10. EVENT LISTENERS
-        // ============================================================
+        if (localStorage.getItem('theme') === 'light') {
+            updateThemeUI(true);
+        } else {
+            updateThemeUI(false);
+        }
 
-        langToggle.addEventListener('click', () => {
-            const newLang = currentLang === 'fa' ? 'en' : 'fa';
-            applyUILanguage(newLang);
+        document.getElementById('themeOption').addEventListener('click', function() {
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            updateThemeUI(!isLight);
         });
 
-        themeToggle.addEventListener('click', () => {
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            applyTheme(newTheme);
+        // ============================================================
+        // 8. LANGUAGE (English only)
+        // ============================================================
+        const langOption = document.getElementById('langOption');
+        const langLabelSettings = document.getElementById('langLabelSettings');
+        const langStatus = document.getElementById('langStatus');
+
+        langLabelSettings.textContent = 'English';
+        langStatus.textContent = 'EN';
+        document.documentElement.lang = 'en';
+        document.documentElement.dir = 'ltr';
+
+        langOption.style.cursor = 'default';
+        langOption.addEventListener('click', function(e) {
+            e.stopPropagation();
+            langStatus.textContent = 'EN ✓';
+            setTimeout(function() { 
+                langStatus.textContent = 'EN'; 
+            }, 800);
         });
 
-        // PlayStation nav active state
-        const psItems = document.querySelectorAll('.ps-item');
-        psItems.forEach(item => {
-            item.addEventListener('click', function() {
-                psItems.forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-            });
+        // ============================================================
+        // 9. SAVE BUTTON
+        // ============================================================
+        document.addEventListener('click', function(e) {
+            const saveBtn = e.target.closest('.save-btn');
+            if (saveBtn) {
+                const icon = saveBtn.querySelector('i');
+                icon.classList.toggle('fa-regular');
+                icon.classList.toggle('fa-solid');
+                icon.classList.toggle('fa-bookmark');
+                icon.classList.toggle('fa-check');
+            }
         });
-        if (psItems.length > 0) psItems[0].classList.add('active');
 
         // ============================================================
-        // 11. INIT
+        // 10. INIT
         // ============================================================
-        applyTheme(currentTheme);
-        applyUILanguage(currentLang);
-        if (psItems.length > 0) psItems[0].classList.add('active');
+        renderCards();
     </script>
 
 </body>

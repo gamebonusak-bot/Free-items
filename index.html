@@ -1,46 +1,100 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تبدیل آیتم‌های بازی</title>
+    <title>Game Item Converter</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="nav.css">
     <style>
         /* ===== ROOT ===== */
         :root {
-            --bg-base: #0d0f14;
-            --bg-radial: #1a1f2b;
-            --text-main: #ffffff;
-            --text-sub: #a0aec0;
-            --card-bg: #1a1f2b;
-            --card-border: #2a3040;
-            --pill-bg: rgba(26, 31, 43, 0.95);
-            --accent-pink: #ff0055;
-            --accent-green: #00ff88;
-            --shadow-color: rgba(0, 0, 0, 0.35);
-            --green-main: #00ff88;
-            --green-shadow: rgba(0, 255, 136, 0.4);
-            --img-bg: radial-gradient(circle at center, #1a1a2e, #0a0a0a);
-            --img-filter: brightness(1.1) saturate(1.1) drop-shadow(0 0 10px rgba(0, 255, 136, 0.1));
+            /* Dark mode (default) - Lime & Black */
+            --bg-base: #0a0a0a;
+            --bg-radial: #1a1a0a;
+            --text-main: #f0f0e0;
+            --text-sub: #b8b8a0;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.12);
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --lime-main: #ccff00;
+            --lime-shadow: rgba(204, 255, 0, 0.4);
+            --lime-glow: rgba(204, 255, 0, 0.1);
+            --img-bg: radial-gradient(circle at center, #1a1a0a, #0a0a00);
+            --img-filter: brightness(1.1) saturate(1.2);
             --img-opacity: 0.95;
-            --img-scale: 1;
+            --nav-bg: rgba(10, 10, 10, 0.92);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            --glass-blur: 30px;
+            --skin-card-bg: rgba(255, 255, 255, 0.06);
+            --skin-card-border: rgba(255, 255, 255, 0.1);
+            --btn-bg: linear-gradient(135deg, #ccff00, #aadd00);
+            --btn-color: #0a0a0a;
+            --btn-shadow: rgba(204, 255, 0, 0.4);
+            --dot-bg: #2a2a10;
+            --dot-active-bg: #ccff00;
+            --desc-color: #b8b8a0;
+            --glass-card-bg: rgba(255, 255, 255, 0.08);
+            --glass-card-border: rgba(255, 255, 255, 0.15);
+            --glass-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --glass-card-blur: 20px;
+            --score-bg: rgba(0, 0, 0, 0.6);
+            --score-border: rgba(255, 255, 255, 0.15);
+            --score-color: #ffffff;
+            --time-bg: rgba(0, 0, 0, 0.5);
+            --time-border: rgba(255, 255, 255, 0.1);
+            --time-color: rgba(255, 255, 255, 0.7);
+            --grant-bg: rgba(0, 0, 0, 0.5);
+            --grant-border: rgba(204, 255, 0, 0.2);
+            --grant-color: rgba(204, 255, 0, 0.7);
+            --accent-line: #ccff00;
+            --accent-line-width: 3px;
         }
 
+        /* Light mode - Clean White & Light Gray */
         .light-mode {
-            --bg-base: #f5f7fa;
-            --bg-radial: #eef1f5;
-            --text-main: #2d3748;
-            --text-sub: #4a5568;
-            --card-bg: #ffffff;
-            --card-border: #e2e8f0;
-            --pill-bg: rgba(255, 255, 255, 0.95);
-            --shadow-color: rgba(0, 0, 0, 0.08);
-            --green-main: #38a89d;
-            --green-shadow: rgba(56, 168, 157, 0.25);
-            --img-bg: linear-gradient(135deg, #f0f4f8, #ffffff);
-            --img-filter: brightness(1) saturate(1) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.06));
+            --bg-base: #f5f7f5;
+            --bg-radial: #e8ece8;
+            --text-main: #1a1a1a;
+            --text-sub: #4a4a4a;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --card-border: rgba(255, 255, 255, 0.4);
+            --shadow-color: rgba(0, 0, 0, 0.06);
+            --lime-main: #4a7a4a;
+            --lime-shadow: rgba(74, 122, 74, 0.15);
+            --lime-glow: rgba(74, 122, 74, 0.05);
+            --img-bg: linear-gradient(135deg, #f0f4f0, #ffffff);
+            --img-filter: brightness(1) saturate(1);
             --img-opacity: 1;
-            --img-scale: 0.92;
+            --nav-bg: rgba(255, 255, 255, 0.92);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+            --glass-blur: 20px;
+            --skin-card-bg: rgba(255, 255, 255, 0.7);
+            --skin-card-border: rgba(255, 255, 255, 0.4);
+            --btn-bg: linear-gradient(135deg, #5a8a5a, #4a7a4a);
+            --btn-color: #ffffff;
+            --btn-shadow: rgba(74, 122, 74, 0.2);
+            --dot-bg: #d0d4d0;
+            --dot-active-bg: #4a7a4a;
+            --desc-color: #4a4a4a;
+            --glass-card-bg: rgba(255, 255, 255, 0.7);
+            --glass-card-border: rgba(255, 255, 255, 0.4);
+            --glass-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --score-bg: rgba(255, 255, 255, 0.85);
+            --score-border: rgba(0, 0, 0, 0.08);
+            --score-color: #1a1a1a;
+            --time-bg: rgba(255, 255, 255, 0.7);
+            --time-border: rgba(0, 0, 0, 0.06);
+            --time-color: rgba(0, 0, 0, 0.5);
+            --grant-bg: rgba(255, 255, 255, 0.7);
+            --grant-border: rgba(74, 122, 74, 0.2);
+            --grant-color: rgba(74, 122, 74, 0.6);
+            --accent-line: #4a7a4a;
+            --accent-line-width: 2px;
         }
 
         /* ===== RESET & BASE ===== */
@@ -48,7 +102,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
@@ -61,104 +115,15 @@
             padding-bottom: 90px;
             position: relative;
             transition: background-color 0.5s ease, color 0.5s ease, background-image 0.5s ease;
+            overflow-x: hidden;
         }
 
         /* ===== HEADER ===== */
         header {
             padding: 18px 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
-            gap: 12px;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .icon-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-main);
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .icon-btn:hover {
-            transform: translateY(-2px);
-            border-color: var(--green-main);
-            box-shadow: 0 0 12px var(--green-shadow);
-        }
-
-        .membership-btn {
-            width: auto;
-            padding: 0 18px;
-            border-radius: 21px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            background: linear-gradient(135deg, var(--accent-pink), #ff5588);
-            border: none;
-            color: #ffffff;
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.35);
-            transition: all 0.3s ease;
-        }
-
-        .light-mode .membership-btn {
-            background: linear-gradient(135deg, #e53e6b, #ed6a8e);
-            box-shadow: 0 0 15px rgba(229, 62, 107, 0.2);
-        }
-
-        .membership-btn:hover {
-            box-shadow: 0 0 22px rgba(255, 0, 85, 0.55);
-        }
-
-        .lang-btn {
-            width: auto;
-            padding: 0 14px;
-            border-radius: 21px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-        }
-
-        .logo-container {
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            padding: 3px;
-            background: var(--card-bg);
-            border: 2px solid var(--accent-pink);
-            box-shadow: 0 0 20px var(--accent-pink), inset 0 0 20px var(--accent-pink);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-        }
-
-        .light-mode .logo-container {
-            border-color: #e53e6b;
-            box-shadow: 0 0 20px rgba(229, 62, 107, 0.15), inset 0 0 20px rgba(229, 62, 107, 0.05);
-        }
-
-        .logo-container:hover {
-            transform: scale(1.08);
-        }
-
-        .logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
         }
 
         /* ===== MAIN ===== */
@@ -167,363 +132,724 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px 20px 20px;
+            justify-content: center;
+            padding: 40px 20px 30px;
+            min-height: 70vh;
         }
 
-        .page-header {
-            text-align: center;
-            margin-bottom: 28px;
-            padding: 0 20px;
+        /* ===== SLIDER CONTAINER ===== */
+        .slider-wrapper {
+            width: 100%;
+            max-width: 560px;
+            position: relative;
+            overflow: hidden;
+            padding: 5px 0 10px 0;
         }
 
-        .page-header h1 {
-            color: var(--green-main);
-            font-size: 1.2rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 0 0 15px var(--green-shadow);
-            margin-bottom: 6px;
-            transition: all 0.5s ease;
+        .slider-container {
+            display: flex;
+            gap: 20px;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: grab;
+            padding: 5px 8px;
+            touch-action: pan-y;
+            will-change: transform;
         }
 
-        .light-mode .page-header h1 {
-            text-shadow: 0 0 10px rgba(56, 168, 157, 0.15);
-            font-weight: 600;
+        .slider-container.dragging {
+            cursor: grabbing;
+            transition: none;
         }
 
-        .page-header p {
-            color: var(--text-sub);
-            font-size: 0.85rem;
-            transition: color 0.5s ease;
+        .slider-container .skin-card {
+            min-width: calc(100% - 16px);
+            max-width: calc(100% - 16px);
+            flex-shrink: 0;
         }
 
-        /* ===== CARDS ===== */
-        .cards-container {
+        /* ===== DESKTOP: show all cards together, no slider ===== */
+        @media (min-width: 1025px) {
+            .slider-wrapper {
+                max-width: 700px;
+                overflow: visible;
+            }
+
+            .slider-container {
+                flex-wrap: wrap;
+                justify-content: center;
+                cursor: default;
+                transform: none !important;
+                gap: 24px;
+            }
+
+            .slider-container.dragging {
+                cursor: default;
+            }
+
+            .slider-container .skin-card {
+                min-width: 300px;
+                max-width: 338px;
+                flex: 1 1 320px;
+            }
+
+            .slider-container .skin-image-wrapper {
+                height: 300px;
+            }
+
+            .slider-dots {
+                display: none;
+            }
+        }
+
+        /* ===== SKIN CARDS - GLASS STYLE WITH LIME BORDER ===== */
+        .skin-card {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            width: 100%;
-            max-width: 480px;
-            position: relative;
-        }
-
-        .cards-container::before {
-            content: '';
-            position: absolute;
-            top: 50px;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 3px;
-            background: var(--green-main);
-            border-radius: 10px;
-            box-shadow: 0 0 10px var(--green-main), 0 0 20px var(--green-main), 0 0 35px var(--green-main);
-            z-index: 0;
-            transition: all 0.5s ease;
-        }
-
-        .light-mode .cards-container::before {
-            background: #cbd5e0;
-            box-shadow: none;
-            width: 2px;
-        }
-
-        .card {
-            display: flex;
             text-decoration: none;
             color: inherit;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            height: 100px;
-            align-items: center;
+            background: var(--glass-card-bg);
+            backdrop-filter: blur(var(--glass-card-blur));
+            -webkit-backdrop-filter: blur(var(--glass-card-blur));
+            border: 2px solid var(--lime-main);
+            border-radius: 24px;
             overflow: hidden;
+            box-shadow: 0 0 20px var(--lime-glow), var(--glass-card-shadow);
+            transition: all 0.4s ease;
             position: relative;
-            z-index: 1;
-            box-shadow: 0 8px 25px var(--shadow-color);
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-4px) scale(1.02);
-            border-color: var(--green-main);
-            box-shadow: 0 12px 35px var(--green-shadow);
-        }
-
-        .light-mode .card:hover {
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
-            border-color: var(--green-main);
-        }
-
-        .card-img-wrapper {
-            width: 140px;
             height: 100%;
-            flex-shrink: 0;
+        }
+
+        /* ===== LIME ACCENT LINE - LEFT SIDE (THIN) ===== */
+        .skin-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: var(--accent-line-width);
+            height: 100%;
+            background: var(--lime-main);
+            border-radius: 24px 0 0 24px;
+            box-shadow: 0 0 10px var(--lime-shadow);
+            z-index: 5;
+            pointer-events: none;
+            opacity: 0.6;
+            transition: all 0.4s ease;
+        }
+
+        /* ===== LIME ACCENT LINE - RIGHT SIDE (THIN) ===== */
+        .skin-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: var(--accent-line-width);
+            height: 100%;
+            background: var(--lime-main);
+            border-radius: 0 24px 24px 0;
+            box-shadow: 0 0 10px var(--lime-shadow);
+            z-index: 5;
+            pointer-events: none;
+            opacity: 0.6;
+            transition: all 0.4s ease;
+        }
+
+        .skin-card:hover::after,
+        .skin-card:hover::before {
+            opacity: 1;
+            box-shadow: 0 0 20px var(--lime-shadow);
+        }
+
+        /* ===== SCORE BADGE - TOP LEFT ===== */
+        .score-badge {
+            position: absolute;
+            top: 14px;
+            left: 16px;
+            z-index: 10;
+            padding: 4px 10px;
+            border-radius: 14px;
+            background: var(--score-bg);
+            border: 1px solid var(--score-border);
+            color: var(--score-color);
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .score-badge i {
+            font-size: 0.55rem;
+            opacity: 0.8;
+        }
+
+        .score-badge .score-value {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--lime-main);
+        }
+
+        .light-mode .score-badge .score-value {
+            color: #4a7a4a;
+        }
+
+        /* ===== TIME BADGE - TOP RIGHT ===== */
+        .time-badge {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            z-index: 10;
+            padding: 4px 10px;
+            border-radius: 14px;
+            background: var(--time-bg);
+            border: 1px solid var(--time-border);
+            color: var(--time-color);
+            font-size: 0.55rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .time-badge i {
+            font-size: 0.5rem;
+        }
+
+        /* Skin Image */
+        .skin-image-wrapper {
             position: relative;
+            width: 100%;
+            height: 480px;
+            background: var(--img-bg);
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            border-left: 2px solid var(--green-main);
-            transition: all 0.5s ease;
-            background: var(--img-bg);
+            padding: 0;
+            margin: 0;
+            border: none;
+            outline: none;
         }
 
-        .light-mode .card-img-wrapper {
-            border-left: 2px solid #e2e8f0;
-            background: linear-gradient(135deg, #f7fafc, #edf2f7);
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.02);
-        }
-
-        .card-img-wrapper img {
+        .skin-image-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             object-position: center;
-            padding: 12px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             filter: var(--img-filter);
             opacity: var(--img-opacity);
-            transform: scale(var(--img-scale));
+            display: block;
+            border: none;
+            outline: none;
         }
 
-        .card:hover .card-img-wrapper img {
-            transform: scale(1.08);
-            filter: brightness(1.2) saturate(1.1);
+        .skin-card:hover .skin-image-wrapper img {
+            transform: scale(1.02);
+            filter: brightness(1.08) saturate(1.03);
         }
 
-        .light-mode .card:hover .card-img-wrapper img {
-            transform: scale(1.05);
-            filter: brightness(1.05) saturate(1.05);
-        }
-
-        .card-body {
-            flex: 1;
-            padding: 0 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .card-title {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 5px;
-            transition: color 0.5s ease;
-        }
-
-        .light-mode .card-title {
-            font-weight: 700;
-        }
-
-        .card-title i {
-            margin-left: 6px;
-            color: var(--green-main);
-            font-size: 1.3rem;
-            width: 1.6rem;
-            text-align: center;
-        }
-
-        .card-desc {
-            font-size: 0.9rem;
-            color: var(--text-sub);
-            font-weight: 500;
-            transition: color 0.5s ease;
-        }
-
-        .card-action {
-            margin-top: 6px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--green-main);
-            transition: all 0.3s ease;
-        }
-
-        .light-mode .card-action {
-            font-weight: 600;
-            color: #38a89d;
-        }
-
-        /* ===== BOTTOM NAV ===== */
-        .bottom-nav {
-            position: fixed;
-            bottom: 20px;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .ps-shapes {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 30px;
-            background: var(--pill-bg);
-            padding: 14px 35px;
-            border-radius: 50px;
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 5px 20px var(--shadow-color);
-            width: auto;
-            transition: all 0.5s ease;
-        }
-
-        .light-mode .ps-shapes {
-            background: rgba(255, 255, 255, 0.9);
-            border-color: #e2e8f0;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
-        }
-
-        .ps-shapes i {
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .ps-shapes .ps-cross { color: #5352ed; text-shadow: 0 0 15px rgba(83, 82, 237, 0.7); }
-        .ps-shapes .ps-circle { color: #ff4757; text-shadow: 0 0 15px rgba(255, 71, 87, 0.7); }
-        .ps-shapes .ps-triangle { color: #00f0ff; text-shadow: 0 0 15px rgba(0, 240, 255, 0.7); }
-        .ps-shapes .ps-square { color: #ff77a9; text-shadow: 0 0 15px rgba(255, 119, 169, 0.7); }
-
-        .light-mode .ps-shapes .ps-cross { color: #6c63c4; text-shadow: 0 0 15px rgba(108, 99, 196, 0.2); }
-        .light-mode .ps-shapes .ps-circle { color: #e53e6b; text-shadow: 0 0 15px rgba(229, 62, 107, 0.2); }
-        .light-mode .ps-shapes .ps-triangle { color: #38b2ac; text-shadow: 0 0 15px rgba(56, 178, 172, 0.2); }
-        .light-mode .ps-shapes .ps-square { color: #b779c4; text-shadow: 0 0 15px rgba(183, 121, 196, 0.2); }
-
-        .ps-shapes i:hover {
-            transform: scale(1.3) rotate(10deg);
-            filter: brightness(1.5);
-        }
-
-        .light-mode .ps-shapes i:hover {
-            filter: brightness(1.2);
-        }
-
-        /* ===== FAB ===== */
-        .fab-support {
-            position: fixed;
-            bottom: 90px;
-            right: 25px;
-            left: auto;
-            z-index: 1000;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--green-main), #00cc88);
-            border: 2px solid var(--green-main);
-            color: #ffffff;
-            font-size: 1.8rem;
-            cursor: pointer;
-            box-shadow: 0 0 25px var(--green-shadow), 0 8px 30px var(--shadow-color);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: floatFAB 3s ease-in-out infinite;
-        }
-
-        .light-mode .fab-support {
-            background: linear-gradient(135deg, #38a89d, #4fc3b7);
-            border-color: #38a89d;
-            box-shadow: 0 0 20px rgba(56, 168, 157, 0.2), 0 8px 30px rgba(0, 0, 0, 0.06);
-        }
-
-        .fab-support:hover {
-            transform: scale(1.15) translateY(-5px);
-            box-shadow: 0 0 40px var(--green-shadow), 0 12px 40px var(--shadow-color);
-            background: var(--green-main);
-            border-color: #ffffff;
-        }
-
-        .light-mode .fab-support:hover {
-            background: #38a89d;
-            border-color: #ffffff;
-            box-shadow: 0 0 30px rgba(56, 168, 157, 0.35), 0 12px 40px rgba(0, 0, 0, 0.08);
-        }
-
-        .fab-support:active {
-            transform: scale(0.95);
-        }
-
-        .fab-support::after {
-            content: '';
+        /* ===== GRANT BADGE - ON IMAGE BOTTOM LEFT ===== */
+        .grant-badge {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 2px solid var(--green-main);
-            animation: rippleFAB 2s ease-out infinite;
+            bottom: 16px;
+            left: 18px;
+            z-index: 10;
+            padding: 4px 12px;
+            border-radius: 12px;
+            background: var(--grant-bg);
+            border: 1px solid var(--grant-border);
+            color: var(--grant-color);
+            font-size: 0.55rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-transform: uppercase;
             pointer-events: none;
         }
 
-        .light-mode .fab-support::after {
-            border-color: #38a89d;
+        .grant-badge i {
+            font-size: 0.5rem;
+            opacity: 0.8;
         }
 
-        @keyframes rippleFAB {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.8); opacity: 0; }
+        /* ===== SKIN INFO ===== */
+        .skin-info {
+            padding: 20px 24px 24px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: transparent;
+            border-top: 1px solid var(--glass-card-border);
+            position: relative;
+            z-index: 2;
         }
 
-        @keyframes floatFAB {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+        .skin-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.3px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .skin-description {
+            font-size: 0.9rem;
+            color: var(--desc-color);
+            line-height: 1.5;
+            opacity: 0.85;
+            font-weight: 400;
+            padding-bottom: 4px;
+            min-height: 2.4rem;
+        }
+
+        /* ===== NEXT BUTTON ===== */
+        .btn-next {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: var(--btn-bg);
+            border: none;
+            color: var(--btn-color);
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 12px 32px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 25px var(--btn-shadow);
+            width: 100%;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-next:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 40px var(--btn-shadow);
+        }
+
+        .btn-next i {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-next:hover i {
+            transform: translateX(4px);
+        }
+
+        /* ===== SLIDER DOTS ===== */
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 18px;
+            padding: 5px 0;
+        }
+
+        .slider-dots .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--dot-bg);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .slider-dots .dot.active {
+            background: var(--dot-active-bg);
+            box-shadow: 0 0 15px var(--lime-shadow);
+            width: 28px;
+            border-radius: 5px;
+        }
+
+        .slider-dots .dot:hover {
+            transform: scale(1.2);
+        }
+
+        /* ===== GLASS SETTINGS PANEL ===== */
+        .settings-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .settings-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .settings-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 400px;
+            max-width: 92%;
+            max-height: 85vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            padding: 0;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .settings-panel.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .settings-panel .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px 16px 24px;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .settings-panel .panel-header h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.3px;
+        }
+
+        .settings-panel .panel-header h2 i {
+            color: var(--lime-main);
+            font-size: 1.2rem;
+        }
+
+        .settings-panel .close-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: var(--text-sub);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-panel .close-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: rotate(90deg);
+        }
+
+        .settings-content {
+            padding: 8px 0 20px 0;
+            overflow-y: auto;
+            max-height: calc(85vh - 80px);
+            scroll-behavior: smooth;
+        }
+
+        .settings-content::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .settings-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .settings-content::-webkit-scrollbar-thumb {
+            background: var(--lime-main);
+            border-radius: 10px;
+        }
+
+        .settings-group {
+            padding: 0 16px;
+            margin-bottom: 4px;
+        }
+
+        .settings-group label {
+            display: block;
+            color: var(--text-sub);
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 12px 8px 6px 8px;
+            opacity: 0.7;
+        }
+
+        .settings-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-bottom: 2px;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .settings-option:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--glass-border);
+        }
+
+        .settings-option:active {
+            transform: scale(0.98);
+        }
+
+        .settings-option .option-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .settings-option .option-left i {
+            color: var(--lime-main);
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .settings-option .option-text {
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: -0.2px;
+        }
+
+        .settings-option .option-status {
+            color: var(--lime-main);
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(204, 255, 0, 0.08);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .ios-toggle {
+            width: 51px;
+            height: 31px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            position: relative;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+        }
+
+        .light-mode .ios-toggle {
+            background: #e5e5ea;
+            border-color: #d1d1d6;
+        }
+
+        .ios-toggle.active {
+            background: var(--lime-main);
+            border-color: var(--lime-main);
+        }
+
+        .light-mode .ios-toggle.active {
+            background: #4a7a4a;
+            border-color: #4a7a4a;
+        }
+
+        .ios-toggle .toggle-knob {
+            width: 27px;
+            height: 27px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .ios-toggle.active .toggle-knob {
+            left: 21px;
+        }
+
+        .settings-option .chevron {
+            color: var(--text-sub);
+            opacity: 0.4;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .settings-option:hover .chevron {
+            opacity: 0.8;
+        }
+
+        .settings-divider {
+            height: 1px;
+            background: var(--glass-border);
+            margin: 4px 20px;
+        }
+
+        .settings-footer {
+            padding: 16px 24px 8px 24px;
+            text-align: center;
+            opacity: 0.4;
+        }
+
+        .settings-footer span {
+            font-size: 0.65rem;
+            color: var(--text-sub);
+            letter-spacing: 0.5px;
         }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 500px) {
             header { padding: 14px 15px; }
-            .logo-container { width: 52px; height: 52px; }
-            .icon-btn { width: 38px; height: 38px; font-size: 0.9rem; }
-            .lang-btn { padding: 0 10px; font-size: 0.75rem; }
-            .membership-btn { padding: 0 12px; font-size: 0.75rem; }
-            .header-actions { gap: 6px; }
+            
+            main {
+                padding: 20px 15px 20px;
+                min-height: 60vh;
+            }
 
-            .card { height: 85px; border-radius: 15px; }
-            .cards-container::before { top: 42px; bottom: 42px; }
-            .card-img-wrapper { width: 110px; }
-            .card-img-wrapper img { padding: 8px; }
-            .card-body { padding: 0 15px; }
-            .card-title { font-size: 1.1rem; }
-            .card-desc { font-size: 0.8rem; }
+            .skin-image-wrapper { 
+                height: 360px; 
+            }
+            
+            .slider-wrapper { padding: 0; }
+            .slider-container { gap: 14px; padding: 3px 5px; }
+            .slider-container .skin-card { min-width: calc(100% - 10px); max-width: calc(100% - 10px); }
+            
+            .skin-info { padding: 16px 18px 18px 18px; }
+            .skin-name { font-size: 1.1rem; }
+            .skin-description { font-size: 0.8rem; min-height: 2rem; }
+            
+            .btn-next {
+                font-size: 0.85rem;
+                padding: 10px 24px;
+            }
 
-            .bottom-nav { bottom: 12px; }
-            .ps-shapes { padding: 12px 25px; gap: 20px; }
-            .ps-shapes i { font-size: 1.2rem; }
+            .slider-dots { gap: 8px; margin-top: 12px; }
+            .slider-dots .dot { width: 8px; height: 8px; }
+            .slider-dots .dot.active { width: 22px; }
 
-            .fab-support {
-                bottom: 80px;
-                right: 16px;
-                left: auto;
-                width: 50px;
-                height: 50px;
-                font-size: 1.4rem;
+            .settings-panel { width: 94%; max-width: 94%; border-radius: 24px; }
+            .settings-panel .panel-header { padding: 16px 18px 12px 18px; }
+            .settings-panel .panel-header h2 { font-size: 1rem; }
+            .settings-content { padding: 4px 0 16px 0; max-height: calc(85vh - 70px); }
+            .settings-option { padding: 12px 14px; }
+            .settings-option .option-text { font-size: 0.9rem; }
+            .ios-toggle { width: 45px; height: 28px; }
+            .ios-toggle .toggle-knob { width: 24px; height: 24px; }
+            .ios-toggle.active .toggle-knob { left: 19px; }
+
+            .score-badge {
+                top: 10px;
+                left: 12px;
+                padding: 3px 8px;
+                font-size: 0.5rem;
+                border-radius: 10px;
+            }
+
+            .score-badge i {
+                font-size: 0.45rem;
+            }
+
+            .score-badge .score-value {
+                font-size: 0.6rem;
+            }
+
+            .time-badge {
+                top: 10px;
+                right: 12px;
+                padding: 3px 8px;
+                font-size: 0.45rem;
+                border-radius: 10px;
+            }
+
+            .time-badge i {
+                font-size: 0.4rem;
+            }
+
+            .grant-badge {
+                bottom: 12px;
+                left: 14px;
+                padding: 3px 10px;
+                font-size: 0.45rem;
+                border-radius: 10px;
+                letter-spacing: 1px;
+            }
+
+            .grant-badge i {
+                font-size: 0.4rem;
+            }
+
+            .skin-card::after,
+            .skin-card::before {
+                width: 2px;
+            }
+
+            :root {
+                --accent-line-width: 2px;
+            }
+
+            .light-mode {
+                --accent-line-width: 1.5px;
             }
         }
 
         @media (max-width: 380px) {
-            .card-img-wrapper { width: 90px; }
-            .card-img-wrapper img { padding: 6px; }
-            .card-title { font-size: 0.95rem; }
-            .card-title i { font-size: 1rem; width: 1.3rem; }
-            .card-desc { font-size: 0.7rem; }
-            .card-body { padding: 0 10px; }
-            .ps-shapes { gap: 14px; padding: 10px 16px; }
-            .ps-shapes i { font-size: 1rem; }
-            .fab-support {
-                width: 45px;
-                height: 45px;
-                font-size: 1.2rem;
-                bottom: 75px;
-                right: 12px;
-                left: auto;
-            }
+            .skin-image-wrapper { height: 280px; }
+            .skin-name { font-size: 0.95rem; }
+            .skin-description { font-size: 0.7rem; min-height: 1.8rem; }
+            .btn-next { font-size: 0.75rem; padding: 8px 18px; }
+        }
+
+        /* ===== ADDITIONAL GLASS EFFECT FOR CARDS ===== */
+        .skin-card .skin-image-wrapper {
+            position: relative;
+            z-index: 0;
+        }
+
+        .skin-card .skin-info {
+            position: relative;
+            z-index: 2;
         }
     </style>
 </head>
@@ -531,159 +857,460 @@
 
     <!-- ===== HEADER ===== -->
     <header>
-        <div class="logo-container">
-            <img src="op.jpg.png" alt="Logo">
-        </div>
-        <div class="header-actions">
-            <button class="icon-btn" id="themeToggle" type="button">
-                <i class="fa-solid fa-moon"></i>
-            </button>
-            <button class="icon-btn lang-btn" id="langToggle" type="button">
-                <span id="langLabel">FA</span>
-            </button>
-            <button class="icon-btn membership-btn" id="membershipBtn" type="button">
-                <span id="membershipLabel">عضویت</span>
-            </button>
-        </div>
+        <!-- header left empty -->
     </header>
 
-    <!-- ===== MAIN ===== -->
-    <main>
-        <div class="page-header">
-            <h1 data-i18n="pageTitle"><i class="fa-solid fa-gamepad"></i> Game item converter</h1>
-            <p data-i18n="pageSubtitle"><i class="fa-solid fa-globe"></i> Global Content</p>
+    <!-- ===== SETTINGS OVERLAY ===== -->
+    <div class="settings-overlay" id="settingsOverlay"></div>
+
+    <!-- ===== GLASS SETTINGS PANEL ===== -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="panel-header">
+            <h2><i class="fa-solid fa-gear"></i> <span>Settings</span></h2>
+            <button class="close-btn" id="closeSettings"><i class="fa-solid fa-xmark"></i></button>
         </div>
-
-        <div class="cards-container">
-            <!-- کارت ۱: PUBG -->
-            <a href="pubg.html" class="card">
-                <div class="card-img-wrapper">
-                    <img src="beetter.png" alt="PUBG">
+        <div class="settings-content">
+            <div class="settings-group">
+                <label>🌐 Language</label>
+                <div class="settings-option" id="langOption">
+                    <div class="option-left">
+                        <i class="fa-solid fa-language"></i>
+                        <span class="option-text" id="langLabel">English</span>
+                    </div>
+                    <div class="option-status" id="langStatus">EN</div>
                 </div>
-                <div class="card-body">
-                    <h3 class="card-title" data-i18n="card1Title">PUBG</h3>
-                    <p class="card-desc" data-i18n="card1Desc">تبدیل آیتم‌های پابجی به یکدیگر</p>
-                    <span class="card-action" data-i18n="card1Action">تبدیل و دریافت ←</span>
+            </div>
+            <div class="settings-divider"></div>
+            <div class="settings-group">
+                <label>🎨 Appearance</label>
+                <div class="settings-option" id="themeOption">
+                    <div class="option-left">
+                        <i class="fa-solid fa-moon" id="themeIcon"></i>
+                        <span class="option-text" id="themeLabel">Dark</span>
+                    </div>
+                    <div class="ios-toggle" id="themeToggle">
+                        <div class="toggle-knob"></div>
+                    </div>
                 </div>
-            </a>
-
-            <!-- کارت ۲: Clash of Clans -->
-            <a href="clash.html" class="card">
-                <div class="card-img-wrapper">
-                    <img src="coc.png" alt="Clash of Clans">
+            </div>
+            <div class="settings-divider"></div>
+            <div class="settings-group">
+                <label>👤 Account</label>
+                <!-- ===== لینک به signin.html ===== -->
+                <div class="settings-option" onclick="window.location.href='signin.html'">
+                    <div class="option-left">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span class="option-text">Sign In</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-left chevron"></i>
                 </div>
-                <div class="card-body">
-                    <h3 class="card-title" data-i18n="card2Title">Clash of Clans</h3>
-                    <p class="card-desc" data-i18n="card2Desc">تبدیل آیتم‌های کلش اف کلنز به یکدیگر</p>
-                    <span class="card-action" data-i18n="card2Action">تبدیل و دریافت ←</span>
+            </div>
+            <div class="settings-divider"></div>
+            <div class="settings-group">
+                <label>💬 Support</label>
+                <div class="settings-option" onclick="window.location.href='conection.html'">
+                    <div class="option-left">
+                        <i class="fa-solid fa-headset"></i>
+                        <span class="option-text">Contact Support</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-left chevron"></i>
                 </div>
-            </a>
-        </div>
-    </main>
-
-    <!-- ===== BOTTOM NAV ===== -->
-    <div class="bottom-nav">
-        <div class="ps-shapes">
-            <i class="fa-solid fa-xmark ps-cross"></i>
-            <i class="fa-regular fa-circle ps-circle"></i>
-            <i class="fa-solid fa-triangle-exclamation ps-triangle"></i>
-            <i class="fa-regular fa-square ps-square"></i>
+            </div>
+            <div class="settings-footer">
+                <span>Version 2.0.0</span>
+            </div>
         </div>
     </div>
 
-    <!-- ===== FAB SUPPORT ===== -->
-    <button class="fab-support" title="پشتیبانی" id="supportBtn" onclick="window.location.href='conection.html'">
-        <i class="fa-solid fa-headset"></i>
-    </button>
+    <!-- ===== MAIN ===== -->
+    <main>
+        <!-- Slider -->
+        <div class="slider-wrapper">
+            <div class="slider-container" id="sliderContainer">
+                
+                <!-- Card 1: PUBG - Cobalt (Glass Style) -->
+                <div class="skin-card">
+                    <div class="score-badge">
+                        <i class="fa-solid fa-star"></i>
+                        <span class="score-value">4.8</span>
+                    </div>
+                    <div class="time-badge">
+                        <i class="fa-regular fa-clock"></i>
+                        <span id="timeDisplay1">--:--</span>
+                    </div>
+                    <div class="skin-image-wrapper">
+                        <img src="3d chracter.png" alt="PUBG 3D Character - Cobalt">
+                        <div class="grant-badge">
+                            <i class="fa-regular fa-circle-check"></i>
+                            GRANT
+                        </div>
+                    </div>
+                    <div class="skin-info">
+                        <div class="skin-name">PUBG - Cobalt</div>
+                        <div class="skin-description">Exchange pubg item with each other</div>
+                        <a href="pubg.html" class="btn-next">
+                            <span>Next</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 2: Clash of Clans (Glass Style) -->
+                <div class="skin-card">
+                    <div class="score-badge">
+                        <i class="fa-solid fa-star"></i>
+                        <span class="score-value">4.9</span>
+                    </div>
+                    <div class="time-badge">
+                        <i class="fa-regular fa-clock"></i>
+                        <span id="timeDisplay2">--:--</span>
+                    </div>
+                    <div class="skin-image-wrapper">
+                        <img src="haaland.png" alt="Clash of Clans - Barbarian King">
+                        <div class="grant-badge">
+                            <i class="fa-regular fa-circle-check"></i>
+                            GRANT
+                        </div>
+                    </div>
+                    <div class="skin-info">
+                        <div class="skin-name">Clash - Barbarian King</div>
+                        <div class="skin-description">Exchange clash item with each other</div>
+                        <a href="clash.html" class="btn-next">
+                            <span>Next</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Slider Dots -->
+        <div class="slider-dots" id="sliderDots">
+            <button class="dot active" data-index="0"></button>
+            <button class="dot" data-index="1"></button>
+        </div>
+    </main>
+
+    <!-- ===== BOTTOM NAV (shared component) ===== -->
+    <div id="bottom-nav-placeholder"></div>
+    <script src="nav.js"></script>
 
     <!-- ===== SCRIPT ===== -->
     <script>
-        const translations = {
-            fa: {
-                'langLabel': 'FA',
-                'membershipLabel': 'عضویت',
-                'pageTitle': 'Game item converter',
-                'pageSubtitle': 'Global Content',
-                'card1Title': 'PUBG',
-                'card1Desc': 'تبدیل آیتم‌های پابجی به یکدیگر',
-                'card1Action': 'تبدیل و دریافت ←',
-                'card2Title': 'Clash of Clans',
-                'card2Desc': 'تبدیل آیتم‌های کلش اف کلنز به یکدیگر',
-                'card2Action': 'تبدیل و دریافت ←',
-                'supportTitle': 'پشتیبانی'
-            },
-            en: {
-                'langLabel': 'EN',
-                'membershipLabel': 'Sign up',
-                'pageTitle': 'Game item converter',
-                'pageSubtitle': 'Global Content',
-                'card1Title': 'PUBG',
-                'card1Desc': 'Convert PUBG items to each other',
-                'card1Action': 'Convert & Receive ←',
-                'card2Title': 'Clash of Clans',
-                'card2Desc': 'Convert Clash of Clans items to each other',
-                'card2Action': 'Convert & Receive ←',
-                'supportTitle': 'Support'
+        (function() {
+            // ----- UPDATE CLOCK -----
+            function updateClock() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const timeStr = hours + ':' + minutes;
+                
+                const timeDisplay1 = document.getElementById('timeDisplay1');
+                const timeDisplay2 = document.getElementById('timeDisplay2');
+                if (timeDisplay1) timeDisplay1.textContent = timeStr;
+                if (timeDisplay2) timeDisplay2.textContent = timeStr;
             }
-        };
+            updateClock();
+            setInterval(updateClock, 60000);
 
-        let currentLang = localStorage.getItem('lang') || 'fa';
+            // ----- THEME TOGGLE -----
+            const themeOption = document.getElementById('themeOption');
+            const themeIcon = document.getElementById('themeIcon');
+            const themeToggle = document.getElementById('themeToggle');
+            const themeLabel = document.getElementById('themeLabel');
 
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
-            
-            document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
-            document.documentElement.lang = lang;
-            localStorage.setItem('lang', lang);
-            
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (t[key] !== undefined) {
-                    const icon = el.querySelector('i');
-                    if (icon) {
-                        const textNode = el.childNodes[el.childNodes.length - 1];
-                        if (textNode && textNode.nodeType === 3) {
-                            textNode.textContent = ' ' + t[key];
-                        } else {
-                            el.innerHTML = icon.outerHTML + ' ' + t[key];
-                        }
-                    } else {
-                        el.textContent = t[key];
+            function updateThemeUI(isLight) {
+                if (isLight) {
+                    themeToggle.classList.add('active');
+                    themeIcon.className = 'fa-solid fa-sun';
+                    themeIcon.style.color = '#f5a623';
+                    themeLabel.textContent = 'Light';
+                } else {
+                    themeToggle.classList.remove('active');
+                    themeIcon.className = 'fa-solid fa-moon';
+                    themeIcon.style.color = '';
+                    themeLabel.textContent = 'Dark';
+                }
+            }
+
+            if (localStorage.getItem('theme') === 'light') {
+                document.body.classList.add('light-mode');
+                updateThemeUI(true);
+            } else {
+                updateThemeUI(false);
+            }
+
+            themeOption.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                const isLight = document.body.classList.contains('light-mode');
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                updateThemeUI(isLight);
+            });
+
+            // ----- LANGUAGE (English only) -----
+            const langOption = document.getElementById('langOption');
+            const langLabel = document.getElementById('langLabel');
+            const langStatus = document.getElementById('langStatus');
+
+            langLabel.textContent = 'English';
+            langStatus.textContent = 'EN';
+            document.documentElement.lang = 'en';
+            document.documentElement.dir = 'ltr';
+
+            langOption.style.cursor = 'default';
+            langOption.addEventListener('click', (e) => {
+                e.stopPropagation();
+                langStatus.textContent = 'EN ✓';
+                setTimeout(() => { langStatus.textContent = 'EN'; }, 800);
+            });
+
+            // ----- SLIDER FUNCTIONALITY -----
+            const sliderContainer = document.getElementById('sliderContainer');
+            const dots = document.querySelectorAll('.dot');
+            let currentIndex = 0;
+            let isDragging = false;
+            let startX = 0;
+            let currentX = 0;
+            let diffX = 0;
+            let isSwiping = false;
+            const totalSlides = 2;
+
+            function isDesktop() {
+                return window.matchMedia('(min-width: 1025px)').matches;
+            }
+
+            function getCardWidth() {
+                const card = document.querySelector('.slider-container .skin-card');
+                if (!card) return 0;
+                const gap = parseFloat(getComputedStyle(sliderContainer).gap) || 20;
+                return card.offsetWidth + gap;
+            }
+
+            function goToSlide(index, animate = true) {
+                if (index < 0) index = 0;
+                if (index >= totalSlides) index = totalSlides - 1;
+                
+                currentIndex = index;
+
+                // Desktop: all cards shown together via CSS grid/wrap, no transform needed
+                if (isDesktop()) {
+                    sliderContainer.style.transform = '';
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === index);
+                    });
+                    return;
+                }
+                
+                if (!animate) {
+                    sliderContainer.style.transition = 'none';
+                } else {
+                    sliderContainer.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                }
+                
+                const cardWidth = getCardWidth();
+                if (cardWidth > 0) {
+                    const offset = -index * cardWidth;
+                    sliderContainer.style.transform = `translateX(${offset}px)`;
+                }
+                
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
+
+                if (!animate) {
+                    requestAnimationFrame(() => {
+                        sliderContainer.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                    });
+                }
+            }
+
+            setTimeout(() => {
+                goToSlide(0, false);
+            }, 50);
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    goToSlide(index);
+                });
+            });
+
+            sliderContainer.addEventListener('mousedown', (e) => {
+                if (isDesktop()) return;
+                isDragging = true;
+                isSwiping = false;
+                startX = e.pageX - sliderContainer.offsetLeft;
+                sliderContainer.classList.add('dragging');
+                sliderContainer.style.transition = 'none';
+            });
+
+            sliderContainer.addEventListener('touchstart', (e) => {
+                if (isDesktop()) return;
+                isDragging = true;
+                isSwiping = false;
+                startX = e.touches[0].pageX - sliderContainer.offsetLeft;
+                sliderContainer.classList.add('dragging');
+                sliderContainer.style.transition = 'none';
+            }, { passive: true });
+
+            sliderContainer.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+                currentX = e.pageX - sliderContainer.offsetLeft;
+                diffX = currentX - startX;
+                
+                if (Math.abs(diffX) > 8) isSwiping = true;
+                
+                if (isSwiping) {
+                    const cardWidth = getCardWidth();
+                    if (cardWidth > 0) {
+                        const offset = -currentIndex * cardWidth + diffX;
+                        sliderContainer.style.transform = `translateX(${offset}px)`;
                     }
                 }
             });
-            
-            document.getElementById('langLabel').textContent = t['langLabel'];
-            document.getElementById('membershipLabel').textContent = t['membershipLabel'];
-            document.getElementById('supportBtn').title = t['supportTitle'];
-        }
 
-        changeLanguage(currentLang);
+            sliderContainer.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                currentX = e.touches[0].pageX - sliderContainer.offsetLeft;
+                diffX = currentX - startX;
+                
+                if (Math.abs(diffX) > 8) isSwiping = true;
+                
+                if (isSwiping) {
+                    const cardWidth = getCardWidth();
+                    if (cardWidth > 0) {
+                        const offset = -currentIndex * cardWidth + diffX;
+                        sliderContainer.style.transform = `translateX(${offset}px)`;
+                    }
+                }
+            }, { passive: true });
 
-        document.getElementById('langToggle').addEventListener('click', () => {
-            const newLang = currentLang === 'fa' ? 'en' : 'fa';
-            changeLanguage(newLang);
-        });
+            document.addEventListener('mouseup', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                sliderContainer.classList.remove('dragging');
+                
+                if (isSwiping) {
+                    const threshold = 40;
+                    if (diffX < -threshold) {
+                        goToSlide(currentIndex + 1);
+                    } else if (diffX > threshold) {
+                        goToSlide(currentIndex - 1);
+                    } else {
+                        goToSlide(currentIndex);
+                    }
+                    diffX = 0;
+                    isSwiping = false;
+                } else {
+                    goToSlide(currentIndex);
+                }
+            });
 
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = themeToggle.querySelector('i');
+            document.addEventListener('touchend', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                sliderContainer.classList.remove('dragging');
+                
+                if (isSwiping) {
+                    const threshold = 40;
+                    if (diffX < -threshold) {
+                        goToSlide(currentIndex + 1);
+                    } else if (diffX > threshold) {
+                        goToSlide(currentIndex - 1);
+                    } else {
+                        goToSlide(currentIndex);
+                    }
+                    diffX = 0;
+                    isSwiping = false;
+                } else {
+                    goToSlide(currentIndex);
+                }
+            });
 
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.classList.add('light-mode');
-            themeIcon.classList.replace('fa-moon', 'fa-sun');
-        }
+            document.addEventListener('keydown', (e) => {
+                if (isDesktop()) return;
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    goToSlide(currentIndex + 1);
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    goToSlide(currentIndex - 1);
+                }
+            });
 
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            const isLight = document.body.classList.contains('light-mode');
-            themeIcon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        });
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    goToSlide(currentIndex, false);
+                }, 100);
+            });
 
-        document.getElementById('membershipBtn').addEventListener('click', () => {
-            window.location.href = 'signup.html';
-        });
+            // ===== SETTINGS PANEL =====
+            const settingsPanel = document.getElementById('settingsPanel');
+            const settingsOverlay = document.getElementById('settingsOverlay');
+            const settingsBtn = document.getElementById('settingsBtn');
+            const closeSettingsBtn = document.getElementById('closeSettings');
+
+            function openSettings() {
+                settingsPanel.classList.add('open');
+                settingsOverlay.classList.add('visible');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeSettings() {
+                settingsPanel.classList.remove('open');
+                settingsOverlay.classList.remove('visible');
+                document.body.style.overflow = '';
+            }
+
+            // Wait for nav.js to load, then attach settings button
+            // Since nav.js loads asynchronously, we use a MutationObserver or check periodically
+            function attachSettingsButton() {
+                const settingsBtn = document.getElementById('settingsBtn');
+                if (settingsBtn) {
+                    settingsBtn.addEventListener('click', openSettings);
+                    return true;
+                }
+                return false;
+            }
+
+            // Try immediately and if not, wait for nav.js to load
+            if (!attachSettingsButton()) {
+                const observer = new MutationObserver(() => {
+                    if (attachSettingsButton()) {
+                        observer.disconnect();
+                    }
+                });
+                observer.observe(document.body, { childList: true, subtree: true });
+            }
+
+            closeSettingsBtn.addEventListener('click', closeSettings);
+            settingsOverlay.addEventListener('click', closeSettings);
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && settingsPanel.classList.contains('open')) {
+                    closeSettings();
+                }
+            });
+
+            // ===== REDIRECT NEWS BUTTON TO IGN.COM =====
+            const newsBtn = document.getElementById('newsBtn');
+            if (newsBtn) {
+                newsBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = 'https://www.ign.com';
+                });
+            }
+        })();
     </script>
 
 </body>

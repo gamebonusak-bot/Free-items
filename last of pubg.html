@@ -1,164 +1,111 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>گیمینگ استور - جوایز ویژه</title>
+    <title>Gaming Store - Special Rewards</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="nav.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap');
 
         :root {
-            --bg: #0f0f12;
-            --surface: #18181f;
-            --surface-hover: #22222e;
-            --border: rgba(255,255,255,0.06);
-            --text: #f0f0f5;
-            --text-muted: #8b8b9e;
-            --accent: #e11d48;
-            --accent-glow: rgba(225, 29, 72, 0.4);
-            --green: #10b981;
-            --green-glow: rgba(16, 185, 129, 0.3);
+            --bg-base: #0a0a0a;
+            --bg-radial: #1a1a0a;
+            --text-main: #f0f0e0;
+            --text-sub: #b8b8a0;
+            --card-bg: #12120a;
+            --card-border: #2a2a10;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --lime-main: #ccff00;
+            --lime-shadow: rgba(204, 255, 0, 0.4);
+            --green-shadow: rgba(204, 255, 0, 0.3);
+            --modal-overlay: rgba(0, 0, 0, 0.8);
+            --input-bg: #1a1a0a;
+            --nav-bg: rgba(10, 10, 10, 0.92);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            --glass-blur: 30px;
+            --surface: #12120a;
+            --surface-hover: #1a1a0a;
+            --border: #2a2a10;
             --radius: 16px;
             --radius-sm: 12px;
-            --nav-bg: rgba(24, 24, 31, 0.85);
-            --pill-bg: rgba(24, 24, 31, 0.95);
-            --card-border: #2a3040;
+            --accent: #ccff00;
+            --accent-glow: rgba(204, 255, 0, 0.4);
+            --green: #ccff00;
+            --green-glow: rgba(204, 255, 0, 0.3);
+            --pill-bg: rgba(10, 10, 10, 0.95);
+            --img-bg: radial-gradient(circle at center, #1a1a0a, #0a0a00);
+            --img-filter: brightness(1.1) saturate(1.2);
+            --img-opacity: 0.95;
+            --glass-card-bg: rgba(255, 255, 255, 0.08);
+            --glass-card-border: rgba(255, 255, 255, 0.15);
+            --glass-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --glass-card-blur: 20px;
         }
 
-        [data-theme="light"] {
-            --bg: #f0f0f5;
+        .light-mode {
+            --bg-base: #f5f7f5;
+            --bg-radial: #e8ece8;
+            --text-main: #1a1a1a;
+            --text-sub: #4a4a4a;
+            --card-bg: #ffffff;
+            --card-border: #d0d4d0;
+            --shadow-color: rgba(0, 0, 0, 0.06);
+            --lime-main: #4a7a4a;
+            --lime-shadow: rgba(74, 122, 74, 0.15);
+            --green-shadow: rgba(74, 122, 74, 0.15);
+            --modal-overlay: rgba(0, 0, 0, 0.5);
+            --input-bg: #edf2f7;
+            --nav-bg: rgba(255, 255, 255, 0.92);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+            --glass-blur: 20px;
             --surface: #ffffff;
             --surface-hover: #e8e8ee;
-            --border: rgba(0,0,0,0.08);
-            --text: #1a1a1e;
-            --text-muted: #6b6b7e;
-            --nav-bg: rgba(255, 255, 255, 0.85);
+            --border: #d0d4d0;
+            --accent: #4a7a4a;
+            --accent-glow: rgba(74, 122, 74, 0.15);
+            --green: #4a7a4a;
+            --green-glow: rgba(74, 122, 74, 0.15);
             --pill-bg: rgba(255, 255, 255, 0.95);
-            --card-border: #e2ded3;
+            --img-bg: linear-gradient(135deg, #f0f4f0, #ffffff);
+            --img-filter: brightness(1) saturate(1);
+            --img-opacity: 1;
+            --glass-card-bg: rgba(255, 255, 255, 0.7);
+            --glass-card-border: rgba(255, 255, 255, 0.4);
+            --glass-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Vazirmatn', 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', 'Vazirmatn', sans-serif;
         }
 
         body {
-            background: var(--bg);
-            color: var(--text);
+            background-color: var(--bg-base);
+            background-image: radial-gradient(circle at 10% 10%, var(--bg-radial) 0%, var(--bg-base) 100%);
+            color: var(--text-main);
             min-height: 100vh;
             padding-bottom: 120px;
             line-height: 1.6;
-            transition: background 0.4s ease, color 0.4s ease;
+            transition: background-color 0.5s ease, color 0.5s ease, background-image 0.5s ease;
         }
 
         /* ==========================================
-           HEADER
+           HEADER - Empty
            ========================================== */
         header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(15, 15, 18, 0.75);
-            backdrop-filter: blur(20px) saturate(1.8);
-            -webkit-backdrop-filter: blur(20px) saturate(1.8);
-            border-bottom: 1px solid var(--border);
-            padding: 14px 24px;
+            padding: 10px 0;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.4s ease;
-        }
-
-        [data-theme="light"] header {
-            background: rgba(240, 240, 245, 0.75);
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .brand-logo {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            flex-shrink: 0;
-            border: 2px solid var(--border);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .brand-logo:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px var(--accent-glow);
-        }
-
-        .brand-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .header-actions {
-            display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .btn-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.9rem;
-        }
-
-        .btn-icon:hover {
-            background: var(--surface-hover);
-            color: var(--text);
-            transform: translateY(-2px);
-            border-color: rgba(255,255,255,0.15);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-        }
-
-        [data-theme="light"] .btn-icon:hover {
-            background: var(--surface-hover);
-            color: var(--text);
-            border-color: rgba(0,0,0,0.12);
-        }
-
-        .btn-primary {
-            padding: 8px 20px;
-            border-radius: 24px;
-            border: none;
-            background: linear-gradient(135deg, var(--accent), #fb7185);
-            color: white;
-            font-weight: 700;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px var(--accent-glow);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 28px var(--accent-glow);
+            min-height: 0;
         }
 
         /* ==========================================
@@ -167,7 +114,7 @@
         main {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 32px 24px;
+            padding: 20px 24px 32px;
         }
 
         .masonry {
@@ -194,7 +141,6 @@
             flex-direction: column;
         }
 
-        /* ارتفاع‌های متفاوت برای ظاهر پینترستی */
         .card:nth-child(1) { min-height: 320px; }
         .card:nth-child(2) { min-height: 280px; }
         .card:nth-child(3) { min-height: 360px; }
@@ -210,12 +156,8 @@
 
         .card:hover {
             transform: translateY(-6px) scale(1.01);
-            box-shadow: 0 24px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
+            box-shadow: 0 24px 48px var(--shadow-color), 0 0 0 1px var(--lime-main);
             z-index: 10;
-        }
-
-        [data-theme="light"] .card:hover {
-            box-shadow: 0 24px 48px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);
         }
 
         .card-img-wrap {
@@ -238,9 +180,6 @@
             filter: brightness(1.05);
         }
 
-        /* ==========================================
-           OVERLAY - فقط عنوان و توضیحات
-           ========================================== */
         .card-overlay {
             position: absolute;
             inset: 0;
@@ -271,9 +210,6 @@
             text-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
 
-        /* ==========================================
-           CARD BODY
-           ========================================== */
         .card-body {
             padding: 14px 16px 16px;
             background: var(--surface);
@@ -291,26 +227,20 @@
             font-size: 0.6rem;
             padding: 3px 10px;
             border-radius: 20px;
-            background: rgba(255,255,255,0.06);
-            color: var(--text-muted);
+            background: rgba(204, 255, 0, 0.06);
+            color: var(--text-sub);
             font-weight: 500;
             border: 1px solid var(--border);
             transition: all 0.3s ease;
         }
 
-        [data-theme="light"] .tag {
+        .light-mode .tag {
             background: rgba(0,0,0,0.04);
         }
 
         .card:hover .tag {
-            border-color: var(--green);
-            color: var(--text);
-        }
-
-        .tag.pink {
-            background: rgba(225, 29, 72, 0.12);
-            color: #fb7185;
-            border-color: rgba(225, 29, 72, 0.2);
+            border-color: var(--lime-main);
+            color: var(--text-main);
         }
 
         .card-footer {
@@ -330,7 +260,7 @@
             width: 32px;
             height: 32px;
             object-fit: contain;
-            filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.3));
+            filter: drop-shadow(0 0 12px var(--lime-shadow));
             transition: transform 0.3s ease;
             flex-shrink: 0;
         }
@@ -342,22 +272,19 @@
         .price {
             font-weight: 900;
             font-size: 1.1rem;
-            color: var(--green);
-            text-shadow: 0 0 20px var(--green-glow);
+            color: var(--lime-main);
+            text-shadow: 0 0 20px var(--lime-shadow);
             letter-spacing: 0.5px;
             white-space: nowrap;
         }
 
-        /* ==========================================
-           دکمه ذخیره در پایین کارت
-           ========================================== */
         .save-btn-card {
             width: 34px;
             height: 34px;
             border-radius: 50%;
             border: 1px solid var(--border);
             background: transparent;
-            color: var(--text-muted);
+            color: var(--text-sub);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -368,15 +295,15 @@
         }
 
         .save-btn-card:hover {
-            background: rgba(225, 29, 72, 0.15);
-            color: var(--accent);
-            border-color: rgba(225, 29, 72, 0.3);
+            background: rgba(204, 255, 0, 0.1);
+            color: var(--lime-main);
+            border-color: var(--lime-main);
         }
 
         .save-btn-card.saved {
-            background: rgba(225, 29, 72, 0.2);
-            color: var(--accent);
-            border-color: var(--accent);
+            background: rgba(204, 255, 0, 0.15);
+            color: var(--lime-main);
+            border-color: var(--lime-main);
         }
 
         /* ==========================================
@@ -411,15 +338,11 @@
             max-width: 520px;
             width: 100%;
             border: 1px solid var(--border);
-            box-shadow: 0 32px 80px rgba(0,0,0,0.8);
+            box-shadow: 0 32px 80px var(--shadow-color);
             animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
             max-height: 90vh;
             overflow-y: auto;
-        }
-
-        [data-theme="light"] .detail-panel {
-            box-shadow: 0 32px 80px rgba(0,0,0,0.2);
         }
 
         @keyframes slideUp {
@@ -435,7 +358,7 @@
 
         .detail-panel .panel-img-wrap {
             position: relative;
-            background: var(--bg);
+            background: var(--bg-base);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -454,7 +377,7 @@
         .detail-panel .panel-close {
             position: absolute;
             top: 12px;
-            left: 12px;
+            right: 12px;
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -471,7 +394,8 @@
         }
 
         .detail-panel .panel-close:hover {
-            background: var(--accent);
+            background: var(--lime-main);
+            color: #0a0a0a;
             transform: rotate(90deg);
         }
 
@@ -483,10 +407,11 @@
             font-size: 1.5rem;
             font-weight: 900;
             margin-bottom: 6px;
+            color: var(--text-main);
         }
 
         .detail-panel .panel-desc {
-            color: var(--text-muted);
+            color: var(--text-sub);
             font-size: 0.95rem;
             margin-bottom: 12px;
         }
@@ -518,7 +443,7 @@
         .detail-panel .panel-price .coin-img {
             width: 50px;
             height: 50px;
-            filter: drop-shadow(0 0 24px rgba(16, 185, 129, 0.5));
+            filter: drop-shadow(0 0 24px var(--lime-shadow));
         }
 
         .detail-panel .panel-action {
@@ -538,6 +463,23 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--lime-main), #aadd00);
+            color: #0a0a0a;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px var(--lime-shadow);
+        }
+
+        .light-mode .detail-panel .panel-action .btn-primary {
+            color: #ffffff;
+            background: linear-gradient(135deg, #4a7a4a, #5a8a5a);
+        }
+
+        .detail-panel .panel-action .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px var(--lime-shadow);
         }
 
         .detail-panel .panel-action .btn-secondary {
@@ -548,7 +490,7 @@
             border-radius: var(--radius-sm);
             border: 1px solid var(--border);
             background: transparent;
-            color: var(--text);
+            color: var(--text-main);
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
@@ -559,15 +501,274 @@
 
         .detail-panel .panel-action .btn-secondary:hover {
             background: var(--surface-hover);
-            border-color: rgba(255,255,255,0.2);
+            border-color: var(--lime-main);
+            color: var(--lime-main);
         }
 
         /* ==========================================
-           BOTTOM NAV
+           SETTINGS PANEL - کامل مثل بقیه صفحات
+           ========================================== */
+        .settings-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .settings-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .settings-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 400px;
+            max-width: 92%;
+            max-height: 85vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            padding: 0;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .settings-panel.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .settings-panel .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px 16px 24px;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .settings-panel .panel-header h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.3px;
+        }
+
+        .settings-panel .panel-header h2 i {
+            color: var(--lime-main);
+            font-size: 1.2rem;
+        }
+
+        .settings-panel .close-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: var(--text-sub);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-panel .close-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: rotate(90deg);
+        }
+
+        .settings-content {
+            padding: 8px 0 20px 0;
+            overflow-y: auto;
+            max-height: calc(85vh - 80px);
+            scroll-behavior: smooth;
+        }
+
+        .settings-content::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .settings-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .settings-content::-webkit-scrollbar-thumb {
+            background: var(--lime-main);
+            border-radius: 10px;
+        }
+
+        .settings-group {
+            padding: 0 16px;
+            margin-bottom: 4px;
+        }
+
+        .settings-group label {
+            display: block;
+            color: var(--text-sub);
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 12px 8px 6px 8px;
+            opacity: 0.7;
+        }
+
+        .settings-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-bottom: 2px;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .settings-option:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--glass-border);
+        }
+
+        .settings-option:active {
+            transform: scale(0.98);
+        }
+
+        .settings-option .option-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .settings-option .option-left i {
+            color: var(--lime-main);
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .settings-option .option-text {
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: -0.2px;
+        }
+
+        .settings-option .option-status {
+            color: var(--lime-main);
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(204, 255, 0, 0.08);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .ios-toggle {
+            width: 51px;
+            height: 31px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            position: relative;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+        }
+
+        .light-mode .ios-toggle {
+            background: #e5e5ea;
+            border-color: #d1d1d6;
+        }
+
+        .ios-toggle.active {
+            background: var(--lime-main);
+            border-color: var(--lime-main);
+        }
+
+        .light-mode .ios-toggle.active {
+            background: #4a7a4a;
+            border-color: #4a7a4a;
+        }
+
+        .ios-toggle .toggle-knob {
+            width: 27px;
+            height: 27px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .ios-toggle.active .toggle-knob {
+            left: 21px;
+        }
+
+        .settings-option .chevron {
+            color: var(--text-sub);
+            opacity: 0.4;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .settings-option:hover .chevron {
+            opacity: 0.8;
+        }
+
+        .settings-divider {
+            height: 1px;
+            background: var(--glass-border);
+            margin: 4px 20px;
+        }
+
+        .settings-footer {
+            padding: 16px 24px 8px 24px;
+            text-align: center;
+            opacity: 0.4;
+        }
+
+        .settings-footer span {
+            font-size: 0.65rem;
+            color: var(--text-sub);
+            letter-spacing: 0.5px;
+        }
+
+        /* ==========================================
+           BOTTOM NAV - NORMAL (بدون RTL)
            ========================================== */
         .bottom-nav {
             position: fixed;
-            bottom: 24px;
+            bottom: 20px;
             left: 0;
             width: 100%;
             display: flex;
@@ -576,89 +777,105 @@
             z-index: 1000;
         }
 
-        .ps-shapes {
+        .nav-container {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 32px;
-            background: var(--pill-bg);
-            padding: 14px 40px;
+            justify-content: space-around;
+            gap: 15px;
+            background: var(--nav-bg);
+            padding: 12px 25px;
             border-radius: 50px;
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 5px 30px var(--shadow-color);
             width: auto;
-            transition: background 0.4s ease, border-color 0.4s ease;
+            min-width: 320px;
+            max-width: 480px;
+            transition: all 0.5s ease;
         }
 
-        [data-theme="light"] .ps-shapes {
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .ps-shapes .ps-item {
+        .nav-item {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
+            gap: 3px;
+            text-decoration: none;
+            color: var(--text-sub);
+            font-size: 0.6rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
             cursor: pointer;
-            transition: transform 0.3s ease, filter 0.3s ease;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            background: none;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 12px;
             position: relative;
         }
 
-        .ps-shapes .ps-cross { color: #5352ed; text-shadow: 0 0 20px rgba(83, 82, 237, 0.7); }
-        .ps-shapes .ps-circle { color: #ff4757; text-shadow: 0 0 20px rgba(255, 71, 87, 0.7); }
-        .ps-shapes .ps-triangle { color: #00f0ff; text-shadow: 0 0 20px rgba(0, 240, 255, 0.7); }
-        .ps-shapes .ps-square { color: #ff77a9; text-shadow: 0 0 20px rgba(255, 119, 169, 0.7); }
-
-        .ps-shapes .ps-item:hover {
-            transform: scale(1.3) rotate(10deg);
-            filter: brightness(1.5);
+        .nav-item i {
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            color: var(--text-sub);
         }
 
-        .ps-shapes .ps-item.active::after {
+        .nav-item span {
+            font-size: 0.55rem;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+        }
+
+        .nav-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .nav-item:hover i {
+            color: var(--lime-main);
+            text-shadow: 0 0 15px var(--lime-shadow);
+        }
+
+        .nav-item.active {
+            color: var(--lime-main);
+        }
+
+        .nav-item.active i {
+            color: var(--lime-main);
+            text-shadow: 0 0 20px var(--lime-shadow);
+        }
+
+        .nav-item.active::after {
             content: '';
             position: absolute;
-            bottom: -6px;
+            bottom: -2px;
             left: 50%;
             transform: translateX(-50%);
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: currentColor;
-            box-shadow: 0 0 15px currentColor;
+            width: 20px;
+            height: 2px;
+            background: var(--lime-main);
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--lime-shadow);
         }
 
-        /* ==========================================
-           FAB SUPPORT
-           ========================================== */
-        .fab-support {
-            position: fixed;
-            bottom: 28px;
-            right: 28px;
-            z-index: 1000;
-            width: 56px;
-            height: 56px;
+        .nav-item .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--lime-main);
+            color: #0a0a0a;
+            font-size: 0.5rem;
+            font-weight: 700;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--green), #059669);
-            border: none;
-            color: white;
-            font-size: 1.25rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 8px 32px var(--green-glow);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none;
+            box-shadow: 0 0 10px var(--lime-shadow);
         }
 
-        .fab-support:hover {
-            transform: scale(1.1) rotate(10deg);
-            box-shadow: 0 12px 40px var(--green-glow);
+        .light-mode .nav-item .badge {
+            color: #ffffff;
+            background: #4a7a4a;
         }
 
         /* ==========================================
@@ -669,11 +886,18 @@
         @media (max-width: 768px) { 
             .masonry { column-count: 2; column-gap: 14px; } 
             main { padding: 20px 12px; }
-            header { padding: 12px 16px; }
-            .brand-logo { width: 40px; height: 40px; }
             
-            .ps-shapes { padding: 12px 25px; gap: 20px; }
-            .ps-shapes .ps-item { font-size: 1.3rem; width: 32px; height: 32px; }
+            .nav-container {
+                padding: 10px 15px;
+                gap: 8px;
+                min-width: auto;
+                width: 92%;
+                border-radius: 30px;
+            }
+            .nav-item { padding: 3px 6px; }
+            .nav-item i { font-size: 1.1rem; }
+            .nav-item span { font-size: 0.45rem; }
+            .nav-item .badge { width: 14px; height: 14px; font-size: 0.4rem; top: -4px; right: -4px; }
             
             .detail-panel { max-width: 95%; }
             .detail-panel .panel-body { padding: 18px 20px 22px; }
@@ -684,14 +908,24 @@
             
             .card { min-height: auto !important; }
             .card-img { min-height: 160px; }
+
+            .settings-panel { width: 94%; max-width: 94%; border-radius: 24px; }
+            .settings-panel .panel-header { padding: 16px 18px 12px 18px; }
+            .settings-panel .panel-header h2 { font-size: 1rem; }
+            .settings-content { padding: 4px 0 16px 0; max-height: calc(85vh - 70px); }
+            .settings-option { padding: 12px 14px; }
+            .settings-option .option-text { font-size: 0.9rem; }
+            .ios-toggle { width: 45px; height: 28px; }
+            .ios-toggle .toggle-knob { width: 24px; height: 24px; }
+            .ios-toggle.active .toggle-knob { left: 19px; }
         }
 
         @media (max-width: 480px) { 
             .masonry { column-count: 2; column-gap: 10px; } 
             .card-body { padding: 10px 12px 12px; }
-            .ps-shapes { padding: 10px 18px; gap: 14px; }
-            .ps-shapes .ps-item { font-size: 1.1rem; width: 28px; height: 28px; }
-            .brand-logo { width: 36px; height: 36px; }
+            .nav-container { padding: 8px 10px; gap: 4px; }
+            .nav-item i { font-size: 0.95rem; }
+            .nav-item span { font-size: 0.4rem; }
             .coin-img { width: 24px; height: 24px; }
             .detail-panel .panel-price .coin-img { width: 36px; height: 36px; }
             .price { font-size: 0.9rem; }
@@ -707,12 +941,12 @@
            SCROLLBAR
            ========================================== */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #444; }
 
-        [data-theme="light"] ::-webkit-scrollbar-thumb { background: #bbb; }
-        [data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: #999; }
+        .light-mode ::-webkit-scrollbar-thumb { background: #bbb; }
+        .light-mode ::-webkit-scrollbar-thumb:hover { background: #999; }
 
         /* ==========================================
            ANIMATIONS
@@ -748,23 +982,86 @@
 </head>
 <body>
 
-    <header>
-        <a href="#" class="brand" id="brandLink">
-            <div class="brand-logo">
-                <img src="op.jpg.png" alt="Logo">
-            </div>
-        </a>
-        <div class="header-actions">
-            <button class="btn-icon" id="themeToggle" title="حالت تاریک/روشن">
-                <i class="fa-solid fa-moon" id="themeIcon"></i>
-            </button>
-            <button class="btn-icon" id="langToggle" title="تغییر زبان">
-                <span id="langLabel" style="font-size:0.75rem; font-weight:700;">FA</span>
-            </button>
-            <button class="btn-primary" id="joinBtn">عضویت</button>
-        </div>
-    </header>
+    <!-- ==========================================
+    HEADER - Empty
+    ========================================== -->
+    <header></header>
 
+    <!-- ==========================================
+    SETTINGS OVERLAY
+    ========================================== -->
+    <div class="settings-overlay" id="settingsOverlay"></div>
+
+    <!-- ==========================================
+    SETTINGS PANEL - کامل
+    ========================================== -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="panel-header">
+            <h2><i class="fa-solid fa-gear"></i> <span>Settings</span></h2>
+            <button class="close-btn" id="closeSettings"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="settings-content">
+            <!-- Language -->
+            <div class="settings-group">
+                <label>🌐 Language</label>
+                <div class="settings-option" id="langOption">
+                    <div class="option-left">
+                        <i class="fa-solid fa-language"></i>
+                        <span class="option-text" id="langLabel">English</span>
+                    </div>
+                    <div class="option-status" id="langStatus">EN</div>
+                </div>
+            </div>
+            <div class="settings-divider"></div>
+
+            <!-- Appearance -->
+            <div class="settings-group">
+                <label>🎨 Appearance</label>
+                <div class="settings-option" id="themeOption">
+                    <div class="option-left">
+                        <i class="fa-solid fa-moon" id="themeIconSettings"></i>
+                        <span class="option-text" id="themeLabel">Dark</span>
+                    </div>
+                    <div class="ios-toggle" id="themeToggleSettings">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="settings-divider"></div>
+
+            <!-- Account -->
+            <div class="settings-group">
+                <label>👤 Account</label>
+                <div class="settings-option" onclick="window.location.href='signup.html'">
+                    <div class="option-left">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span class="option-text">Sign Up / Login</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-left chevron"></i>
+                </div>
+            </div>
+            <div class="settings-divider"></div>
+
+            <!-- Support -->
+            <div class="settings-group">
+                <label>💬 Support</label>
+                <div class="settings-option" onclick="window.location.href='conection.html'">
+                    <div class="option-left">
+                        <i class="fa-solid fa-headset"></i>
+                        <span class="option-text">Contact Support</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-left chevron"></i>
+                </div>
+            </div>
+            <div class="settings-footer">
+                <span>Version 2.0.0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+    MAIN
+    ========================================== -->
     <main>
         <div class="masonry" id="masonryGrid">
             <!-- Cards will be populated by JavaScript -->
@@ -781,37 +1078,49 @@
                 <button class="panel-close" id="panelClose"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="panel-body">
-                <h2 class="panel-title" id="panelTitle">عنوان</h2>
-                <p class="panel-desc" id="panelDesc">توضیحات</p>
+                <h2 class="panel-title" id="panelTitle">Title</h2>
+                <p class="panel-desc" id="panelDesc">Description</p>
                 <div class="panel-tags" id="panelTags"></div>
                 <div class="panel-price">
-                    <img class="coin-img" src="download.png" alt="سکه">
-                    <span class="price" id="panelPrice">۰</span>
+                    <img class="coin-img" src="download.png" alt="Coin">
+                    <span class="price" id="panelPrice">0</span>
                 </div>
                 <div class="panel-action">
-                    <button class="btn-primary" id="buyBtn"><i class="fa-solid fa-coins"></i> خرید با سکه</button>
-                    <button class="btn-secondary" id="saveBtn"><i class="fa-regular fa-bookmark"></i> <span id="saveText">ذخیره</span></button>
+                    <button class="btn-primary" id="buyBtn"><i class="fa-solid fa-coins"></i> Buy with Coins</button>
+                    <button class="btn-secondary" id="saveBtn"><i class="fa-regular fa-bookmark"></i> <span id="saveText">Save</span></button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- ==========================================
-    BOTTOM NAV
+    BOTTOM NAV - NORMAL
     ========================================== -->
     <div class="bottom-nav">
-        <div class="ps-shapes">
-            <div class="ps-item ps-cross"><i class="fa-solid fa-xmark"></i></div>
-            <div class="ps-item ps-circle"><i class="fa-regular fa-circle"></i></div>
-            <div class="ps-item ps-triangle"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <div class="ps-item ps-square"><i class="fa-regular fa-square"></i></div>
+        <div class="nav-container">
+            <button class="nav-item" id="newsBtn" onclick="window.location.href='news.html'">
+                <i class="fa-solid fa-newspaper"></i>
+                <span>News</span>
+            </button>
+            <button class="nav-item" id="supportBtn" onclick="window.location.href='conection.html'">
+                <i class="fa-solid fa-headset"></i>
+                <span>Support</span>
+            </button>
+            <button class="nav-item active" id="homeBtn" onclick="window.location.href='index.html'">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </button>
+            <button class="nav-item" id="signupNavBtn" onclick="window.location.href='signup.html'">
+                <i class="fa-solid fa-user-plus"></i>
+                <span>Sign Up</span>
+                <span class="badge">+</span>
+            </button>
+            <button class="nav-item" id="settingsBtn">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </button>
         </div>
     </div>
-
-    <!-- FAB Support -->
-    <button class="fab-support" title="پشتیبانی" id="supportBtn" onclick="window.location.href='conection.html'">
-        <i class="fa-solid fa-headset"></i>
-    </button>
 
     <script>
         // ============================================================
@@ -917,29 +1226,7 @@
         ];
 
         // ============================================================
-        // 2. TRANSLATIONS
-        // ============================================================
-        const uiTranslations = {
-            fa: {
-                join: "عضویت",
-                buy: "خرید با سکه",
-                save: "ذخیره"
-            },
-            en: {
-                join: "Join",
-                buy: "Buy with Coins",
-                save: "Save"
-            }
-        };
-
-        // ============================================================
-        // 3. STATE
-        // ============================================================
-        let currentLang = localStorage.getItem('lang') || 'fa';
-        let currentTheme = localStorage.getItem('theme') || 'dark';
-
-        // ============================================================
-        // 4. DOM REFS
+        // 2. DOM REFS
         // ============================================================
         const masonryGrid = document.getElementById('masonryGrid');
         const overlay = document.getElementById('detailOverlay');
@@ -952,14 +1239,9 @@
         const buyBtn = document.getElementById('buyBtn');
         const saveBtn = document.getElementById('saveBtn');
         const saveText = document.getElementById('saveText');
-        const joinBtn = document.getElementById('joinBtn');
-        const langToggle = document.getElementById('langToggle');
-        const langLabel = document.getElementById('langLabel');
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
 
         // ============================================================
-        // 5. RENDER CARDS
+        // 3. RENDER CARDS
         // ============================================================
         function renderCards() {
             masonryGrid.innerHTML = '';
@@ -982,23 +1264,21 @@
                         </div>
                         <div class="card-footer">
                             <div class="price-box">
-                                <img class="coin-img" src="download.png" alt="سکه">
+                                <img class="coin-img" src="download.png" alt="Coin">
                                 <span class="price">${item.price.toLocaleString()}</span>
                             </div>
-                            <button class="save-btn-card" data-id="${item.id}" title="ذخیره">
+                            <button class="save-btn-card" data-id="${item.id}" title="Save">
                                 <i class="fa-regular fa-bookmark"></i>
                             </button>
                         </div>
                     </div>
                 `;
                 
-                // کلیک روی کارت برای باز شدن پنل
                 card.addEventListener('click', (e) => {
                     if (e.target.closest('.save-btn-card')) return;
                     openDetail(item);
                 });
                 
-                // دکمه ذخیره در پایین کارت
                 const saveCardBtn = card.querySelector('.save-btn-card');
                 saveCardBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -1015,7 +1295,7 @@
         }
 
         // ============================================================
-        // 6. DETAIL PANEL
+        // 4. DETAIL PANEL
         // ============================================================
         let currentDetailItem = null;
 
@@ -1050,22 +1330,20 @@
         });
 
         // ============================================================
-        // 7. BUY BUTTON - LINK TO sendme.html
+        // 5. BUY BUTTON
         // ============================================================
         buyBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            
             if (!currentDetailItem) return;
-            
             const itemName = currentDetailItem.title;
             const itemPrice = currentDetailItem.price;
-            
-            // هدایت به صفحه sendme.html با پارامترها
             const url = 'sendme.html?item=' + encodeURIComponent(itemName) + '&price=' + itemPrice;
             window.location.href = url;
         });
 
-        // Save button in detail panel
+        // ============================================================
+        // 6. SAVE BUTTON IN DETAIL
+        // ============================================================
         saveBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             const icon = saveBtn.querySelector('i');
@@ -1076,66 +1354,96 @@
         });
 
         // ============================================================
-        // 8. APPLY UI LANGUAGE
+        // 7. THEME TOGGLE
         // ============================================================
-        function applyUILanguage(lang) {
-            const t = uiTranslations[lang];
-            joinBtn.textContent = t.join;
-            buyBtn.innerHTML = '<i class="fa-solid fa-coins"></i> ' + t.buy;
-            saveText.textContent = t.save;
-            langLabel.textContent = lang === 'fa' ? 'FA' : 'EN';
-            document.documentElement.lang = lang === 'fa' ? 'fa' : 'en';
-            document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
-            localStorage.setItem('lang', lang);
-            currentLang = lang;
-        }
+        const themeToggleSettings = document.getElementById('themeToggleSettings');
+        const themeIconSettings = document.getElementById('themeIconSettings');
+        const themeLabel = document.getElementById('themeLabel');
 
-        // ============================================================
-        // 9. THEME
-        // ============================================================
-        function applyTheme(theme) {
-            if (theme === 'light') {
-                document.documentElement.setAttribute('data-theme', 'light');
-                themeIcon.className = 'fa-solid fa-sun';
+        function updateThemeUI(isLight) {
+            if (isLight) {
+                document.body.classList.add('light-mode');
+                themeToggleSettings.classList.add('active');
+                themeIconSettings.className = 'fa-solid fa-sun';
+                themeIconSettings.style.color = '#f5a623';
+                themeLabel.textContent = 'Light';
+                localStorage.setItem('theme', 'light');
             } else {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                themeIcon.className = 'fa-solid fa-moon';
+                document.body.classList.remove('light-mode');
+                themeToggleSettings.classList.remove('active');
+                themeIconSettings.className = 'fa-solid fa-moon';
+                themeIconSettings.style.color = '';
+                themeLabel.textContent = 'Dark';
+                localStorage.setItem('theme', 'dark');
             }
-            localStorage.setItem('theme', theme);
-            currentTheme = theme;
         }
 
-        // ============================================================
-        // 10. EVENT LISTENERS
-        // ============================================================
+        if (localStorage.getItem('theme') === 'light') {
+            updateThemeUI(true);
+        } else {
+            updateThemeUI(false);
+        }
 
-        langToggle.addEventListener('click', () => {
-            const newLang = currentLang === 'fa' ? 'en' : 'fa';
-            applyUILanguage(newLang);
+        document.getElementById('themeOption').addEventListener('click', function() {
+            const isLight = document.body.classList.contains('light-mode');
+            updateThemeUI(!isLight);
         });
 
-        themeToggle.addEventListener('click', () => {
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            applyTheme(newTheme);
+        // ============================================================
+        // 8. LANGUAGE
+        // ============================================================
+        const langOption = document.getElementById('langOption');
+        const langLabel = document.getElementById('langLabel');
+        const langStatus = document.getElementById('langStatus');
+
+        langLabel.textContent = 'English';
+        langStatus.textContent = 'EN';
+        document.documentElement.lang = 'en';
+        document.documentElement.dir = 'ltr';
+
+        langOption.style.cursor = 'default';
+        langOption.addEventListener('click', function(e) {
+            e.stopPropagation();
+            langStatus.textContent = 'EN ✓';
+            setTimeout(function() { 
+                langStatus.textContent = 'EN'; 
+            }, 800);
         });
 
-        // PlayStation nav active state
-        const psItems = document.querySelectorAll('.ps-item');
-        psItems.forEach(item => {
-            item.addEventListener('click', function() {
-                psItems.forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-            });
+        // ============================================================
+        // 9. SETTINGS PANEL
+        // ============================================================
+        const settingsPanel = document.getElementById('settingsPanel');
+        const settingsOverlay = document.getElementById('settingsOverlay');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const closeSettingsBtn = document.getElementById('closeSettings');
+
+        function openSettings() {
+            settingsPanel.classList.add('open');
+            settingsOverlay.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSettings() {
+            settingsPanel.classList.remove('open');
+            settingsOverlay.classList.remove('visible');
+            document.body.style.overflow = '';
+        }
+
+        settingsBtn.addEventListener('click', openSettings);
+        closeSettingsBtn.addEventListener('click', closeSettings);
+        settingsOverlay.addEventListener('click', closeSettings);
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && settingsPanel.classList.contains('open')) {
+                closeSettings();
+            }
         });
-        if (psItems.length > 0) psItems[0].classList.add('active');
 
         // ============================================================
-        // 11. INIT
+        // 10. INIT
         // ============================================================
-        applyTheme(currentTheme);
-        applyUILanguage(currentLang);
         renderCards();
-        if (psItems.length > 0) psItems[0].classList.add('active');
     </script>
 
 </body>

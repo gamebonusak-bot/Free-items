@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Game Item Converter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="nav.css">
+    <style>
+        /* ===== ROOT ===== */
+        :root {
+            --bg-base: #0a0a0a;
+            --bg-radial: #1a1a0a;
+            --text-main: #f0f0e0;
+            --text-sub: #b8b8a0;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.12);
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --lime-main: #ccff00;
+            --lime-shadow: rgba(204, 255, 0, 0.4);
+            --lime-glow: rgba(204, 255, 0, 0.1);
+            --nav-bg: rgba(10, 10, 10, 0.92);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            --glass-blur: 30px;
+            --btn-bg: linear-gradient(135deg, #ccff00, #aadd00);
+            --btn-color: #0a0a0a;
+            --btn-shadow: rgba(204, 255, 0, 0.4);
+            --input-bg: rgba(255, 255, 255, 0.06);
+            --input-border: rgba(255, 255, 255, 0.12);
+            --input-focus: #ccff00;
+            --accent-line-width: 3px;
+        }
+
+        /* Light mode */
+        .light-mode {
+            --bg-base: #f5f7f5;
+            --bg-radial: #e8ece8;
+            --text-main: #1a1a1a;
+            --text-sub: #4a4a4a;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --card-border: rgba(255, 255, 255, 0.4);
+            --shadow-color: rgba(0, 0, 0, 0.06);
+            --lime-main: #4a7a4a;
+            --lime-shadow: rgba(74, 122, 74, 0.15);
+            --lime-glow: rgba(74, 122, 74, 0.05);
+            --nav-bg: rgba(255, 255, 255, 0.92);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+            --glass-blur: 20px;
+            --btn-bg: linear-gradient(135deg, #5a8a5a, #4a7a4a);
+            --btn-color: #ffffff;
+            --btn-shadow: rgba(74, 122, 74, 0.2);
+            --input-bg: rgba(0, 0, 0, 0.04);
+            --input-border: rgba(0, 0, 0, 0.08);
+            --input-focus: #4a7a4a;
+            --accent-line-width: 2px;
+        }
+
+        /* ===== RESET & BASE ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            background-image: radial-gradient(circle at 10% 10%, var(--bg-radial) 0%, var(--bg-base) 100%);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-bottom: 90px;
+            position: relative;
+            transition: background-color 0.5s ease, color 0.5s ease, background-image 0.5s ease;
+            overflow-x: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            padding: 18px 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        /* ===== MAIN ===== */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 20px 30px;
+            min-height: 70vh;
+        }
+
+        /* ===== SIGNUP CONTAINER ===== */
+        .signup-wrapper {
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+        }
+
+        /* ===== GLASS CARD ===== */
+        .signup-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 2px solid var(--lime-main);
+            border-radius: 24px;
+            padding: 40px 32px 36px;
+            box-shadow: 0 0 30px var(--lime-glow), var(--glass-shadow);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        /* ===== LIME ACCENT LINES ===== */
+        .signup-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: var(--accent-line-width);
+            height: 100%;
+            background: var(--lime-main);
+            box-shadow: 0 0 15px var(--lime-shadow);
+            opacity: 0.6;
+            transition: all 0.4s ease;
+        }
+
+        .signup-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: var(--accent-line-width);
+            height: 100%;
+            background: var(--lime-main);
+            box-shadow: 0 0 15px var(--lime-shadow);
+            opacity: 0.6;
+            transition: all 0.4s ease;
+        }
+
+        .signup-card:hover::after,
+        .signup-card:hover::before {
+            opacity: 1;
+            box-shadow: 0 0 25px var(--lime-shadow);
+        }
+
+        /* ===== HEADER ICON ===== */
+        .signup-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .signup-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: var(--lime-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            box-shadow: 0 0 30px var(--lime-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .signup-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px var(--lime-shadow);
+        }
+
+        .signup-icon i {
+            font-size: 2.2rem;
+            color: #0a0a0a;
+        }
+
+        .light-mode .signup-icon i {
+            color: #ffffff;
+        }
+
+        .signup-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .signup-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        /* ===== FORM ===== */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-sub);
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .form-group .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .form-group .input-wrapper:focus-within {
+            border-color: var(--input-focus);
+            box-shadow: 0 0 20px var(--lime-shadow);
+        }
+
+        .form-group .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .form-group .input-wrapper:focus-within i {
+            color: var(--lime-main);
+            opacity: 1;
+        }
+
+        .form-group .input-wrapper input {
+            width: 100%;
+            padding: 14px 16px 14px 44px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .form-group .input-wrapper input::placeholder {
+            color: var(--text-sub);
+            opacity: 0.5;
+        }
+
+        .form-group .input-wrapper input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 30px var(--input-bg) inset !important;
+            -webkit-text-fill-color: var(--text-main) !important;
+        }
+
+        /* ===== PASSWORD TOGGLE ===== */
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            padding: 4px;
+        }
+
+        .toggle-password:hover {
+            opacity: 1;
+            color: var(--lime-main);
+        }
+
+        /* ===== TERMS ===== */
+        .terms-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 16px 0 20px;
+        }
+
+        .terms-group input[type="checkbox"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            border: 2px solid var(--input-border);
+            border-radius: 6px;
+            background: var(--input-bg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            margin-top: 1px;
+        }
+
+        .terms-group input[type="checkbox"]:checked {
+            background: var(--lime-main);
+            border-color: var(--lime-main);
+        }
+
+        .terms-group input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #0a0a0a;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .light-mode .terms-group input[type="checkbox"]:checked::after {
+            color: #ffffff;
+        }
+
+        .terms-group label {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            line-height: 1.5;
+            cursor: pointer;
+        }
+
+        .terms-group label a {
+            color: var(--lime-main);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .terms-group label a:hover {
+            text-decoration: underline;
+            opacity: 0.8;
+        }
+
+        /* ===== SUBMIT BUTTON ===== */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            background: var(--btn-bg);
+            color: var(--btn-color);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 25px var(--btn-shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 0 45px var(--btn-shadow);
+        }
+
+        .btn-submit:active {
+            transform: scale(0.97);
+        }
+
+        .btn-submit i {
+            font-size: 1rem;
+        }
+
+        /* ===== DIVIDER ===== */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 22px 0 20px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--input-border);
+        }
+
+        .divider span {
+            font-size: 0.7rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.6;
+            white-space: nowrap;
+        }
+
+        /* ===== SOCIAL BUTTONS ===== */
+        .social-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 14px;
+            border: 1.5px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .social-btn:hover {
+            border-color: var(--lime-main);
+            background: rgba(204, 255, 0, 0.06);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px var(--lime-glow);
+        }
+
+        .light-mode .social-btn:hover {
+            background: rgba(74, 122, 74, 0.04);
+        }
+
+        .social-btn i {
+            font-size: 1.1rem;
+        }
+
+        .social-btn.google i { color: #ea4335; }
+        .social-btn.facebook i { color: #1877f2; }
+        .social-btn.apple i { color: var(--text-main); }
+
+        /* ===== LOGIN LINK ===== */
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--text-sub);
+        }
+
+        .login-link a {
+            color: var(--lime-main);
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+            opacity: 0.8;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 500px) {
+            header { padding: 14px 15px; }
+            
+            main {
+                padding: 12px 15px 20px;
+                min-height: 60vh;
+            }
+
+            .signup-card {
+                padding: 28px 20px 24px;
+                border-radius: 20px;
+            }
+
+            .signup-title {
+                font-size: 1.3rem;
+            }
+
+            .signup-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            .signup-icon i {
+                font-size: 1.8rem;
+            }
+
+            .form-group .input-wrapper input {
+                padding: 12px 14px 12px 38px;
+                font-size: 0.85rem;
+            }
+
+            .form-group .input-wrapper i {
+                left: 12px;
+                font-size: 0.8rem;
+            }
+
+            .social-buttons {
+                flex-direction: column;
+            }
+
+            .social-btn {
+                padding: 10px;
+                font-size: 0.8rem;
+            }
+
+            .btn-submit {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+
+            .signup-card::after,
+            .signup-card::before {
+                width: 2px;
+            }
+
+            :root {
+                --accent-line-width: 2px;
+            }
+
+            .light-mode {
+                --accent-line-width: 1.5px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .signup-card {
+                padding: 20px 14px 18px;
+            }
+
+            .signup-title {
+                font-size: 1.1rem;
+            }
+
+            .signup-icon {
+                width: 50px;
+                height: 50px;
+            }
+
+            .signup-icon i {
+                font-size: 1.4rem;
+            }
+
+            .form-group .input-wrapper input {
+                padding: 10px 12px 10px 34px;
+                font-size: 0.8rem;
+            }
+
+            .terms-group label {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <!-- header left empty -->
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main>
+        <div class="signup-wrapper">
+            <div class="signup-card">
+                
+                <!-- Header -->
+                <div class="signup-header">
+                    <div class="signup-icon">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <h1 class="signup-title">Create Account</h1>
+                    <p class="signup-subtitle">Join the gaming community today</p>
+                </div>
+
+                <!-- Form -->
+                <form id="signupForm" onsubmit="handleSignup(event)">
+                    
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-user"></i>
+                            <input type="text" id="fullName" placeholder="John Doe" required>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-envelope"></i>
+                            <input type="email" id="email" placeholder="you@example.com" required>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="password" placeholder="••••••••" required minlength="6">
+                            <button type="button" class="toggle-password" onclick="togglePassword()">
+                                <i class="fa-regular fa-eye" id="passwordIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-check"></i>
+                            <input type="password" id="confirmPassword" placeholder="••••••••" required minlength="6">
+                        </div>
+                    </div>
+
+                    <!-- Terms -->
+                    <div class="terms-group">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">
+                            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" class="btn-submit">
+                        <i class="fa-solid fa-arrow-right"></i>
+                        Create Account
+                    </button>
+
+                </form>
+
+                <!-- Divider -->
+                <div class="divider">
+                    <span>or continue with</span>
+                </div>
+
+                <!-- Social Buttons -->
+                <div class="social-buttons">
+                    <button class="social-btn google" onclick="alert('Sign up with Google')">
+                        <i class="fa-brands fa-google"></i> Google
+                    </button>
+                    <button class="social-btn facebook" onclick="alert('Sign up with Facebook')">
+                        <i class="fa-brands fa-facebook-f"></i> Facebook
+                    </button>
+                    <button class="social-btn apple" onclick="alert('Sign up with Apple')">
+                        <i class="fa-brands fa-apple"></i> Apple
+                    </button>
+                </div>
+
+                <!-- Login Link -->
+                <div class="login-link">
+                    Already have an account? <a href="op.html">Sign In</a>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <div id="bottom-nav-placeholder"></div>
+    <script src="nav.js"></script>
+
+    <!-- ===== SCRIPT ===== -->
+    <script>
+        // ============================================================
+        // PASSWORD TOGGLE
+        // ============================================================
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const icon = document.getElementById('passwordIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.className = 'fa-regular fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                icon.className = 'fa-regular fa-eye';
+            }
+        }
+
+        // ============================================================
+        // FORM SUBMIT
+        // ============================================================
+        function handleSignup(e) {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+
+            // Validation
+            if (!fullName) {
+                alert('Please enter your full name');
+                return;
+            }
+
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            if (!terms) {
+                alert('Please agree to the Terms of Service');
+                return;
+            }
+
+            // Success - redirect to home page
+            alert('Account created successfully! Welcome ' + fullName + '!');
+            window.location.href = 'index.html';
+        }
+
+        // ============================================================
+        // THEME TOGGLE (from settings panel)
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('theme') === 'light') {
+                document.body.classList.add('light-mode');
+            }
+
+            // Listen for theme changes from nav.js
+            const themeOption = document.getElementById('themeOption');
+            if (themeOption) {
+                themeOption.addEventListener('click', function() {
+                    setTimeout(() => {
+                        const isLight = document.body.classList.contains('light-mode');
+                        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                    }, 100);
+                });
+            }
+        });
+
+        // ============================================================
+        // SETTINGS PANEL
+        // ============================================================
+        const settingsPanel = document.getElementById('settingsPanel');
+        const settingsOverlay = document.getElementById('settingsOverlay');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const closeSettingsBtn = document.getElementById('closeSettings');
+
+        function openSettings() {
+            if (settingsPanel) {
+                settingsPanel.classList.add('open');
+                settingsOverlay.classList.add('visible');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeSettings() {
+            if (settingsPanel) {
+                settingsPanel.classList.remove('open');
+                settingsOverlay.classList.remove('visible');
+                document.body.style.overflow = '';
+            }
+        }
+
+        if (settingsBtn) {
+            settingsBtn.addEventListener('click', openSettings);
+        }
+        if (closeSettingsBtn) {
+            closeSettingsBtn.addEventListener('click', closeSettings);
+        }
+        if (settingsOverlay) {
+            settingsOverlay.addEventListener('click', closeSettings);
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && settingsPanel && settingsPanel.classList.contains('open')) {
+                closeSettings();
+            }
+        });
+    </script>
+
+</body>
+</html>

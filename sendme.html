@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>پشتیبانی و ارتباط با ما - گیمینگ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="nav.css">
     <style>
         /* ==========================================
            متغیرهای رنگی (حالت شب / روز)
@@ -33,6 +34,21 @@
             
             --google-color: #ea4335;
             --google-neon: rgba(234, 67, 53, 0.6);
+
+            --nav-bg: rgba(10, 10, 10, 0.92);
+            --lime-main: #ccff00;
+            --lime-shadow: rgba(204, 255, 0, 0.4);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            --glass-blur: 30px;
+            --img-bg: radial-gradient(circle at center, #1a1a0a, #0a0a00);
+            --img-filter: brightness(1.1) saturate(1.2);
+            --img-opacity: 0.95;
+            --glass-card-bg: rgba(255, 255, 255, 0.08);
+            --glass-card-border: rgba(255, 255, 255, 0.15);
+            --glass-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --glass-card-blur: 20px;
         }
 
         .light-mode {
@@ -53,6 +69,20 @@
             --facebook-neon: rgba(24, 119, 242, 0.3);
             --tiktok-neon: rgba(255, 0, 80, 0.3);
             --google-neon: rgba(234, 67, 53, 0.3);
+
+            --nav-bg: rgba(255, 255, 255, 0.92);
+            --lime-main: #4a7a4a;
+            --lime-shadow: rgba(74, 122, 74, 0.15);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+            --glass-blur: 20px;
+            --img-bg: linear-gradient(135deg, #f0f4f0, #ffffff);
+            --img-filter: brightness(1) saturate(1);
+            --img-opacity: 1;
+            --glass-card-bg: rgba(255, 255, 255, 0.7);
+            --glass-card-border: rgba(255, 255, 255, 0.4);
+            --glass-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
         }
 
         * {
@@ -72,135 +102,6 @@
             padding-bottom: 90px;
             position: relative;
             transition: background-color 0.5s ease, color 0.5s ease, background-image 0.5s ease;
-        }
-
-        /* ==========================================
-           هدر (فشرده)
-           ========================================== */
-        header {
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 2px solid var(--accent-green);
-            box-shadow: 0 4px 20px var(--green-shadow);
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-container {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            padding: 3px;
-            background: var(--card-bg);
-            border: 2px solid var(--accent-pink);
-            box-shadow: 0 0 15px var(--accent-pink), inset 0 0 15px var(--accent-pink);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-        }
-
-        .light-mode .logo-container {
-            border-color: #e53e6b;
-            box-shadow: 0 0 15px rgba(229, 62, 107, 0.15), inset 0 0 15px rgba(229, 62, 107, 0.05);
-        }
-
-        .logo-container:hover {
-            transform: scale(1.08);
-        }
-
-        .logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-
-        .header-title {
-            color: var(--accent-green);
-            font-size: 0.95rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            text-shadow: 0 0 15px var(--green-shadow);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.5s ease;
-        }
-
-        .light-mode .header-title {
-            text-shadow: 0 0 10px rgba(56, 168, 157, 0.15);
-        }
-
-        .header-title i {
-            font-size: 1rem;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .icon-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-main);
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .icon-btn:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent-green);
-            box-shadow: 0 0 12px var(--green-shadow);
-        }
-
-        .membership-btn {
-            width: auto;
-            padding: 0 14px;
-            border-radius: 21px;
-            font-weight: 700;
-            font-size: 0.75rem;
-            background: linear-gradient(135deg, var(--accent-pink), #ff5588);
-            border: none;
-            color: #ffffff;
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.35);
-            transition: all 0.3s ease;
-        }
-
-        .light-mode .membership-btn {
-            background: linear-gradient(135deg, #e53e6b, #ed6a8e);
-            box-shadow: 0 0 15px rgba(229, 62, 107, 0.2);
-        }
-
-        .membership-btn:hover {
-            box-shadow: 0 0 22px rgba(255, 0, 85, 0.55);
-        }
-
-        .lang-btn {
-            width: auto;
-            padding: 0 12px;
-            border-radius: 21px;
-            font-weight: 700;
-            font-size: 0.75rem;
-            letter-spacing: 0.5px;
         }
 
         /* ==========================================
@@ -429,168 +330,365 @@
         }
 
         /* ==========================================
-           دکمه بازگشت
+           SETTINGS PANEL - کامل
            ========================================== */
-        .back-btn {
-            margin-top: 30px;
+        .settings-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .settings-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .settings-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 400px;
+            max-width: 92%;
+            max-height: 85vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            padding: 0;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .settings-panel.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .settings-panel .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px 16px 24px;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .settings-panel .panel-header h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 24px;
-            border-radius: 25px;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
+            letter-spacing: -0.3px;
+        }
+
+        .settings-panel .panel-header h2 i {
+            color: var(--lime-main);
+            font-size: 1.2rem;
+        }
+
+        .settings-panel .close-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
             color: var(--text-sub);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px var(--shadow-color);
+            font-size: 1.2rem;
             cursor: pointer;
-        }
-
-        .back-btn:hover {
-            border-color: var(--accent-green);
-            color: var(--accent-green);
-            box-shadow: 0 0 25px var(--green-shadow);
-            transform: translateY(-3px);
-        }
-
-        .back-btn i {
-            transition: transform 0.3s ease;
-        }
-
-        .back-btn:hover i {
-            transform: translateX(4px);
-        }
-
-        /* ==========================================
-           نوار پایین
-           ========================================== */
-        .bottom-nav {
-            position: fixed;
-            bottom: 20px;
-            left: 0;
-            width: 100%;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            z-index: 1000;
+            justify-content: center;
         }
 
-        .ps-shapes {
+        .settings-panel .close-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: rotate(90deg);
+        }
+
+        .settings-content {
+            padding: 8px 0 20px 0;
+            overflow-y: auto;
+            max-height: calc(85vh - 80px);
+            scroll-behavior: smooth;
+        }
+
+        .settings-content::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .settings-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .settings-content::-webkit-scrollbar-thumb {
+            background: var(--lime-main);
+            border-radius: 10px;
+        }
+
+        .settings-group {
+            padding: 0 16px;
+            margin-bottom: 4px;
+        }
+
+        .settings-group label {
+            display: block;
+            color: var(--text-sub);
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 12px 8px 6px 8px;
+            opacity: 0.7;
+        }
+
+        .settings-option {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 30px;
-            background: var(--pill-bg);
-            padding: 14px 35px;
-            border-radius: 50px;
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 5px 20px var(--shadow-color);
-            width: auto;
-            transition: all 0.5s ease;
-        }
-
-        .light-mode .ps-shapes {
-            background: rgba(255, 255, 255, 0.9);
-            border-color: #e2e8f0;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
-        }
-
-        .ps-shapes i {
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
             cursor: pointer;
+            transition: all 0.25s ease;
+            margin-bottom: 2px;
+            border: 1px solid transparent;
+            position: relative;
         }
 
-        .ps-shapes .ps-cross { color: #5352ed; text-shadow: 0 0 15px rgba(83, 82, 237, 0.7); }
-        .ps-shapes .ps-circle { color: #ff4757; text-shadow: 0 0 15px rgba(255, 71, 87, 0.7); }
-        .ps-shapes .ps-triangle { color: #00f0ff; text-shadow: 0 0 15px rgba(0, 240, 255, 0.7); }
-        .ps-shapes .ps-square { color: #ff77a9; text-shadow: 0 0 15px rgba(255, 119, 169, 0.7); }
-
-        .light-mode .ps-shapes .ps-cross { color: #6c63c4; text-shadow: 0 0 15px rgba(108, 99, 196, 0.2); }
-        .light-mode .ps-shapes .ps-circle { color: #e53e6b; text-shadow: 0 0 15px rgba(229, 62, 107, 0.2); }
-        .light-mode .ps-shapes .ps-triangle { color: #38b2ac; text-shadow: 0 0 15px rgba(56, 178, 172, 0.2); }
-        .light-mode .ps-shapes .ps-square { color: #b779c4; text-shadow: 0 0 15px rgba(183, 121, 196, 0.2); }
-
-        .ps-shapes i:hover {
-            transform: scale(1.3) rotate(10deg);
-            filter: brightness(1.5);
+        .settings-option:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--glass-border);
         }
 
-        .light-mode .ps-shapes i:hover {
-            filter: brightness(1.2);
+        .settings-option:active {
+            transform: scale(0.98);
+        }
+
+        .settings-option .option-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .settings-option .option-left i {
+            color: var(--lime-main);
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .settings-option .option-text {
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: -0.2px;
+        }
+
+        .settings-option .option-status {
+            color: var(--lime-main);
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(204, 255, 0, 0.08);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .ios-toggle {
+            width: 51px;
+            height: 31px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            position: relative;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+        }
+
+        .light-mode .ios-toggle {
+            background: #e5e5ea;
+            border-color: #d1d1d6;
+        }
+
+        .ios-toggle.active {
+            background: var(--lime-main);
+            border-color: var(--lime-main);
+        }
+
+        .light-mode .ios-toggle.active {
+            background: #4a7a4a;
+            border-color: #4a7a4a;
+        }
+
+        .ios-toggle .toggle-knob {
+            width: 27px;
+            height: 27px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .ios-toggle.active .toggle-knob {
+            left: 21px;
+        }
+
+        .settings-option .chevron {
+            color: var(--text-sub);
+            opacity: 0.4;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .settings-option:hover .chevron {
+            opacity: 0.8;
+        }
+
+        .settings-divider {
+            height: 1px;
+            background: var(--glass-border);
+            margin: 4px 20px;
+        }
+
+        .settings-footer {
+            padding: 16px 24px 8px 24px;
+            text-align: center;
+            opacity: 0.4;
+        }
+
+        .settings-footer span {
+            font-size: 0.65rem;
+            color: var(--text-sub);
+            letter-spacing: 0.5px;
         }
 
         /* ==========================================
            واکنش‌گرایی
            ========================================== */
         @media (max-width: 500px) {
-            header { padding: 10px 15px; }
-            .logo-container { width: 42px; height: 42px; }
-            .icon-btn { width: 34px; height: 34px; font-size: 0.8rem; }
-            .lang-btn { padding: 0 10px; font-size: 0.7rem; }
-            .membership-btn { padding: 0 10px; font-size: 0.7rem; }
-            .header-actions { gap: 5px; }
-            .header-title { font-size: 0.75rem; }
-            .header-title i { font-size: 0.8rem; }
-
             .train-container { max-width: 100%; }
             .island-card { padding: 12px 14px; border-radius: 14px; }
             .icon-box { width: 42px; height: 42px; font-size: 1.3rem; }
             .island-info h3 { font-size: 0.9rem; }
             .island-info p { font-size: 0.7rem; }
 
-            .bottom-nav { bottom: 12px; }
-            .ps-shapes { padding: 12px 25px; gap: 20px; }
-            .ps-shapes i { font-size: 1.2rem; }
-
-            .back-btn { padding: 8px 18px; font-size: 0.75rem; }
+            .settings-panel { width: 94%; max-width: 94%; border-radius: 24px; }
+            .settings-panel .panel-header { padding: 16px 18px 12px 18px; }
+            .settings-panel .panel-header h2 { font-size: 1rem; }
+            .settings-content { padding: 4px 0 16px 0; max-height: calc(85vh - 70px); }
+            .settings-option { padding: 12px 14px; }
+            .settings-option .option-text { font-size: 0.9rem; }
+            .ios-toggle { width: 45px; height: 28px; }
+            .ios-toggle .toggle-knob { width: 24px; height: 24px; }
+            .ios-toggle.active .toggle-knob { left: 19px; }
         }
 
         @media (max-width: 380px) {
-            .header-title { font-size: 0.65rem; }
-            .header-title i { font-size: 0.7rem; }
-            .logo-container { width: 36px; height: 36px; }
             .icon-box { width: 36px; height: 36px; font-size: 1.1rem; }
             .island-card { padding: 10px 10px; }
             .island-info h3 { font-size: 0.8rem; }
             .island-info p { font-size: 0.6rem; }
-            .ps-shapes { gap: 14px; padding: 10px 16px; }
-            .ps-shapes i { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 
     <!-- ==========================================
-    هدر (فشرده)
+    SETTINGS OVERLAY
     ========================================== -->
-    <header>
-        <div class="header-left">
-            <div class="logo-container">
-                <img src="op.jpg.png" alt="Logo">
-            </div>
-            <div class="header-title">
-                <i class="fa-solid fa-gamepad"></i>
-                <span data-i18n="headerTitle">ورود به حساب پاپجی</span>
-            </div>
-        </div>
+    <div class="settings-overlay" id="settingsOverlay"></div>
 
-        <div class="header-actions">
-            <button class="icon-btn" id="themeToggle" type="button">
-                <i class="fa-solid fa-moon"></i>
-            </button>
-            <button class="icon-btn lang-btn" id="langToggle" type="button">
-                <span id="langLabel">FA</span>
-            </button>
-            <button class="icon-btn membership-btn" id="membershipBtn" type="button">
-                <span id="membershipLabel">عضویت</span>
-            </button>
+    <!-- ==========================================
+    SETTINGS PANEL - کامل
+    ========================================== -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="panel-header">
+            <h2><i class="fa-solid fa-gear"></i> <span>Settings</span></h2>
+            <button class="close-btn" id="closeSettings"><i class="fa-solid fa-xmark"></i></button>
         </div>
-    </header>
+        <div class="settings-content">
+            <!-- Language -->
+            <div class="settings-group">
+                <label>🌐 Language</label>
+                <div class="settings-option" id="langOption">
+                    <div class="option-left">
+                        <i class="fa-solid fa-language"></i>
+                        <span class="option-text" id="langLabelSettings">English</span>
+                    </div>
+                    <div class="option-status" id="langStatus">EN</div>
+                </div>
+            </div>
+            <div class="settings-divider"></div>
+
+            <!-- Appearance -->
+            <div class="settings-group">
+                <label>🎨 Appearance</label>
+                <div class="settings-option" id="themeOption">
+                    <div class="option-left">
+                        <i class="fa-solid fa-moon" id="themeIconSettings"></i>
+                        <span class="option-text" id="themeLabel">Dark</span>
+                    </div>
+                    <div class="ios-toggle" id="themeToggleSettings">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="settings-divider"></div>
+
+            <!-- Account -->
+            <div class="settings-group">
+                <label>👤 Account</label>
+                <div class="settings-option" onclick="window.location.href='signup.html'">
+                    <div class="option-left">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span class="option-text">Sign Up / Login</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-left chevron"></i>
+                </div>
+            </div>
+            <div class="settings-divider"></div>
+
+            <!-- Support -->
+            <div class="settings-group">
+                <label>💬 Support</label>
+                <div class="settings-option" onclick="window.location.href='conection.html'">
+                    <div class="option-left">
+                        <i class="fa-solid fa-headset"></i>
+                        <span class="option-text">Contact Support</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-left chevron"></i>
+                </div>
+            </div>
+            <div class="settings-footer">
+                <span>Version 2.0.0</span>
+            </div>
+        </div>
+    </div>
 
     <!-- ==========================================
     محتوای اصلی
@@ -651,24 +749,13 @@
             </div>
 
         </div>
-
-        <div class="back-btn" id="backBtn">
-            <i class="fa-solid fa-arrow-right"></i>
-            <span data-i18n="backBtn">بازگشت</span>
-        </div>
     </main>
 
     <!-- ==========================================
-    نوار پایین
+    BOTTOM NAV - با کامپوننت shared
     ========================================== -->
-    <div class="bottom-nav">
-        <div class="ps-shapes">
-            <i class="fa-solid fa-xmark ps-cross"></i>
-            <i class="fa-regular fa-circle ps-circle"></i>
-            <i class="fa-solid fa-triangle-exclamation ps-triangle"></i>
-            <i class="fa-regular fa-square ps-square"></i>
-        </div>
-    </div>
+    <div id="bottom-nav-placeholder"></div>
+    <script src="nav.js"></script>
 
     <script>
         // ==========================================
@@ -676,9 +763,6 @@
         // ==========================================
         var translations = {
             fa: {
-                'langLabel': 'FA',
-                'membershipLabel': 'عضویت',
-                'headerTitle': 'ورود به حساب پاپجی',
                 'facebookTitle': 'Facebook',
                 'facebookDesc': 'ورود از طریق فیس بوک',
                 'twitterTitle': 'X.com',
@@ -686,13 +770,9 @@
                 'tiktokTitle': 'Tiktok',
                 'tiktokDesc': 'ورود از طریق تیک تاک',
                 'googleTitle': 'Google',
-                'googleDesc': 'ورود از طریق گوگل',
-                'backBtn': 'بازگشت'
+                'googleDesc': 'ورود از طریق گوگل'
             },
             en: {
-                'langLabel': 'EN',
-                'membershipLabel': 'Sign up',
-                'headerTitle': 'PUBG Account Login',
                 'facebookTitle': 'Facebook',
                 'facebookDesc': 'Login via Facebook',
                 'twitterTitle': 'X.com',
@@ -700,8 +780,7 @@
                 'tiktokTitle': 'Tiktok',
                 'tiktokDesc': 'Login via TikTok',
                 'googleTitle': 'Google',
-                'googleDesc': 'Login via Google',
-                'backBtn': 'Back'
+                'googleDesc': 'Login via Google'
             }
         };
 
@@ -736,48 +815,12 @@
                     }
                 }
             }
-            
-            document.getElementById('langLabel').textContent = t['langLabel'];
-            document.getElementById('membershipLabel').textContent = t['membershipLabel'];
         }
 
         changeLanguage(currentLang);
 
         // ==========================================
-        // دکمه تغییر زبان
-        // ==========================================
-        document.getElementById('langToggle').addEventListener('click', function() {
-            var newLang = currentLang === 'fa' ? 'en' : 'fa';
-            changeLanguage(newLang);
-        });
-
-        // ==========================================
-        // دکمه تغییر تم (شب/روز)
-        // ==========================================
-        var themeToggle = document.getElementById('themeToggle');
-        var themeIcon = themeToggle.querySelector('i');
-
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.classList.add('light-mode');
-            themeIcon.classList.replace('fa-moon', 'fa-sun');
-        }
-
-        themeToggle.addEventListener('click', function() {
-            document.body.classList.toggle('light-mode');
-            var isLight = document.body.classList.contains('light-mode');
-            themeIcon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        });
-
-        // ==========================================
-        // دکمه عضویت
-        // ==========================================
-        document.getElementById('membershipBtn').addEventListener('click', function() {
-            window.location.href = 'signup.html';
-        });
-
-        // ==========================================
-        // تغییر مسیر کارت‌ها در همان صفحه (بدون تب جدید)
+        // تغییر مسیر کارت‌ها
         // ==========================================
         var cards = document.querySelectorAll('.island-card');
         for (var i = 0; i < cards.length; i++) {
@@ -790,10 +833,93 @@
         }
 
         // ==========================================
-        // دکمه بازگشت
+        // SETTINGS PANEL
         // ==========================================
-        document.getElementById('backBtn').addEventListener('click', function() {
-            window.location.href = 'index.html';
+        const settingsPanel = document.getElementById('settingsPanel');
+        const settingsOverlay = document.getElementById('settingsOverlay');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const closeSettingsBtn = document.getElementById('closeSettings');
+
+        function openSettings() {
+            settingsPanel.classList.add('open');
+            settingsOverlay.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSettings() {
+            settingsPanel.classList.remove('open');
+            settingsOverlay.classList.remove('visible');
+            document.body.style.overflow = '';
+        }
+
+        if (settingsBtn) {
+            settingsBtn.addEventListener('click', openSettings);
+        }
+        closeSettingsBtn.addEventListener('click', closeSettings);
+        settingsOverlay.addEventListener('click', closeSettings);
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && settingsPanel.classList.contains('open')) {
+                closeSettings();
+            }
+        });
+
+        // ==========================================
+        // THEME TOGGLE در پنل تنظیمات
+        // ==========================================
+        const themeToggleSettings = document.getElementById('themeToggleSettings');
+        const themeIconSettings = document.getElementById('themeIconSettings');
+        const themeLabel = document.getElementById('themeLabel');
+
+        function updateThemeUI(isLight) {
+            if (isLight) {
+                document.body.classList.add('light-mode');
+                themeToggleSettings.classList.add('active');
+                themeIconSettings.className = 'fa-solid fa-sun';
+                themeIconSettings.style.color = '#f5a623';
+                themeLabel.textContent = 'Light';
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.classList.remove('light-mode');
+                themeToggleSettings.classList.remove('active');
+                themeIconSettings.className = 'fa-solid fa-moon';
+                themeIconSettings.style.color = '';
+                themeLabel.textContent = 'Dark';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        if (localStorage.getItem('theme') === 'light') {
+            updateThemeUI(true);
+        } else {
+            updateThemeUI(false);
+        }
+
+        document.getElementById('themeOption').addEventListener('click', function() {
+            const isLight = document.body.classList.contains('light-mode');
+            updateThemeUI(!isLight);
+        });
+
+        // ==========================================
+        // LANGUAGE در پنل تنظیمات
+        // ==========================================
+        const langOption = document.getElementById('langOption');
+        const langLabelSettings = document.getElementById('langLabelSettings');
+        const langStatus = document.getElementById('langStatus');
+
+        langLabelSettings.textContent = currentLang === 'fa' ? 'فارسی' : 'English';
+        langStatus.textContent = currentLang === 'fa' ? 'FA' : 'EN';
+
+        langOption.style.cursor = 'default';
+        langOption.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var newLang = currentLang === 'fa' ? 'en' : 'fa';
+            changeLanguage(newLang);
+            langLabelSettings.textContent = newLang === 'fa' ? 'فارسی' : 'English';
+            langStatus.textContent = newLang === 'fa' ? 'FA ✓' : 'EN ✓';
+            setTimeout(function() { 
+                langStatus.textContent = newLang === 'fa' ? 'FA' : 'EN'; 
+            }, 800);
         });
     </script>
 
