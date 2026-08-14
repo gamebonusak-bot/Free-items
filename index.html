@@ -167,11 +167,16 @@
             flex-shrink: 0;
         }
 
-        /* ===== DESKTOP: show all cards together, no slider ===== */
+        /* ===== DESKTOP: wider, shorter height & gap from bottom nav ===== */
         @media (min-width: 1025px) {
+            main {
+                padding-bottom: 90px; /* ایجاد فاصله کامل از نوار ناوبری پایین */
+            }
+
             .slider-wrapper {
-                max-width: 700px;
+                max-width: 900px;
                 overflow: visible;
+                margin-bottom: 30px;
             }
 
             .slider-container {
@@ -187,13 +192,14 @@
             }
 
             .slider-container .skin-card {
-                min-width: 300px;
-                max-width: 338px;
-                flex: 1 1 320px;
+                min-width: 380px;
+                max-width: 420px;
+                flex: 1 1 380px;
             }
 
+            /* کاهش ارتفاع عکس در سیستم برای متناسب شدن کارت */
             .slider-container .skin-image-wrapper {
-                height: 300px;
+                height: 220px;
             }
 
             .slider-dots {
@@ -855,15 +861,11 @@
 </head>
 <body>
 
-    <!-- ===== HEADER ===== -->
     <header>
-        <!-- header left empty -->
-    </header>
+        </header>
 
-    <!-- ===== SETTINGS OVERLAY ===== -->
     <div class="settings-overlay" id="settingsOverlay"></div>
 
-    <!-- ===== GLASS SETTINGS PANEL ===== -->
     <div class="settings-panel" id="settingsPanel">
         <div class="panel-header">
             <h2><i class="fa-solid fa-gear"></i> <span>Settings</span></h2>
@@ -896,7 +898,6 @@
             <div class="settings-divider"></div>
             <div class="settings-group">
                 <label>👤 Account</label>
-                <!-- ===== لینک به signin.html ===== -->
                 <div class="settings-option" onclick="window.location.href='signin.html'">
                     <div class="option-left">
                         <i class="fa-solid fa-user-plus"></i>
@@ -922,13 +923,10 @@
         </div>
     </div>
 
-    <!-- ===== MAIN ===== -->
     <main>
-        <!-- Slider -->
         <div class="slider-wrapper">
             <div class="slider-container" id="sliderContainer">
                 
-                <!-- Card 1: PUBG - Cobalt (Glass Style) -->
                 <div class="skin-card">
                     <div class="score-badge">
                         <i class="fa-solid fa-star"></i>
@@ -955,7 +953,6 @@
                     </div>
                 </div>
 
-                <!-- Card 2: Clash of Clans (Glass Style) -->
                 <div class="skin-card">
                     <div class="score-badge">
                         <i class="fa-solid fa-star"></i>
@@ -985,18 +982,15 @@
             </div>
         </div>
 
-        <!-- Slider Dots -->
         <div class="slider-dots" id="sliderDots">
             <button class="dot active" data-index="0"></button>
             <button class="dot" data-index="1"></button>
         </div>
     </main>
 
-    <!-- ===== BOTTOM NAV (shared component) ===== -->
     <div id="bottom-nav-placeholder"></div>
     <script src="nav.js"></script>
 
-    <!-- ===== SCRIPT ===== -->
     <script>
         (function() {
             // ----- UPDATE CLOCK -----
@@ -1265,8 +1259,6 @@
                 document.body.style.overflow = '';
             }
 
-            // Wait for nav.js to load, then attach settings button
-            // Since nav.js loads asynchronously, we use a MutationObserver or check periodically
             function attachSettingsButton() {
                 const settingsBtn = document.getElementById('settingsBtn');
                 if (settingsBtn) {
@@ -1276,7 +1268,6 @@
                 return false;
             }
 
-            // Try immediately and if not, wait for nav.js to load
             if (!attachSettingsButton()) {
                 const observer = new MutationObserver(() => {
                     if (attachSettingsButton()) {
