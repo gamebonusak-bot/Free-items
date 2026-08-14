@@ -124,7 +124,7 @@
         }
 
         /* ==========================================
-           Cards - سبک جدید با اطلاعات کامل
+           Cards - با نوار لیمویی دور هر باکس
            ========================================== */
         .cards-container {
             display: flex;
@@ -140,6 +140,28 @@
             flex-direction: column;
             gap: 0;
             position: relative;
+            border-radius: 20px;
+            /* نوار لیمویی دور کل باکس */
+            border: 2px solid rgba(204, 255, 0, 0.25);
+            box-shadow: 0 0 30px rgba(204, 255, 0, 0.08), inset 0 0 30px rgba(204, 255, 0, 0.03);
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+
+        .light-mode .card-wrapper {
+            border-color: rgba(74, 122, 74, 0.25);
+            box-shadow: 0 0 30px rgba(74, 122, 74, 0.06), inset 0 0 30px rgba(74, 122, 74, 0.02);
+        }
+
+        .card-wrapper:hover {
+            border-color: rgba(204, 255, 0, 0.6);
+            box-shadow: 0 0 50px rgba(204, 255, 0, 0.15), 0 10px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .light-mode .card-wrapper:hover {
+            border-color: rgba(74, 122, 74, 0.5);
+            box-shadow: 0 0 40px rgba(74, 122, 74, 0.1), 0 10px 40px rgba(0, 0, 0, 0.05);
         }
 
         .card {
@@ -149,28 +171,19 @@
             background: var(--card-bg);
             backdrop-filter: blur(var(--glass-card-blur));
             -webkit-backdrop-filter: blur(var(--glass-card-blur));
-            border: 1px solid var(--card-border);
-            border-radius: 20px 20px 0 0;
+            border: none;
+            border-radius: 18px 18px 0 0;
             height: 110px;
             align-items: center;
             overflow: hidden;
             position: relative;
             z-index: 1;
-            box-shadow: var(--glass-card-shadow);
             transition: all 0.3s ease;
             cursor: pointer;
         }
 
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: var(--lime-main);
-            box-shadow: 0 15px 45px var(--lime-shadow), var(--glass-card-shadow);
+        .card-wrapper:hover .card {
             background: var(--card-bg);
-        }
-
-        .light-mode .card:hover {
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.12), var(--glass-card-shadow);
-            border-color: var(--lime-main);
         }
 
         /* Glass shine effect */
@@ -181,7 +194,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            border-radius: 20px 20px 0 0;
+            border-radius: 18px 18px 0 0;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 50%, rgba(255, 255, 255, 0.02) 100%);
             pointer-events: none;
             z-index: 1;
@@ -189,10 +202,6 @@
 
         .light-mode .card::before {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 50%, rgba(255, 255, 255, 0.1) 100%);
-        }
-
-        .card:hover::before {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 40%, rgba(255, 255, 255, 0.05) 100%);
         }
 
         .card-img-wrapper {
@@ -204,16 +213,24 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            border-left: 2px solid var(--lime-main);
+            border-left: 2px solid rgba(204, 255, 0, 0.2);
             transition: all 0.5s ease;
             background: radial-gradient(circle at center, #1a1a0a, #0a0a00);
             z-index: 0;
         }
 
         .light-mode .card-img-wrapper {
-            border-left: 2px solid #d0d4d0;
+            border-left: 2px solid rgba(74, 122, 74, 0.2);
             background: linear-gradient(135deg, #f7fafc, #edf2f7);
             box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.02);
+        }
+
+        .card-wrapper:hover .card-img-wrapper {
+            border-left-color: rgba(204, 255, 0, 0.5);
+        }
+
+        .light-mode .card-wrapper:hover .card-img-wrapper {
+            border-left-color: rgba(74, 122, 74, 0.4);
         }
 
         .card-img-wrapper img {
@@ -234,12 +251,12 @@
             transform: scale(0.92);
         }
 
-        .card:hover .card-img-wrapper img {
+        .card-wrapper:hover .card-img-wrapper img {
             transform: scale(1.08);
             filter: brightness(1.2) saturate(1.1);
         }
 
-        .light-mode .card:hover .card-img-wrapper img {
+        .light-mode .card-wrapper:hover .card-img-wrapper img {
             transform: scale(1.05);
             filter: brightness(1.05) saturate(1.05);
         }
@@ -302,23 +319,24 @@
             background: var(--card-bg);
             backdrop-filter: blur(var(--glass-card-blur));
             -webkit-backdrop-filter: blur(var(--glass-card-blur));
-            border: 1px solid var(--card-border);
-            border-top: none;
-            border-radius: 0 0 20px 20px;
+            border: none;
+            border-top: 1px solid rgba(204, 255, 0, 0.1);
+            border-radius: 0 0 18px 18px;
             padding: 16px 24px 20px 24px;
-            box-shadow: var(--glass-card-shadow);
             transition: all 0.3s ease;
             position: relative;
         }
 
+        .light-mode .card-info {
+            border-top: 1px solid rgba(74, 122, 74, 0.1);
+        }
+
         .card-wrapper:hover .card-info {
-            border-color: var(--lime-main);
-            box-shadow: 0 15px 45px var(--lime-shadow), var(--glass-card-shadow);
+            border-top-color: rgba(204, 255, 0, 0.25);
         }
 
         .light-mode .card-wrapper:hover .card-info {
-            border-color: var(--lime-main);
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.12), var(--glass-card-shadow);
+            border-top-color: rgba(74, 122, 74, 0.2);
         }
 
         .card-info-grid {
@@ -363,8 +381,12 @@
 
         .card-info .info-divider {
             height: 1px;
-            background: var(--card-border);
+            background: rgba(204, 255, 0, 0.08);
             margin: 10px 0;
+        }
+
+        .light-mode .card-info .info-divider {
+            background: rgba(74, 122, 74, 0.08);
         }
 
         .card-info .info-footer {
@@ -529,6 +551,11 @@
             font-weight: 800;
             min-width: 80px;
             text-align: left;
+        }
+
+        .slider-wrapper {
+            direction: ltr;
+            width: 100%;
         }
 
         input[type="range"] {
@@ -1058,6 +1085,11 @@
             .card-title { font-size: 1.1rem; }
             .card-desc { font-size: 0.8rem; }
 
+            .card-wrapper {
+                border-radius: 15px;
+                border-width: 1.5px;
+            }
+
             .card-info {
                 padding: 14px 16px 16px 16px;
                 border-radius: 0 0 15px 15px;
@@ -1363,7 +1395,9 @@
                     <span id="sliderLabel">Silver Coin Amount:</span>
                     <span class="slider-value" id="sliderValue">0</span>
                 </div>
-                <input type="range" id="amountSlider" min="0" max="10000" value="0" step="1">
+                <div class="slider-wrapper">
+                    <input type="range" id="amountSlider" min="0" max="10000" value="0" step="1">
+                </div>
                 <div class="slider-limits">
                     <span id="minLabel">0</span>
                     <span id="maxLabel">10,000</span>
