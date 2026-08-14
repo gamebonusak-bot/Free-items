@@ -124,36 +124,22 @@
         }
 
         /* ==========================================
-           Cards - Glass Style مانند منوهای دیگر
+           Cards - سبک جدید با اطلاعات کامل
            ========================================== */
         .cards-container {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 30px;
             width: 100%;
-            max-width: 480px;
+            max-width: 500px;
             position: relative;
         }
 
-        .cards-container::before {
-            content: '';
-            position: absolute;
-            top: 50px;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 3px;
-            background: var(--lime-main);
-            border-radius: 10px;
-            box-shadow: 0 0 10px var(--lime-main), 0 0 20px var(--lime-main), 0 0 35px var(--lime-main);
-            z-index: 0;
-            transition: all 0.5s ease;
-        }
-
-        .light-mode .cards-container::before {
-            background: #cbd5e0;
-            box-shadow: none;
-            width: 2px;
+        .card-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
         }
 
         .card {
@@ -164,8 +150,8 @@
             backdrop-filter: blur(var(--glass-card-blur));
             -webkit-backdrop-filter: blur(var(--glass-card-blur));
             border: 1px solid var(--card-border);
-            border-radius: 20px;
-            height: 100px;
+            border-radius: 20px 20px 0 0;
+            height: 110px;
             align-items: center;
             overflow: hidden;
             position: relative;
@@ -176,7 +162,7 @@
         }
 
         .card:hover {
-            transform: translateY(-6px) scale(1.02);
+            transform: translateY(-4px);
             border-color: var(--lime-main);
             box-shadow: 0 15px 45px var(--lime-shadow), var(--glass-card-shadow);
             background: var(--card-bg);
@@ -195,7 +181,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            border-radius: 20px;
+            border-radius: 20px 20px 0 0;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 50%, rgba(255, 255, 255, 0.02) 100%);
             pointer-events: none;
             z-index: 1;
@@ -307,6 +293,130 @@
         .light-mode .card-action {
             font-weight: 600;
             color: #4a7a4a;
+        }
+
+        /* ==========================================
+           کارت اطلاعات - بخش پایینی هر کارت
+           ========================================== */
+        .card-info {
+            background: var(--card-bg);
+            backdrop-filter: blur(var(--glass-card-blur));
+            -webkit-backdrop-filter: blur(var(--glass-card-blur));
+            border: 1px solid var(--card-border);
+            border-top: none;
+            border-radius: 0 0 20px 20px;
+            padding: 16px 24px 20px 24px;
+            box-shadow: var(--glass-card-shadow);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .card-wrapper:hover .card-info {
+            border-color: var(--lime-main);
+            box-shadow: 0 15px 45px var(--lime-shadow), var(--glass-card-shadow);
+        }
+
+        .light-mode .card-wrapper:hover .card-info {
+            border-color: var(--lime-main);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.12), var(--glass-card-shadow);
+        }
+
+        .card-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-sub);
+            font-size: 0.85rem;
+        }
+
+        .info-item i {
+            color: var(--lime-main);
+            font-size: 0.9rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .info-item .label {
+            font-weight: 500;
+            color: var(--text-sub);
+            opacity: 0.7;
+        }
+
+        .info-item .value {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .light-mode .info-item .value {
+            color: #1a1a1a;
+        }
+
+        .info-item .value.highlight {
+            color: var(--lime-main);
+        }
+
+        .card-info .info-divider {
+            height: 1px;
+            background: var(--card-border);
+            margin: 10px 0;
+        }
+
+        .card-info .info-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+        }
+
+        .card-info .info-tag {
+            display: inline-block;
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: rgba(204, 255, 0, 0.12);
+            color: var(--lime-main);
+            border: 1px solid rgba(204, 255, 0, 0.15);
+        }
+
+        .light-mode .card-info .info-tag {
+            background: rgba(74, 122, 74, 0.12);
+            color: #4a7a4a;
+            border-color: rgba(74, 122, 74, 0.15);
+        }
+
+        .card-info .info-btn {
+            padding: 6px 18px;
+            border: none;
+            border-radius: 12px;
+            background: var(--lime-main);
+            color: #0a0a0a;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px var(--lime-shadow);
+        }
+
+        .light-mode .card-info .info-btn {
+            background: #4a7a4a;
+            color: #ffffff;
+            box-shadow: 0 0 15px var(--lime-shadow);
+        }
+
+        .card-info .info-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--lime-shadow);
+        }
+
+        .card-info .info-btn:active {
+            transform: scale(0.95);
         }
 
         /* ==========================================
@@ -941,13 +1051,33 @@
         @media (max-width: 500px) {
             header { padding: 14px 15px; }
 
-            .card { height: 85px; border-radius: 15px; }
-            .cards-container::before { top: 42px; bottom: 42px; }
+            .card { height: 85px; border-radius: 15px 15px 0 0; }
             .card-img-wrapper { width: 110px; }
             .card-img-wrapper img { padding: 8px; }
             .card-body { padding: 0 15px; }
             .card-title { font-size: 1.1rem; }
             .card-desc { font-size: 0.8rem; }
+
+            .card-info {
+                padding: 14px 16px 16px 16px;
+                border-radius: 0 0 15px 15px;
+            }
+            .card-info-grid {
+                grid-template-columns: 1fr;
+                gap: 6px;
+            }
+            .info-item {
+                font-size: 0.8rem;
+            }
+            .card-info .info-footer {
+                flex-direction: column;
+                gap: 8px;
+                align-items: stretch;
+            }
+            .card-info .info-btn {
+                width: 100%;
+                text-align: center;
+            }
 
             .modal-content {
                 padding: 30px 20px;
@@ -1076,41 +1206,140 @@
         </div>
 
         <div class="cards-container">
-            <!-- Card 1: Silver Coin -->
-            <div class="card" onclick="openModalFn('silver')">
-                <div class="card-img-wrapper">
-                    <img src="download.png" alt="Silver Coin">
+            <!-- ==========================================
+            کارت 1: Silver Coin
+            ========================================== -->
+            <div class="card-wrapper">
+                <div class="card" onclick="openModalFn('silver')">
+                    <div class="card-img-wrapper">
+                        <img src="download.png" alt="Silver Coin">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><i class="fa-regular fa-circle"></i> Silver Coin</h3>
+                        <p class="card-desc">Win Free silver Coin</p>
+                        <span class="card-action">Select & Receive ←</span>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <h3 class="card-title"><i class="fa-regular fa-circle"></i> Silver Coin</h3>
-                    <p class="card-desc">Win Free silver Coin</p>
-                    <span class="card-action">Select & Receive ←</span>
+                <div class="card-info">
+                    <div class="card-info-grid">
+                        <div class="info-item">
+                            <i class="fa-solid fa-coins"></i>
+                            <span class="label">Available:</span>
+                            <span class="value highlight">10,000</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-gem"></i>
+                            <span class="label">Value:</span>
+                            <span class="value">Free</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-regular fa-clock"></i>
+                            <span class="label">Daily Limit:</span>
+                            <span class="value">500</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                            <span class="label">Status:</span>
+                            <span class="value highlight">Active</span>
+                        </div>
+                    </div>
+                    <div class="info-divider"></div>
+                    <div class="info-footer">
+                        <span class="info-tag"><i class="fa-regular fa-star"></i> Free Reward</span>
+                        <button class="info-btn" onclick="openModalFn('silver')">Claim Now</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Card 2: UC VIP -->
-            <div class="card" onclick="openModalFn('uc')">
-                <div class="card-img-wrapper">
-                    <img src="uc.png" alt="UC VIP">
+            <!-- ==========================================
+            کارت 2: UC VIP
+            ========================================== -->
+            <div class="card-wrapper">
+                <div class="card" onclick="openModalFn('uc')">
+                    <div class="card-img-wrapper">
+                        <img src="uc.png" alt="UC VIP">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><i class="fa-solid fa-star"></i> UC (VIP)</h3>
+                        <p class="card-desc">Win PUBG Mobile UC</p>
+                        <span class="card-action">Select & Receive ←</span>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <h3 class="card-title"><i class="fa-solid fa-star"></i> UC (VIP)</h3>
-                    <p class="card-desc">Win PUBG Mobile UC</p>
-                    <span class="card-action">Select & Receive ←</span>
+                <div class="card-info">
+                    <div class="card-info-grid">
+                        <div class="info-item">
+                            <i class="fa-solid fa-coins"></i>
+                            <span class="label">Available:</span>
+                            <span class="value highlight">1,000</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-gem"></i>
+                            <span class="label">Value:</span>
+                            <span class="value">$10.00</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-regular fa-clock"></i>
+                            <span class="label">Daily Limit:</span>
+                            <span class="value">100</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                            <span class="label">Status:</span>
+                            <span class="value highlight">VIP Only</span>
+                        </div>
+                    </div>
+                    <div class="info-divider"></div>
+                    <div class="info-footer">
+                        <span class="info-tag"><i class="fa-solid fa-crown"></i> VIP Reward</span>
+                        <button class="info-btn" onclick="openModalFn('uc')">Claim Now</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Card 3: Exchange items -->
-            <a href="last of pubg.html" class="card">
-                <div class="card-img-wrapper">
-                    <img src="mmm.png" alt="Exchange items">
+            <!-- ==========================================
+            کارت 3: Exchange items
+            ========================================== -->
+            <div class="card-wrapper">
+                <a href="last of pubg.html" class="card">
+                    <div class="card-img-wrapper">
+                        <img src="mmm.png" alt="Exchange items">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><i class="fa-solid fa-arrows-rotate"></i> Exchange items</h3>
+                        <p class="card-desc">Exchange Silver with other items</p>
+                        <span class="card-action">Select & Receive ←</span>
+                    </div>
+                </a>
+                <div class="card-info">
+                    <div class="card-info-grid">
+                        <div class="info-item">
+                            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                            <span class="label">Exchange Rate:</span>
+                            <span class="value highlight">100:1</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-box"></i>
+                            <span class="label">Items:</span>
+                            <span class="value">12+</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-regular fa-clock"></i>
+                            <span class="label">Processing:</span>
+                            <span class="value">Instant</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                            <span class="label">Status:</span>
+                            <span class="value highlight">Available</span>
+                        </div>
+                    </div>
+                    <div class="info-divider"></div>
+                    <div class="info-footer">
+                        <span class="info-tag"><i class="fa-solid fa-rotate"></i> Exchange</span>
+                        <a href="last of pubg.html" class="info-btn" style="text-decoration: none; text-align: center;">Exchange Now</a>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <h3 class="card-title"><i class="fa-solid fa-arrows-rotate"></i> Exchange items</h3>
-                    <p class="card-desc">Exchange Silver with other items</p>
-                    <span class="card-action">Select & Receive ←</span>
-                </div>
-            </a>
+            </div>
         </div>
     </main>
 
@@ -1158,10 +1387,10 @@
     ========================================== -->
     <div class="bottom-nav">
         <div class="nav-container">
-            <button class="nav-item" id="newsBtn" onclick="window.location.href='news.html'">
+            <a class="nav-item" id="newsBtn" href="https://www.ign.com">
                 <i class="fa-solid fa-newspaper"></i>
                 <span>News</span>
-            </button>
+            </a>
             <button class="nav-item" id="supportBtn" onclick="window.location.href='conection.html'">
                 <i class="fa-solid fa-headset"></i>
                 <span>Support</span>
